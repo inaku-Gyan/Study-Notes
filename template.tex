@@ -1,0 +1,143 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+
+\usepackage{bm} % 数学粗体（避免斜体被取消）
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{esint} % 提供更丰富的积分符号
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+% \usepackage{bussproofs} % 自然演绎推理树
+
+% 交叉引用
+% 关闭边框，设置颜色
+\usepackage[colorlinks=true, linkcolor=darkgray, citecolor=teal, urlcolor=blue]{hyperref}
+% 使 \cref 和 \Cref 可用
+\usepackage{cleveref}
+
+\usepackage{bookmark}  % 生成 PDF 大纲
+
+\allowdisplaybreaks[3]  % 允许换页
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tip box}
+{\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{conceptbox}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{thmbox}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{plain}
+\newtheorem{tip inner}{Tip}[section]
+\newenvironment{tip}[1][]
+{\begin{tip box}\begin{tip inner}[#1]\hfill\par}
+{\end{tip inner}\end{tip box}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        \(\begin{matrix}#2\end{matrix}\)
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\Ev}[1]{\,\mathcal{E}\ensuremath{v}\left\{#1\right\}}
+\newcommand{\Od}[1]{\,\mathcal{O}\ensuremath{d}\left\{#1\right\}}
+
+\renewcommand{\Re}[1]{\,\mathcal{R}\ensuremath{e}\left\{#1\right\}}
+\renewcommand{\Im}[1]{\,\mathcal{I}\ensuremath{m}\left\{#1\right\}}
+
+\newcommand{\iu}{\mathrm{i}}  % 虚数单位 i
+\newcommand{\ju}{\mathrm{j}}  % 虚数单位 j
+
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}  % 自然常数
+
+
+\DeclareMathOperator{\proj}{proj}
+\DeclareMathOperator{\sgn}{sgn}
+
+\renewcommand{\parallel}{\mathrel{/\mskip-5mu/}} % parallel symbol
+
+
+\newcommand{\perm}[2]{\ensuremath{{}_{#1}\mathrm{P}_{#2}}}  % 排列数
+\newcommand{\comb}[2]{\ensuremath{{}_{#1}\mathrm{C}_{#2}}}  % 组合数
+
+\newcommand{\E}{\mathbb{E}\qty}  % 期望
+\newcommand{\Prob}{\mathbb{P}\qty}  % 概率
+\newcommand{\Var}{\mathrm{Var}\qty}  % 方差
+
+\begin{document}
+
+This is a template.
+
+
+
+\end{document}
