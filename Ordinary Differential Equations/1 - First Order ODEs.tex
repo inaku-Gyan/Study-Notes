@@ -1,0 +1,360 @@
+\documentclass[10pt,UTF8]{article}
+
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+% \usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+
+\usepackage{bm} % 数学粗体（避免斜体被取消）
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{esint} % 提供更丰富的积分符号
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+% \usepackage{bussproofs} % 自然演绎推理树
+
+% 交叉引用
+% 关闭边框，设置颜色
+\usepackage[colorlinks=true, linkcolor=darkgray, citecolor=teal, urlcolor=blue]{hyperref}
+% 使 \cref 和 \Cref 可用
+\usepackage{cleveref}
+
+\usepackage{bookmark}  % 生成 PDF 大纲
+
+\allowdisplaybreaks[3]  % 允许换页
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipBox}
+{\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{conceptBox}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{theoremBoxNoIndent}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{definitionBox}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theoremBox}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definitionBox}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definitionBox}}
+
+\theoremstyle{definition}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theoremBox}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theoremBox}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{plain}
+\newtheorem{tip inner}{Tip}[section]
+\newenvironment{tip}[1][]
+{\begin{tipBox}\begin{tip inner}[#1]\hfill\par}
+{\end{tip inner}\end{tipBox}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\iu}{\mathrm{i}}  % 虚数单位 i
+
+
+\begin{document}
+
+\part*{First Order ODEs}
+
+The \textbf{general form} of a first order ODE is
+\[
+    \dv{y}{t} = f(t,y)
+\]
+for some given function \(f\).
+
+\section{Linear}
+
+The \textbf{general form} of a first order linear ODE is
+\[
+    \dv{y}{t} + p(t)\cdot y = q(t)
+\]
+for some given functions \(p\) and \(q\).
+
+\subsection{Method of Integrating Factors}
+
+\begin{theoremBox}
+    For ODEs of the form
+    \[
+        \dv{y}{t} + p(t)\cdot y = q(t)
+    \]
+    the \textbf{general solution} is
+    \[
+        y = \frac{1}{\mu(t)} \int \mu(t)\cdot q(t)\dd{t}
+    \]
+    where the \textbf{integrating factor} is any \(\mu(t)\) that satisfies
+    \[
+        \ln\abs{\mu(t)} = \int p(t)\dd{t}
+    \]
+\end{theoremBox}
+\begin{remark}
+    Indefinite integrals yield a family of functions differing by a constant.
+    Each indefinite integral results in an independent constant, which represents a degree of freedom.
+    However, the constant from \(\mu(t)\) cancels out in the final solution for \(y\).
+\end{remark}
+
+
+\subsection{Variation of Parameters}
+
+\begin{theoremBox}
+    For ODEs of the form
+    \[
+        \dv{y}{t} + p(t)\cdot y = q(t)
+    \]
+    let \(h(t)\) be a function such that
+    \[
+        h(t) = \int p(t)\dd{t}
+    \]
+    Then the \textbf{general solution} is given by
+    \[
+        y = e^{-h(t)} \int q(t)\cdot e^{h(t)} \dd{t}
+    \]
+\end{theoremBox}
+
+\subsection{}
+
+\begin{theoremBox}
+    For ODEs of the form
+    \[
+        \dv{y}{t} + p(t)\cdot y = q(t)
+    \]
+    the \textbf{general solution} is given by
+    \[
+        y = v \int \frac{q(t)}{v} \dd{t}
+    \]
+    where \(v\) satisfies
+    \[
+        \dv{v}{t} + p(t)\cdot v = 0
+    \]
+\end{theoremBox}
+\begin{proof}
+    We want to solve \cref{eq: method3 eq for y}.
+    Suppose \(v\) satisfies \cref{eq: method3 eq for v},
+    which is separable and can be solved easily.
+    \begin{gather}
+        y' + p(t)\cdot y = q(t)
+        \label{eq: method3 eq for y} \\
+        v' + p(t)\cdot v = 0
+        \label{eq: method3 eq for v}
+    \end{gather}
+    Take the derivative of \(y/v\):
+    \begin{align*}
+        \dv{t}(\frac{y}{v})
+        &= \frac{y' v - v' y}{v^2} \\
+        &= \frac{y' v + (p(t)\cdot v) y}{v^2} 
+        \tag*{Plug in \cref{eq: method3 eq for v}.} \\
+        &= \frac{q(t)}{v}
+        \tag*{Plug in \cref{eq: method3 eq for y}.}
+    \end{align*}
+    Thus we have
+    \begin{equation*}
+        \frac{y}{v} = \int \frac{q(t)}{v} \dd{t}
+    \end{equation*}
+    Since \(v\) can be solved from \cref{eq: method3 eq for v},
+    we obtain the solution for \(y\).
+\end{proof}
+
+\section{Non-Linear}
+
+\subsection{Separable Equations}
+
+A first order ODE is \textbf{separable} if it can be written in the form
+\[
+    M(t) + N(y)\cdot \dv{y}{t} = 0
+\]
+for some functions \(M\) and \(N\).
+Then the solution satisfies
+\[
+    \int N(y)\dd{y} = -\int M(t)\dd{t}
+\]
+
+\subsection{Transformation Methods}
+
+Some complicated non-linear ODEs can be transformed into ODEs that are solvable by suitable substitutions.
+
+\subsubsection{Bernoulli Equations}
+
+Bernoulli equations can be transformed into linear ODEs by the substitution \(v = y^{1-r}\).
+
+
+\begin{definition}[Bernoulli Equations]
+    A first order ODE is called a \textbf{Bernoulli equation} if it can be written in the form
+    \begin{equation}
+        \dv{y}{t} + p(t)\cdot y = q(t)\cdot y^r
+        \label{eq: Bernoulli Equations}
+    \end{equation}
+    for some given functions \(p\), \(q\) and
+    a real number \( r\in\mathbb{R} \setminus \{ 0, 1 \} \).
+\end{definition}
+
+\begin{theoremBox}
+    The \textbf{general solution} of a Bernoulli equation~\eqref{eq: Bernoulli Equations} is given by
+    \[
+        y^{1-r} = \frac{1-r}{\mu(t)} \int \mu(t)\cdot q(t)\dd{t}
+    \]
+    where \(\mu(t)\) satisfies
+    \[
+        \ln\abs{\mu(t)} = (1-r)\int p(t)\dd{t}
+    \]
+\end{theoremBox}
+
+\begin{proof}
+    Substitute \(v = y^{1-r}\), and then solve with the method of integrating factors.
+    \begin{align*}
+        \dv{y}{t} + p(t)\cdot y = q(t)\cdot y^r
+        \quad & \implies\quad
+        y^{-r}\dv{y}{t} + p(t)\cdot y^{1-r} = q(t) \\
+        \quad & \implies\quad
+        \dv{t}( y^{1-r}) + (1-r)p(t)\cdot y^{1-r} = (1-r) q(t)
+    \end{align*}
+\end{proof}
+
+\subsubsection{Homogeneous Equations}
+
+Homogeneous equations can be transformed into separable equations.
+
+\begin{theoremBox}
+    If a first-order ODE can be expressed in the following form, then it is said to be \textbf{homogeneous}:
+    \[
+        \dv{y}{t} = F(y/t)
+    \]
+    for some given function \(F\).
+    
+    \noindent
+    Then it can be transformed into a separable equation using \(v = y/t\):
+    \[
+        \frac{1}{F(v) - v} \dd{v} = \frac{1}{t} \dd{t}
+    \]
+\end{theoremBox}
+
+\begin{remark}
+    The homogeneous equations considered here have nothing to do with
+    the homogeneous LCCDEs.
+\end{remark}
+
+\subsection{Exact Equations}
+
+\begin{definition}[Exact Equations]
+    A first order ODE \(M(t,y)\dd{t}+N(t,y)\dd{y}=0\) is said to be \textbf{exact} if there exists a function \(\Psi(t,y)\) such that
+    \begin{equation*}
+        \pdv{\Psi(t,y)}{t} = M(t,y) \qand \pdv{\Psi(t,y)}{y} = N(t,y)
+    \end{equation*}
+    Then the general solution is given implicitly as
+    \[
+        \Psi(t,y) = C \qquad\text{for some constant } C \in \mathbb{R}
+    \]
+\end{definition}
+
+\begin{theorem}
+    Let \(R\) be a simply connected region in the \(t y\)-plane.
+    If \(M(t,y)\), \(N(t,y)\), \(M_y(t,y)\), and \(N_t(t,y)\) are continuous in~\(R\), then
+    \begin{equation*}
+        M(t,y) + N(t,y) \dv{y}{t} = 0 \text{ is exact in } R
+        \qquad\iff\qquad
+        M_y(t,y) = N_t(t,y) \quad \text{for all } (t,y) \in R
+    \end{equation*}
+    where \(M_y(t,y) := \pdv*{M(t,y)}{y}\) and \(N_t(t,y) := \pdv*{N(t,y)}{t}\).
+\end{theorem}
+
+To solve the first order ODE \(M(t,y)\dd{t}+N(t,y)\dd{y}=0\),
+we can follow these steps:
+\begin{enumerate}
+    \item Verify that the equation is exact by checking if \(M_y(t,y) = N_t(t,y)\).
+    \item Integrate \(M(t,y)\) with respect to \(t\) to find \(\Psi(t,y)\):
+    \[
+        \Psi(t,y) = \int M(t,y)\dd{t} + h(y)
+    \]
+    where \(h(y)\) is an arbitrary function of \(y\).
+    \item Differentiate \(\Psi(t,y)\) with respect to \(y\) and set it equal to \(N(t,y)\):
+    \[
+        \pdv{\Psi(t,y)}{y} = N(t,y)
+    \]
+    This will allow us to solve for \(h(y)\).
+    \item Substitute \(h(y)\) back into \(\Psi(t,y)\) to obtain the implicit solution:
+    \[
+        \Psi(t,y) = C
+    \]
+    for some constant \(C\).
+\end{enumerate}
+
+\subsection{Exact Equations and Integrating Factors}
+
+It is sometimes possible to convert an ODE that is not exact into an exact equation with a suitable integrating factor.
+
+Suppose the following first order ODE is exact:
+\begin{equation*}
+    \mu M(t,y) + \mu N(t,y)\dv{y}{t} = 0
+\end{equation*}
+Then the integrating factor \( \mu \) must satisfy
+\begin{equation*}
+    \pdv{(\mu M)}{y} = \pdv{(\mu N)}{t}
+\end{equation*}
+
+On one hand, assuming that \( \mu = \mu(t) \), we have
+\begin{equation*}
+    \dv{\mu}{t} = \frac{M_y - N_t}{N}\cdot \mu
+\end{equation*}
+If \((M_y - N_t) / N\) depends on \(t\) alone, then we can solve for \(\mu(t)\).
+
+On the other hand, assuming that \( \mu = \mu(y) \), we have
+\begin{equation*}
+    \dv{\mu}{y} = \frac{N_t - M_y}{M}\cdot \mu
+\end{equation*}
+If \((N_t - M_y) / M\) depends on \(y\) alone, then we can solve for \(\mu(y)\).
+
+If neither case applies, then try some substitutions to transform the ODE into a solvable form.
+
+\end{document}
