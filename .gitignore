@@ -259,6 +259,8 @@ TSWLatexianTemp*
 ehthumbs.db
 Thumbs.db
 
+*:Zone.Identifier
+
 # IDE
 # .vscode/
 .idea/
