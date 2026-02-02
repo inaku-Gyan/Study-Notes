@@ -1,0 +1,168 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{makecell}
+\usepackage{multirow}
+
+\usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+\usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+\usepackage{siunitx}
+% 关闭警告
+\ExplSyntaxOn
+\msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+\ExplSyntaxOff
+
+
+\usepackage[most]{tcolorbox}
+
+
+\newenvironment{tipbox}
+    {\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black]}
+    {\end{tcolorbox}}
+
+\newenvironment{conceptbox}
+    {\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+    {\end{tcolorbox}}
+
+\newenvironment{thmbox}
+    {\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+    {\end{tcolorbox}}
+
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\perm}[2]{\ensuremath{{}_{#1}\mathrm{P}_{#2}}}  % 排列数
+\newcommand{\comb}[2]{\ensuremath{{}_{#1}\mathrm{C}_{#2}}}  % 组合数
+
+
+\begin{document}
+
+\section{Counting Techniques}
+
+The following enumeration methods are drawn from \emph{multiplication principle}.
+
+\subsection{Summary}
+
+\begin{center}
+    \renewcommand{\arraystretch}{2.5}
+\begin{tabular}{c|c c|c}
+    \hline\hline
+    Way to Sample &
+    \multicolumn{2}{c|}{Sample You Get} &
+    Number of Samples \\
+    \hline
+
+    \multirow{2}{*}{
+        \makecell{ordered sampling \\ without replacement}        
+    } &
+    \multicolumn{2}{c|}{a \textbf{permutation of $n$ objects}} &
+    $\displaystyle n!$ \\
+    \cline{2-4}
+
+    &
+    \multicolumn{1}{c|}{\multirow{2}{*}{
+        \makecell{an \textbf{ordered sample} \\ \textbf{of size $r$}}
+    }} &
+    \makecell{a \textbf{permutation of $n$ objects} \\ \textbf{taken $r$ at a time}} &
+    $\displaystyle \perm{n}{r}=\frac{n!}{(n-r)!}$ \\
+    \cline{1-1} \cline{3-4}
+
+    \makecell{ordered sampling \\ with replacement} &
+    \multicolumn{1}{c|}{} &
+    &
+    $\displaystyle n^r$ \\
+    \hline
+
+    \multirow{2}{*}{
+        \makecell{unordered sampling \\ without replacement} 
+    } &
+    \multicolumn{1}{c|}{\multirow{2}{*}{
+        \makecell{a \textbf{distinguishable} \\ \textbf{permutation}}
+    }} &
+    \makecell{
+        a \textbf{combination of $n$ objects} \\ \textbf{taken $r$ at a time}
+    } &
+    $\displaystyle \comb{n}{r}=\binom{n}{r}=\frac{n!}{r!(n-r)!}$ \\
+    \cline{3-4}
+    
+    &
+    \multicolumn{1}{c|}{} &
+    \makecell{
+        a \textbf{distinguishable permutation} \\ \textbf{of objects of $m$ types}
+    } &
+    $\displaystyle \binom{n}{n_1,n_2,\cdots,n_m}=\frac{n!}{n_1!\cdots n_m!}$ \\
+    \hline
+
+    \makecell{unordered sampling \\ with replacement} &
+    &
+    &
+    $\displaystyle \binom{n+r-1}{r}$ \\
+    \hline\hline
+\end{tabular}
+\end{center}
+
+
+\subsection{Some Notations}
+
+\paragraph{}
+The expression $\comb{n}{r}$ can be read as ``$n$ choose $r$''.
+
+\paragraph{}
+The numbers $\displaystyle\binom{n}{r}$ are called \textbf{binomial coefficients}.
+They arise in the expansion of a binomial.
+
+\paragraph{}
+$\displaystyle\binom{n}{n_1,n_2,\cdots,n_s}$ can be called a \textbf{multinomial coefficient}.
+\begin{gather*}
+    \left(x_1+x_2+\cdots+x_s\right)^n = 
+    \sum_{\substack{n_1+n_2+\cdots+n_s=n \\ n_1,n_2,\cdots,n_s\in\mathbb{Z}_{\geqslant 0}}}
+    \binom{n}{n_1,n_2,\cdots,n_s}x_1^{n_1}x_2^{n_2}\cdots x_s^{n_s}
+\end{gather*}
+
+
+\subsection{Unordered Sampling with Replacement}
+
+The number of unordered samples of size $r$ selected from $n$ different objects with replacement is equal to
+the number of non-negative integer solutions to the equation
+\begin{gather*}
+    x_1+x_2+\cdots+x_n=r \qquad\text{with } x_i \in \left\{0,1,2,\cdots,r\right\},
+    \ i\in\left\{1,2,\cdots,n\right\}
+\end{gather*}
+where $x_i$ represents the number of times object $i$ is selected.
+
+For each solution $(\hat{x}_1,\hat{x}_2,\cdots,\hat{x}_n)$,
+we replace $x_i$ with $\hat{x}_i$ vertical lines in the equation:
+\begin{gather*}
+    ||| + \ + || + \cdots + || +\  = r
+\end{gather*}
+Then the number of solutions equals the number of permutations of $r$ vertical lines and $n-1$ plus signs.
+
+Therefore, the number of the original unordered samples is
+\begin{gather*}
+    \binom{n+r-1}{r} = \binom{n+r-1}{n-1} = \frac{(n+r-1)!}{r!(n-1)!}
+\end{gather*}
+
+\end{document}

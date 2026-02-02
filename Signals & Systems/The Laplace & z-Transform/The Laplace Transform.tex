@@ -1,0 +1,442 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+\allowdisplaybreaks[3]  % 允许换页
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\ju}{\mathrm{j}}  % 虚数单位
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+\newcommand{\Ev}{\,\mathcal{E}\ensuremath{v}\qty}
+\newcommand{\Od}{\,\mathcal{O}\ensuremath{d}\qty}
+
+\renewcommand{\Re}{\,\mathcal{R}\ensuremath{e}\qty}
+\renewcommand{\Im}{\,\mathcal{I}\ensuremath{m}\qty}
+
+\newcommand{\sinc}{\operatorname{sinc}} 
+\newcommand{\rect}{{\mkern 1.5 mu}\operatorname{rect}\!\qty} % 矩形函数
+
+
+\begin{document}
+
+\part*{The Laplace Transform}
+
+\section{The Laplace Transform}
+
+\begin{definition}[The Laplace Transform]
+The (bilateral) Laplace transform of a general signal $x(t)$ is defined as
+\begin{equation*}
+    X(s) =
+    \int_{-\infty}^{\infty}x(t)\e^{-s t}\dd{t}
+\end{equation*}
+where $s=\sigma + \ju\omega$ is a complex variable.
+\end{definition}
+
+\begin{remark}
+\textbf{Connection with the Fourier Transform}
+\begin{equation*}
+    \mathcal{L}\{x(t)\} = X(s) =
+    X(\sigma+\ju\omega) = \mathcal{F}\{x(t)\e^{-\sigma t}\}
+\end{equation*}
+\end{remark}
+
+\begin{definition}[The Inverse Laplace Transform]
+The inverse Laplace transform of a function $X(s)$ is defined as
+\begin{equation*}
+    x(t) = \frac{1}{2\pi\ju}\int_{\sigma-\ju\infty}^{\sigma+\ju\infty}X(s)\e^{st}\dd{s}
+\end{equation*}
+\end{definition}
+\begin{proof}
+    Use the inverse Fourier transform:
+    \begin{equation*}
+        x(t)\e^{-\sigma t} = \mathcal{F}^{-1}\{X(\sigma+\ju\omega)\} =
+        \frac{1}{2\pi}\int_{-\infty}^{+\infty}
+        X(\sigma+\ju\omega)\e^{\ju\omega t}\dd{\omega}
+    \end{equation*}
+\end{proof}
+
+
+
+\section{Properties of the ROC}
+
+\begin{enumerate}
+    \item The ROC consists of strips parallel to the $\ju\omega$-axis in the $s$-plane.
+    \item The ROC dose not include any poles.
+    \item If $x(t)$ is of finite duration and is absolutely integrable,
+    then the ROC is the entire $s$-plane.
+    \item If $x(t)$ is right-sided, then the ROC is of the form $\Re(s) > \sigma_0$
+    for some $\sigma_0$.
+    \item If $x(t)$ is left-sided, then the ROC is of the form $\Re(s) < \sigma_0$
+    for some $\sigma_0$.
+    \item If $x(t)$ is two-sided, then the ROC is of
+    the form $\sigma_1 < \Re(s) < \sigma_2$ for some $\sigma_1$ and $\sigma_2$.
+\end{enumerate}
+
+
+
+\section{Basic Laplace Transform Pairs}
+
+\begin{center}
+\begin{tabular}
+    { c @{\qquad} c @{\qquad} c}
+    Signal & Laplace Transform & ROC \\
+    \hline $\displaystyle
+    u(t)
+    $ & $\displaystyle
+    \frac{1}{s}
+    $ & $
+    \Re{s} > 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    -u(-t)
+    $ & $\displaystyle
+    \frac{1}{s}
+    $ & $
+    \Re{s} < 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    \e^{-b\abs{t}}
+    $ & $\displaystyle
+    \frac{-2 b}{s^2-b^2}
+    $ & $
+    -\Re{b} < \Re{s} < \Re{b} \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    \e^{-a t} u(t)
+    $ & $\displaystyle
+    \frac{1}{s+a}
+    $ & $
+    \Re{s+a} > 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    -\e^{-a t} u(-t)
+    $ & $\displaystyle
+    \frac{1}{s+a}
+    $ & $
+    \Re{s+a} < 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \frac{t^{n-1}}{(n-1)!}\e^{-a t} u(t)
+    $ & $\displaystyle
+    \frac{1}{(s+a)^n}
+    $ & $
+    \Re{s+a} > 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    -\frac{t^{n-1}}{(n-1)!}\e^{-a t} u(-t)
+    $ & $\displaystyle
+    \frac{1}{(s+a)^n}
+    $ & $
+    \Re{s+a} < 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    \delta(t)
+    $ & $\displaystyle
+    1
+    $ & $
+    \mathbb{C} \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    \delta(t-T)
+    $ & $\displaystyle
+    \e^{-s T}
+    $ & $
+    \mathbb{C} \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    t^n u(t)
+    $ & $\displaystyle
+    \frac{n!}{s^{n+1}}
+    $ & $\displaystyle
+    \Re{s} > 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \cos(\omega_0 t) u(t)
+    $ & $\displaystyle
+    \frac{s}{s^2+\omega_0^2}
+    $ & $\displaystyle
+    \Re{s} > 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \sin(\omega_0 t) u(t)
+    $ & $\displaystyle
+    \frac{\omega_0}{s^2+\omega_0^2}
+    $ & $\displaystyle
+    \Re{s} > 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \e^{-a t}\cos(\omega_0 t) u(t)
+    $ & $\displaystyle
+    \frac{s+a}{(s+a)^2+\omega_0^2}
+    $ & $\displaystyle
+    \Re{s+a} > 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \e^{-a t}\sin(\omega_0 t) u(t)
+    $ & $\displaystyle
+    \frac{\omega_0}{(s+a)^2+\omega_0^2}
+    $ & $\displaystyle
+    \Re{s+a} > 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    u_n(t) = \dv[n]{\delta(t)}{t}{n}
+    $ & $\displaystyle
+    s^n
+    $ & $\displaystyle
+    \mathbb{C} \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    u_{-n}(t) = \underbrace{u(t) \ast \cdots \ast u(t)}_{n \text{ times}}
+    $ & $\displaystyle
+    \frac{1}{s^n}
+    $ & $\displaystyle
+    \Re{s} > 0 \vphantom{\mycases{1\\1}}
+    $ \\\hline
+\end{tabular}
+\end{center}
+
+
+
+\section{Properties of the Bilateral Laplace Transform}
+
+\subsection{}
+
+\begin{center}
+\begin{tabular}
+    { c @{\qquad} c @{\qquad} c}
+    Signal & Transform & ROC \\
+    \hline $\displaystyle
+    x(t)
+    $ & $\displaystyle
+    X(s)
+    $ & $
+    R
+    $ \\\hline $
+    x_1(t)
+    $ & $\displaystyle
+    X_1(s)
+    $ & $
+    R_1
+    $ \\\hline $
+    x_2(t)
+    $ & $\displaystyle
+    X_2(s)
+    $ & $
+    R_2
+    $ \\\hline $
+    a x_1(t) + b x_2(t)
+    $ & $\displaystyle
+    a X_1(s) + b X_2(s)
+    $ & $
+    \text{At least } R_1 \cap R_2
+    $ \\\hline $
+    x(t-t_0)
+    $ & $\displaystyle
+    \e^{-s t_0} X(s)
+    $ & $
+    R
+    $ \\\hline $\displaystyle
+    \e^{s_0 t} x(t)
+    $ & $\displaystyle
+    X(s-s_0)
+    $ & $
+    R + \Re{s_0}
+    $ \\\hline $\displaystyle
+    x(a t)
+    $ & $\displaystyle
+    \frac{1}{\abs{a}} X\qty(\frac{s}{a})
+    $ & $
+    a R \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    x^*(t)
+    $ & $\displaystyle
+    X^*(s^*)
+    $ & $
+    R
+    $ \\\hline $
+    x_1(t) \ast x_2(t)
+    $ & $\displaystyle
+    X_1(s) X_2(s)
+    $ & $
+    \text{At least } R_1 \cap R_2
+    $ \\\hline $\displaystyle
+    \dv{t} x(t)
+    $ & $\displaystyle
+    s X(s)
+    $ & $\displaystyle
+    \text{At least } R \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    -t x(t)
+    $ & $\displaystyle
+    \dv{s} X(s)
+    $ & $\displaystyle
+    R \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \int_{-\infty}^t x(\tau)\dd{\tau}
+    $ & $\displaystyle
+    \frac{1}{s} X(s)
+    $ & $\displaystyle
+    \text{At least } R \cap \{\Re{s}>0\} \vphantom{\mycases{1\\1}}
+    $ \\\hline
+\end{tabular}
+\end{center}
+
+\subsection{Initial- and Final-Value Theorem}
+
+\begin{theorem}[Initial-Value and Final-Value Theorem]
+    If $x(t)=0$ for $t<0$ and $x(t)$ contains no impulses or higher-order singularities at $t=0$, then
+    \begin{gather*}
+        x(0^+) = \lim_{s\to+\infty} s X(s) \\
+        \lim_{t\to+\infty} x(t) = \lim_{s\to 0} s X(s)
+    \end{gather*}
+\end{theorem}
+
+
+
+\section{The Unilateral Laplace Transform}
+
+\subsection{}
+
+\begin{definition}[The Unilateral Laplace Transform]
+The unilateral Laplace transform of a general signal $x(t)$ is defined as
+\begin{equation*}
+    \mathfrak{X}(s) =
+    \int_{0^-}^{\infty}x(t)\e^{-s t}\dd{t}
+\end{equation*}
+where $s=\sigma + \ju\omega$ is a complex variable.
+\end{definition}
+
+
+\subsection{Properties of the Unilateral Laplace Transform}
+
+For causal signals, the unilateral Laplace transform is the same as the bilateral Laplace transform.
+
+\subsubsection{}
+
+\begin{center}
+\begin{tabular}
+    { c @{\qquad} c @{\qquad} c}
+    Signal & Transform \\
+    \hline $\displaystyle
+    x(t)
+    $ & $\displaystyle
+    \mathfrak{X}(s)
+    $ \\\hline $
+    x_1(t)
+    $ & $\displaystyle
+    \mathfrak{X}_1(s)
+    $ \\\hline $
+    x_2(t)
+    $ & $\displaystyle
+    \mathfrak{X}_2(s)
+    $ \\\hline $
+    a x_1(t) + b x_2(t)
+    $ & $\displaystyle
+    a \mathfrak{X}_1(s) + b \mathfrak{X}_2(s)
+    $ \\\hline $\displaystyle
+    \e^{s_0 t} x(t)
+    $ & $\displaystyle
+    \mathfrak{X}(s-s_0)
+    $ \\\hline $\displaystyle
+    x(a t) \qquad a>0 \vphantom{\mycases{1\\1}}
+    $ & $\displaystyle
+    \frac{1}{a} \mathfrak{X}\qty(\frac{s}{a})
+    $ \\\hline $
+    x^*(t)
+    $ & $\displaystyle
+    \mathfrak{X}^*(s^*)
+    $ \\\hline $
+    \begin{matrix}
+        x_1(t) \ast x_2(t) \\
+        \text{both causal}
+    \end{matrix}
+    $ & $\displaystyle
+    \mathfrak{X}_1(s) \mathfrak{X}_2(s) \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \dv{t} x(t) \vphantom{\mycases{1\\1}}
+    $ & $\displaystyle
+    s \mathfrak{X}(s) - x(0^-)
+    $ \\\hline $\displaystyle
+    -t x(t)
+    $ & $\displaystyle
+    \dv{s} \mathfrak{X}(s) \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \int_{0^-}^t x(\tau)\dd{\tau}
+    $ & $\displaystyle
+    \frac{1}{s} \mathfrak{X}(s) \vphantom{\mycases{1\\1}}
+    $ \\\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Initial- and Final-Value Theorem}
+\begin{theorem}[Initial-Value and Final-Value Theorem]
+    For any $x(t)$,
+    \begin{gather*}
+        x(0^+) = \lim_{s\to+\infty} s \mathfrak{X}(s) \\
+        \lim_{t\to+\infty} x(t) = \lim_{s\to 0} s \mathfrak{X}(s)
+    \end{gather*}
+\end{theorem}
+
+
+\end{document}

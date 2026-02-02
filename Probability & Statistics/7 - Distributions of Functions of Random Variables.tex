@@ -1,0 +1,654 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+\usepackage{bm}
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{centernot}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipbox}
+{\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{conceptbox}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{thmbox}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+\newcommand{\iu}{\mathrm{i}}
+
+\newcommand{\perm}[2]{\ensuremath{{}_{#1}\mathrm{P}_{#2}}}  % 排列数
+\newcommand{\comb}[2]{\ensuremath{{}_{#1}\mathrm{C}_{#2}}}  % 组合数
+
+\newcommand{\E}[1]{\mathbb{E}\qty[#1]}  % 期望
+\newcommand{\Prob}{\mathbb{P}\qty}
+\newcommand{\Var}{\mathrm{Var}\qty}  % 方差
+\newcommand{\Cov}{\mathrm{Cov}\qty}  % 协方差
+
+\begin{document}
+
+\part*{Definitions of Functions of Random Variables}
+
+\section{Functions of One Random Variable}
+
+\subsection{}
+
+\begin{theorem}
+    For two DRVs $X$ and $Y$, if $Y=u(X)$ and $X=v(Y)$,
+    where $u$ and $v$ are one-to-one functions,
+    then their pmfs have the following relationship:
+    \begin{equation*}
+        f_Y(y) = f_X(x) = f_X(v(y))
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}
+    For two CRVs $X$ and $Y$, if $Y=u(X)$ and $X=v(Y)$,
+    where $u$ and $v$ are continuous \textbf{one-to-one} functions,
+    then their pdfs have the following relationship:
+    \begin{equation*}
+        f_Y(y) = \frac{f_X(x)}{\abs{\dv*{y}{x}}}
+        = f_X(v(y))\abs{\dv{y}v(y)}
+        \qor f_Y(y)\abs{\dd{y}} = f_X(x)\abs{\dd{x}}
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+    By the definition, we have:
+    \begin{equation*}
+        f_X(x) = \dv{x}F_X(x) \qquad
+        F_X(x) = \Prob(X\leqslant x) \qquad
+        f_Y(y) = \dv{y}F_Y(y) \qquad
+        F_Y(y) = \Prob(Y\leqslant y) = \Prob[u(X)\leqslant u(x)]
+    \end{equation*}
+    Since $u$ is one-to-one, it is strictly monotonic.
+    \begin{gather*}
+    \shortintertext{When $u'=\dv*{y}{x}>0$,}
+        F_Y(y) = \Prob[u(X)\leqslant u(x)]
+        = \Prob(X\leqslant x) = F_X(x) \\
+        \implies f_Y(y) = \dv{y} F_Y(y) = \dv{y} F_X(x)
+        = \dv{x}{y}\dv{x}F_X(x) = \frac{f_X(x)}{\dv*{y}{x}}
+    \shortintertext{When $u'=\dv*{y}{x}<0$,}
+        F_Y(y) = \Prob[u(X)\leqslant u(x)]
+        = \Prob(X\geqslant x) = 1 - F_X(x) \\
+        \implies f_Y(y) = -\dv{y} F_X(x)
+        = - \frac{f_X(x)}{\dv*{y}{x}}
+    \end{gather*}
+\end{proof}
+
+\begin{theorem}[Random Number Generator, RNG]
+    Let $Y\sim U(0,1)$ and $F(x)$ have the properties of a cdf of a CRV:
+    \begin{itemize}
+        \item $F\colon(a,b)\subseteq\mathbb{R}\to[0,1]$ is strictly increasing.
+        \item $F(a)=0$ and $F(b)=1$.
+    \end{itemize}
+    Then $X=F^{-1}(Y)$ is a CRV with cdf $F(x)$.
+\end{theorem}
+
+\begin{theorem}
+    Suppose $X$ is a CRV with cdf $F_X(x)$ and $Y=F_X(X)$.
+    Then $Y\sim U(0,1)$.
+\end{theorem}
+\begin{proof}
+    Suppose $F(x)=\mycases{
+        0 & x \leqslant a \\
+        F(x) & a \leqslant x \leqslant b \\
+        1 & x \geqslant b
+    }$ and $F(x)$ is non-decreasing over $(-\infty, \infty)$.
+    
+    We need to show that $F(x)=F_X(x)=\Prob(X\leqslant x)$.
+    \begin{align*}
+        F_X(x) = \Prob(X\leqslant x)
+        &= \Prob(F(X)\leqslant F(x))
+        = \Prob(Y\leqslant y) \\
+        &= F_Y(y) = \mycases{
+            0 & y < 0 \\
+            y & 0 \leqslant y \leqslant 1 \\
+            1 & y > 1
+        } \\
+        &= \mycases{
+            0 & F(x) < F(a) \\
+            F(x) & F(a) \leqslant F(x) \leqslant F(b) \\
+            1 & F(x) > F(b)
+        } \\
+        &= F(x) \qfor -\infty < x < \infty
+    \end{align*}
+\end{proof}
+
+\subsection{Histogram for Continuous Distributions}
+
+Histogram gives an approximation of the pdf of a CRV.
+
+The simplest form of a histogram is constructed as follows:
+\begin{enumerate}
+    \item Divide the sample space of the distribution into a
+    sequence of adjacent, non-overlapping and equally spaced subintervals.
+    \item Treat each subinterval as an event. Then count how many
+    observed numerical outcomes fall into each subinterval and
+    calculate the relative frequency
+    \item Draw a rectangle erected over the bin with height equal to the
+    relative frequency divided by the width of each subinterval.
+\end{enumerate}
+
+
+\section{Multivariate Random Variables}
+
+
+\begin{definition}[Independent]
+    The $n$ RVs $X_1, X_2, \cdots, X_n$ are independent, if
+    \begin{equation*}
+        f(x_1, x_2, \cdots, x_n) = f_{X_1}(x_1)f_{X_2}(x_2)\cdots f_{X_n}(x_n)
+    \end{equation*}
+\end{definition}
+\begin{remark}
+    A necessary condition for $X_1, X_2, \cdots, X_n$ to be independent is that
+    \begin{equation*}
+        S = S_{X_1} \times S_{X_2} \times \cdots \times S_{X_n}
+    \end{equation*}
+\end{remark}
+
+
+\begin{definition}
+    $n$ \textbf{independently and identically distributed} (i.i.d.) RVs are called
+    a random sample of size $n$ from a common distribution.
+\end{definition}
+
+
+\begin{theorem}
+    If $X_1, X_2, \cdots, X_n$ are \textbf{independent} RVs and
+    $\E{X_i}$ exists for $i=1,2,\cdots,n$, then
+    \begin{equation*}
+        \E{X_1  X_2  \cdots  X_n} = \E{X_1}  \E{X_2}  \cdots  \E{X_n}
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}
+    If $X_1, X_2, \cdots, X_n$ are \textbf{independent} RVs with their variances
+    existing, then
+    \begin{gather*}
+        \Var(a_1 X_1 + a_2 X_2 + \cdots + a_n X_n) =
+        a_1^2 \Var(X_1) + a_2^2 \Var(X_2) + \cdots + a_n^2 \Var(X_n)
+    \end{gather*}
+\end{theorem}
+
+
+\begin{definition}[Statistic]
+    Any function of the random sample $X_1, X_2, \cdots, X_n$
+    without any unknown parameters is called a \textbf{statistic}.
+\end{definition}
+
+\begin{definition}[Sample Mean, or Estimator]
+    Let $X_1, X_2, \cdots, X_n$ be i.i.d. RVs and
+    each $X_i$ follow a distribution with mean $\mu$ and variance $\sigma^2$.
+    Then the \textbf{sample mean} is defined as
+    \begin{equation*}
+        \bar{X} := \frac{1}{n}\sum_{i=1}^n X_i
+    \end{equation*}
+    It is a \textbf{statistic} and also an \textbf{estimator} of mean $\mu$.
+\end{definition}
+
+\begin{theorem}
+    Let $X_1, X_2, \cdots, X_n$ be i.i.d. RVs and
+    each $X_i$ follow a distribution with mean $\mu$ and variance $\sigma^2$.
+    Then
+    \begin{itemize}
+        \item $\E{\bar{X}}=\mu$
+        \item $\Var(\bar{X})=\dfrac{\sigma^2}{n}$
+    \end{itemize}
+\end{theorem}
+
+\begin{definition}[(Adjusted) Sample Variance]
+    Let $X_1, X_2, \cdots, X_n$ be i.i.d. RVs and
+    each $X_i$ follows a distribution with mean $\mu$ and variance $\sigma^2$.
+    The \textbf{(adjusted) sample variance} is defined as
+    \begin{equation*}
+        S^2 := \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2
+        \qq{where} \bar{X} := \frac{1}{n}\sum_{i=1}^n X_i
+    \end{equation*}
+    It is a statistic and also an estimator of variance $\sigma^2$.
+\end{definition}
+\begin{remark}
+    The \emph{unadjusted sample variance} is defined as
+    $\displaystyle S^2 = \frac{1}{n}\sum_{i=1}^n (X_i - \bar{X})^2$,
+    which is biased due to the loss of one degree of freedom.
+    Thus the \emph{unadjusted sample variance} dose not
+    converge to the variance $\sigma^2$.
+\end{remark}
+
+\begin{theorem}
+    Let $X_1, X_2, \cdots, X_n$ be i.i.d. RVs and
+    each $X_i$ follows a distribution with mean $\mu$ and variance $\sigma^2$.
+    Then
+    \begin{itemize}
+        \item $\E{S^2}=\sigma^2$
+    \end{itemize}
+\end{theorem}
+\begin{proof}
+    Given that $\E{\bar{X}}=\E{X_i}=\mu,\;\Var[X_i]=\E{(X_i-\mu)^2}=\sigma^2,\;
+    \Var(\bar{X})=\dfrac{\sigma^2}{n}$, we have:
+    \begin{align*}
+        \sum_{i=1}^n (X_i - \bar{X})^2
+        &= \sum_{i=1}^n (X_i - \mu + \mu - \bar{X})^2 \\
+        &= \sum_{i=1}^n (X_i - \mu)^2 + 2 (\mu - \bar{X})\sum_{i=1}^n (X_i - \mu)
+        + \sum_{i=1}^n (\mu - \bar{X})^2 \\
+        &= \left[\sum_{i=1}^n (X_i - \mu)^2\right] - n (\mu - \bar{X})^2 \\
+        \E{\sum_{i=1}^n (X_i - \bar{X})^2}
+        &= \sum_{i=1}^n \E{(X_i - \mu)^2} - n \cdot\E{(\E{\bar{X}} - \bar{X})^2} \\
+        &= n\sigma^2 - n \cdot \frac{\sigma^2}{n} \\
+        &= (n-1)\sigma^2
+    \end{align*}
+\end{proof}
+
+
+\section{MGF Technique}
+
+\begin{theorem}
+    If $X_1,X_2,\cdots,X_n$ are \textbf{independent} RVs with mgfs $M_{X_i}(t)$,
+    where $\abs{t}<h_i$ for $i=1,2,\cdots,n$,
+    then the mgf of $\displaystyle Y=\sum_{i=1}^n M_{X_i}(a_i t)$ is given by
+    \begin{equation*}
+        M_Y(t) = \prod_{i=1}^n M_{X_i}(a_i t)
+    \end{equation*}
+    where $\abs{t}<\min\{\abs{h_i/a_i}\}$.
+\end{theorem}
+
+\begin{theorem}
+    If $X_1,X_2,\cdots,X_n$ are i.i.d. RVs with mgf $M(t)$,
+    where $\abs{t}<h$,
+    then the mgf of $\displaystyle Y=\sum_{i=1}^n X_i$ is given by
+    \begin{equation*}
+        M_Y(t) = \big[M(t)\big]^n
+        \qfor \abs{t} < h
+    \end{equation*}
+    The mgf of the sample mean $\displaystyle \bar{X}=\frac{1}{n}\sum_{i=1}^n X_i$ is given by
+    \begin{equation*}
+        M_{\bar{X}}(t) = \left[M\left(\frac{t}{n}\right)\right]^n
+        \qfor \abs{\frac{t}{n}} < h
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}
+    The sum of independent chi-squared random variables is itself a chi-squared random variable,
+    with degrees of freedom equal to the sum of the degrees of freedom of the individual variables.
+    \begin{equation*}
+        X_i \sim \chi^2(r_i) \qquad \implies \qquad
+        Y = X_1 + X_2 + \cdots + X_n 
+        \quad\sim\quad \chi^2\left(r_1 + r_2 + \cdots + r_n\right)
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}
+    The sum of squares of $n$ independent standard normal RVs is a
+    chi-squared RV with $n$ degrees of freedom.
+    \begin{equation*}
+        Z_i \sim N(0,1) \qquad \implies \qquad
+        Y = \sum_{i=1}^n Z_i^2 \sim \chi^2(n)
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+    Recall that $Z^2\sim\chi^2(1)$
+\end{proof}
+
+
+\section{Random Functions Associated with Normal Distributions}
+
+\subsection{}
+
+\begin{theorem}
+    If $X_i\sim N(\mu,\sigma^2)$ for $i=1,2,\cdots,n$,
+    then the sample mean $\bar{X}$ satisfies
+    \begin{equation*}
+        \bar{X} \sim N\left(\mu, \frac{\sigma^2}{n}\right)
+    \end{equation*}
+    and the sample variance $S^2$ satisfies
+    \begin{equation*}
+        \frac{n-1}{\sigma^2}S^2 \sim \chi^2(n-1)
+    \end{equation*}
+    Moreover, $\bar{X}$ and $S^2$ are \textbf{independent},
+    and the normal distribution is the only distribution where they are independent.
+\end{theorem}
+
+\begin{remark}
+    If $X_i\sim N(\mu,\sigma^2)$ for $i=1,2,\cdots,n$, then
+    \begin{equation*}
+        \sum_{i=1}^n \frac{(X_i - \mu)^2}{\sigma^2} \sim \chi^2(n)
+        \qquad\qquad
+        \sum_{i=1}^n \frac{(X_i - \bar{X})^2}{\sigma^2} \sim \chi^2(n-1)
+    \end{equation*}
+    When $\mu$ is replaced by $\bar{X}$,
+    one degree of freedom is lost.
+\end{remark}
+
+\subsection{Student's \texorpdfstring{$\bm{t}$}{t}-Distribution}
+
+\begin{definition}[Student's $t$-Distribution]
+    \textbf{Parameter}\qquad $r=1,2,3,\cdots$
+
+    The \textbf{Student's} $\bm{t}$\textbf{-distribution}
+    with $r$ degrees of freedom is defined as
+    \begin{equation*}
+        T = \frac{Z}{\sqrt{U/r}} \sim t(r)
+    \end{equation*}
+    where $Z\sim N(0,1)$ and $U\sim \chi^2(r)$ are independent.
+\end{definition}
+
+\begin{theorem}
+    The pdf of $T\sim t(r)$ is given by
+    \begin{equation*}
+        f(t) = \frac{
+            \Gamma\!\left(\frac{r+1}{2}\right)}{
+                \sqrt{r\pi}\ \Gamma\!\left(\frac{r}{2}\right)}
+        \left(1+\frac{t^2}{r}\right)^{-\frac{r+1}{2}}
+        \qfor -\infty < t < \infty
+    \end{equation*}
+\end{theorem}
+
+Student's $t$-distribution is heavier-tailed than the standard normal distribution.
+
+\begin{theorem}
+    Let $X_i\sim N(\mu,\sigma^2)$ for $i=1,2,\cdots,n$ be independent,
+    and let $\bar{X}$ and $S^2$ be the sample mean and sample variance,
+    respectively. Then,
+    \begin{equation*}
+        \frac{\bar{X} - \mu}{\sigma/\sqrt{n}} \sim N(0,1)
+        \qquad\qquad
+        T = \frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t(n-1)
+    \end{equation*}
+\end{theorem}
+
+
+\section{The Central Limit Theorem}
+
+\begin{definition}[Convergence in Distribution]
+    A sequence of RVs $X_n$ converges in distribution,
+    or converges weakly, or converges in law to a RV $X$ if
+    \begin{equation*}
+        \lim_{n\to\infty}
+        \Prob(X_n \leqslant x)
+        \quad=\quad
+        \Prob(X \leqslant x)
+        \qquad\quad \forall x
+    \end{equation*}
+    Denoted as
+    \begin{equation*}
+        X_n \xlongrightarrow{d} X
+    \end{equation*}
+\end{definition}
+\begin{remark}
+    The convergence of RVs can be characterized in multiple ways.
+    Examples include:
+    \begin{itemize}
+        \item Convergence in Probability
+        \item Convergence in Distribution
+        \item Almost Sure Convergence
+        \item Convergence in $L^p$ Space
+    \end{itemize}
+    Convergence in distribution is the weakest form of them.
+\end{remark}
+
+
+\begin{theorem}[Central Limit Theorem, CLT]
+    Let $\bar{X}$ be the sample mean of a random sample of size $n$ from a distribution
+    with a finite mean $\mu$ and a finite non-zero variance $\sigma^2$.
+    Then,
+    \begin{equation*}
+        \bar{X} \xlongrightarrow{d} N(\mu, \frac{\sigma^2}{n})
+        \qas n \to \infty
+    \end{equation*}
+    Or equivalently,
+    \begin{equation*}
+        \frac{\bar{X}-\mu}{\sigma/\sqrt{n}}
+        \xlongrightarrow{d} N(0,1)
+        \qas n \to \infty
+    \end{equation*}
+\end{theorem}
+
+
+\section{Approximations for Discrete Distributions}
+
+We can approximate a discrete distribution with a continuous distribution
+that has a pdf similar to the histogram of the discrete distribution.
+
+
+\subsection{Half-Unit Correction for Continuity}
+
+Let $Y=\sum_{i=1}^n X_i$, where $X_1,\cdots,X_n$ are i.i.d. random samples
+from a discrete distribution with mean $\mu$ and variance $\sigma^2$.
+By the CLT, for large $n$, $Y$ can be approximated by
+$Z\sim N(n\mu,n\sigma^2)$.
+\begin{equation*}
+    \Prob(Y = k) = \Prob(k - \frac{1}{2} < Y < k + \frac{1}{2})
+    \approx \Prob(k - \frac{1}{2} < Z < k + \frac{1}{2})
+    = \Phi\!\left(\frac{k + \frac{1}{2} - n\mu}{\sigma\sqrt{n}}\right)
+    - \Phi\!\left(\frac{k - \frac{1}{2} - n\mu}{\sigma\sqrt{n}}\right)
+\end{equation*}
+\begin{remark}
+    We need another CRV as a bridge, say $T$.
+    $T$ should have a non-continuous pdf
+    that has the same shape as the histogram of the DRV $Y$.
+    Then we can say that
+    \begin{equation*}
+        \Prob(k - \frac{1}{2} < Y < k + \frac{1}{2})
+        = \Prob(k - \frac{1}{2} < T < k + \frac{1}{2})
+        \approx \Prob(k - \frac{1}{2} < Z < k + \frac{1}{2})
+    \end{equation*}
+\end{remark}
+
+\begin{theorem}
+    For large $n$, the binomial distribution $\mathrm{B}(n,p)$
+    can be approximated by $N(n p,n p(1-p))$.
+\end{theorem}
+\begin{proof}
+    Let $Y=\sum_{i=1}^n X_i$, where $X_i\sim \mathrm{B}(1,p)$ and $X_i$ are i.i.d.
+    Then $Y\sim \mathrm{B}(n,p)$, and it can be approximated by
+    $N(n p,n p(1-p))$.
+\end{proof}
+
+\begin{theorem}
+    For large enough $\lambda$,
+    the Poisson distribution $\mathrm{Poisson}(\lambda)$
+    can be approximated by $N(\lambda,\lambda)$.
+\end{theorem}
+\begin{proof}
+    Here, provide a proof for $\lambda$ being an integer.
+    Let $Y=\sum_{i=1}^\lambda X_i$, where $X_i\sim \mathrm{Poisson}(1)$
+    and $X_i$ are i.i.d.
+    Then $Y\sim \mathrm{Poisson}(\lambda)$,
+    and it can be approximated by
+    $N(\lambda,\lambda)$ when $\lambda$ is large enough,
+    since $\E{X_i}=\Var(X_i)=1$.
+\end{proof}
+
+
+\section{Chebyshev's Inequality and Convergence in Probability}
+
+\begin{theorem}[Markov's Inequality]
+    If the RV $X$ is \textbf{non-negative} and has a finite mean,
+    then,
+    \begin{equation*}
+        \Prob(X \geqslant \varepsilon) \quad\leqslant\quad
+        \frac{\E{X}}{\varepsilon}
+        \qquad \forall \varepsilon > 0
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}[Chebyshev's Inequality]
+    If the RV $X$ has a finite mean $\mu$ and finite nonzero variance $\sigma^2$,
+    then,
+    \begin{equation*}
+        \Prob(\abs{X - \mu} \geqslant k\sigma) \quad\leqslant\quad \frac{1}{k^2}
+        \qquad \forall k>0
+    \end{equation*}
+    Or equivalently,
+    \begin{equation*}
+        \Prob(\abs{X - \mu} \geqslant \varepsilon) \quad\leqslant\quad
+        \frac{\sigma^2}{\varepsilon^2}
+        \qquad \forall \varepsilon > 0
+    \end{equation*}
+\end{theorem}
+\begin{remark}
+    For any given RV $X$ with mean $\mu$ and variance $\sigma^2>0$,
+    the corresponding \textbf{standardized RV} is $\dfrac{X-\mu}{\sigma}$,
+    with mean $0$ and variance $1$.
+\end{remark}
+\begin{proof}[Chebyshev's Inequality]
+    We only need to show that $\Prob(\abs{Z} \geqslant k) \leqslant \dfrac{1}{k^2}$,
+    where $Z$ is the standardized RV.
+    \begin{align*}
+        \E{Z^2} = 1 = \int_{-\infty}^{\infty} z^2 \Prob(Z=z)
+        \quad\geqslant\quad
+        \int_{-\infty}^{-k}\!\!\!k^2 \Prob(Z=z) + 0
+        + \int_{k}^{\infty}\!\!\!k^2 \Prob(Z=z)
+        \quad=\quad k^2\ \Prob(\abs{Z} \geqslant k)
+    \end{align*}
+\end{proof}
+
+\begin{theorem}[Chebyshev's Inequality]
+    If the RV $X$ has a finite mean $\mu$ and finite nonzero variance $\sigma^2$,
+    then,
+    \begin{equation*}
+        \Prob(\abs{X} \geqslant \varepsilon) \quad\leqslant\quad
+        \frac{\E{X^2}}{\varepsilon^2}
+        \qquad \forall \varepsilon > 0
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+    When $X$ is not standardized, i.e., $\E{X^2}=\sigma^2+\mu^2\neq 1$,
+    \begin{align*}
+        \E{X^2} = \int_{-\infty}^{\infty} x^2 \Prob(X=x)
+        \quad\geqslant\quad
+        \int_{-\infty}^{-\varepsilon}\!\!\!\varepsilon^2 \Prob(X=x) + 0
+        + \int_{\varepsilon}^{\infty}\!\!\!\varepsilon^2 \Prob(X=x)
+        \quad=\quad \varepsilon^2\ \Prob(\abs{X} \geqslant \varepsilon)
+    \end{align*}
+\end{proof}
+
+\begin{definition}[Convergence in Probability]
+    A sequence of RVs $\{X_n\}$ is said to converge in probability to a RV $X$,
+    and denoted as $X_n \xlongrightarrow{p} X$, if
+    \begin{equation*}
+        \lim_{n\to\infty} \Prob(\abs{X_n - X} \geqslant \varepsilon) 
+        \quad=\quad 0
+        \qquad\quad \forall \varepsilon > 0
+    \end{equation*}
+\end{definition}
+
+\begin{theorem}[The Weak Law of Large Numbers, WLLN]
+    Let $X_1, X_2, \cdots, X_n$ be i.i.d. RVs with finite mean $\mu$
+    and nonzero variance. Then,
+    \begin{equation*}
+        \bar{X} = \frac{1}{n}\sum_{i=1}^n X_i
+        \quad\xlongrightarrow{p}\quad \mu
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+    Since $\E{\bar{X}} = \mu$ and $\Var(\bar{X}) = \dfrac{\sigma^2}{n}$,
+    by Chebyshev's inequality, we have
+    \begin{align*}
+        \Prob(\abs{\bar{X} - \mu} \geqslant \varepsilon) 
+        \quad&\leqslant\quad \frac{\sigma^2}{n\varepsilon^2}
+        \qquad \forall \varepsilon > 0 \\
+        \implies \qquad
+        \lim_{n\to\infty} \Prob(\abs{\bar{X} - \mu} \geqslant \varepsilon)
+        \quad&=\quad 0
+        \qquad\quad \forall \varepsilon > 0
+    \end{align*}
+\end{proof}
+
+
+\section{Limiting MGF Technique}
+
+\begin{theorem}
+    If $X_n$ is a sequence of RVs with
+    characteristic function $\varphi_{n}(t)$,
+    and $X$ is a RV with characteristic function $\varphi(t)$,
+    then
+    \begin{equation*}
+        \lim_{n\to\infty} \varphi_{n}(t) = \varphi(t)
+        \qquad\iff\qquad
+        X_n \xlongrightarrow{d} X
+    \end{equation*}
+\end{theorem}
+\begin{remark}
+    $\varphi(t) := \E{\e^{\iu t X}}
+    = M(\iu t)$
+\end{remark}
+
+\end{document}

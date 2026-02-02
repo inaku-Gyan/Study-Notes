@@ -1,0 +1,283 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{times}
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipbox}
+{\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{conceptbox}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{thmbox}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+
+
+
+\begin{document}
+
+\section{Basic Concepts}
+
+\paragraph{Experiment}
+An \textbf{experiment} is a procedure that can be \emph{infinitely repeated} and has a well-defined set of \textbf{outcomes}.
+
+\paragraph{Outcome}
+An \textbf{outcome} is a possible result of an experiment.
+
+\paragraph{Random Experiment}
+A \textbf{random experiment} is an experiment that has more than one possible outcome.
+
+\paragraph{Sample Space}
+The set of all possible outcomes of an experiment is called the \textbf{sample space} of the experiment.
+
+\paragraph{Event}
+An \textbf{event} is a subset of the sample space.
+
+When the random experiment is performed and the outcome is in a certain event,
+we say that this event \emph{has occurred}.
+
+
+\section{An Intuitive Definition of Probability}
+
+\begin{enumerate}
+    \item Repeat the experiment $n$ times.
+    \item Count the number of times the event $A$ occurs and denote it by $\mathcal{N}(A)$.
+\end{enumerate}
+
+Then $\dfrac{\mathcal{N}(A)}{n}$ is called the \emph{relative frequency} of $A$ in the $n$ repetitions, and the \emph{probability} of $A$ is defined as
+\[
+P(A) := \lim_{n\to\infty}\frac{\mathcal{N}(A)}{n}
+\]
+
+
+\section{Set Theory}
+
+\subsection{Some Notations}
+
+\emph{Events} and \emph{sets} are equivalent in this context.
+Thus usually we consider the \emph{sample space} $S$ to be the \emph{universe}
+and have the following notations:
+
+\begin{itemize}
+    \item The \textbf{null} or \textbf{empty} set: $\emptyset$
+    \item $A$ is a \textbf{subset} of $B$: $A \subseteq B$
+    \item The \textbf{union} of $A$ and $B$: $A \cup B$
+    \item The \textbf{intersection} of $A$ and $B$: $A \cap B$
+    \item The \textbf{complement} of $A$ in $S$: $A'$
+\end{itemize}
+
+\begin{tipbox}
+Note that the \emph{relative complement} of $A$ in $B$ can be obtained by
+\[B\setminus A = B \cap A'\]
+\end{tipbox}
+
+\subsection{Some Concepts}
+
+\subsubsection{Mutually Exclusive Events}
+\begin{definition}[Mutually Exclusive Events]
+    $A_1, A_2, \cdots, A_k$ are \textbf{mutually exclusive} $\iff$
+    They are \textbf{disjoint} sets $\iff$
+    $A_i \cap A_j = \emptyset$ for all $i \neq j$.
+\end{definition}
+
+\subsubsection{Exhaustive Events}
+\begin{definition}[Exhaustive Events]
+    $A_1, A_2, \cdots, A_k$ are \textbf{exhaustive} $\iff$
+    $A_1 \cup A_2 \cup \cdots \cup A_k = S$.
+\end{definition}
+
+\subsubsection{Countable Sets}
+\begin{definition}[Countable]
+    A set is \textbf{countable} if there exists an \emph{injection} from it into $\mathbb{N}$.
+\end{definition}
+
+\begin{remark}
+    Note that a countable set can be either \emph{finite} or \emph{infinite}.
+\end{remark}
+
+\subsection{Some Laws}
+
+\subsubsection{Distributive Laws}
+\begin{center}
+    $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$ \\
+    $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$
+\end{center}
+
+\begin{theorem}[Distributive Laws]
+    \begin{center}
+        $A \cup \left(B_1 \cup B_2 \cup \cdots \right) = 
+        \left(A \cup B_1\right) \cup \left(A \cup B_2\right) \cup \cdots$ \\
+        $A \cap \left(B_1 \cap B_2 \cap \cdots \right) = 
+        \left(A \cap B_1\right) \cap \left(A \cap B_2\right) \cap \cdots$
+    \end{center}
+\end{theorem}
+
+\subsubsection{De Morgan's Laws}
+\begin{center}
+    $(A \cup B)' = A' \cap B'$ \\
+    $(A \cap B)' = A' \cup B'$
+\end{center}
+
+\begin{theorem}[De Morgan's Laws]
+    \begin{center}
+        $\left(A_1 \cup A_2 \cup \cdots \right)' = A_1' \cap A_2' \cap \cdots$ \\
+        $\left(A_1 \cap A_2 \cap \cdots \right)' = A_1' \cup A_2' \cup \cdots$
+    \end{center}
+\end{theorem}
+
+\subsubsection{Inclusion-Exclusion Principle}
+\begin{theorem}[Inclusion-Exclusion Principle]
+    Let $A_1, A_2, \cdots, A_n$ be finite sets and
+    $\abs{A_i}$ denotes the cardinality of the set $A_i$, then
+    \begin{gather*}
+        \abs{\bigcup_{i=1}^n A_i} = 
+        \sum_{\substack{J \subseteq \{1,2,\cdots,n\}\\J\neq\emptyset}}(-1)^{\abs{J}+1}
+        \abs{\bigcap_{j\in J} A_j}
+    \end{gather*}
+\end{theorem}
+
+\section{Probability and Probability Function}
+
+\subsection{Definition}
+
+\begin{definition}[Probability]
+    \textbf{Probability} is a \emph{real-valued set function} that assigns
+    a number $P(A)$ to each event $A$ in the sample space $S$.
+    $P(A)$ is called the \textbf{probability} of $A$,
+    and satisfies the following 3 properties (\emph{Probability Axioms}):
+    
+    \begin{itemize}
+        \item $P(A) \geqslant 0$
+        \item $P(S) = 1$
+        \item For a \emph{countable} number of \emph{mutually exclusive} events
+        $A_1, A_2, A_3, \cdots$,
+        \[P(A_1\cup A_2\cup A_3\cup \cdots)=P(A_1)+P(A_2)+P(A_3)+\cdots\]
+    \end{itemize}
+\end{definition}
+    
+\subsection{Some Properties}
+
+\subsubsection{Inclusion-Exclusion Principle}
+
+\begin{theorem}[Inclusion-Exclusion Principle]
+    If $A_1, A_2, \cdots, A_n$ are $n$ events, then
+    \begin{gather*}
+        P\left(\bigcup_{i=1}^n A_i\right) = 
+        \sum_{\substack{J \subseteq \{1,2,\cdots,n\}\\J\neq\emptyset}}(-1)^{\abs{J}+1}
+        P\left(\bigcap_{j\in J} A_j\right)
+    \end{gather*}
+\end{theorem}
+    
+\subsubsection{A Frequently Used Trick}
+
+\begin{theorem}
+    \begin{center}
+        $P(A) = P(A \cap B) + P(A \cap B')$
+    \end{center}
+\end{theorem}
+
+\subsection{Example}
+
+Let $S=\left\{e_1, e_2, \cdots, e_m\right\}$ be a sample space,
+where each $e_i$ is an outcome of the experiment.
+Let $N(A)$ denote the number of outcomes in the event $A$.
+It is easy to prove that the set function $P(A)$ defined as follows is a probability function:
+\begin{itemize}
+    \item $P(\left\{e_i\right\}) = \dfrac{1}{m}$ for all $i$
+    \item $P(A) = \dfrac{N(A)}{N(S)}$ for any event $A$
+\end{itemize}
+
+
+
+\section{Probability Space}
+
+\begin{definition}[Probability Space]
+    \noindent
+    A \textbf{probability space} is a triple $(S, \mathcal{F}, P)$ that consists of:
+    \begin{itemize}
+        \item A \textbf{sample space} $S$, which is a set of all possible outcomes.
+        \item An \textbf{event space} $\mathcal{F}$, which is a set of all possible events.
+        \item A \textbf{probability function} $P: \mathcal{F} \to [0,1]$ that satisfies the \emph{Probability Axioms}.
+    \end{itemize}
+\end{definition}
+
+
+
+
+
+\end{document}

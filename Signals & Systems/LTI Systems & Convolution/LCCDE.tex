@@ -1,0 +1,151 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\ju}{\mathrm{j}}  % 虚数单位
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+
+\begin{document}
+
+
+\part{Linear Constant-Coefficient Differential Equations}
+
+An $N$th-order LCCDE is given by
+\begin{equation*}
+    \sum_{k=0}^N a_k \dv[k]{y(t)}{t}
+    =
+    \sum_{k=0}^M b_k \dv[k]{x(t)}{t}
+\end{equation*}
+
+\section{Solution}
+
+The solution to an LCCDE consists of two parts:
+a \emph{homogeneous solution} plus a \emph{particular solution}.
+\begin{equation*}
+    y(t) = y_h(t) + y_p(t)
+\end{equation*}
+
+\subsection{Homogeneous Solution \& Natural Response}
+
+The homogeneous solution is the solution to the homogeneous equation
+\begin{equation*}
+    \sum_{k=0}^N a_k \dv[k]{y(t)}{t} = 0
+\end{equation*}
+It has $N$ constants to be determined by the $N$ auxiliary conditions.
+
+\paragraph{Characteristic Polynomial}
+\begin{equation*}
+    P(\lambda) := \sum_{k=0}^N a_k \lambda^k
+\end{equation*}
+
+\paragraph{Characteristic Equation}
+\begin{equation*}
+    P(\lambda) = \sum_{k=0}^N a_k \lambda^k = 0
+\end{equation*}
+
+\vspace{20pt}
+
+\paragraph{}
+If $P(\lambda)=0$ has $N$ distinct complex roots,
+$\lambda_1, \lambda_2, \cdots, \lambda_N$,
+then the solution is
+\begin{equation*}
+    y_h(t) = \sum_{k=1}^N C_k \e^{\lambda_k t}
+\end{equation*}
+where $C_1, C_2, \cdots, C_N$ are constants to be determined.
+
+\paragraph{}
+If $\displaystyle P(\lambda)=\prod_{k=1}^{n}(\lambda-\lambda_k)^{r_k}$,
+where $\lambda_1,\lambda_2,\cdots,\lambda_n$ are distinct roots of $P(\lambda)=0$,
+then the solution is
+\begin{equation*}
+    y_h(t) = \sum_{k=1}^n \left(
+        C_{k,r_k-1}t^{r_k-1} + \cdots + C_{k,1}t + C_{k,0}
+    \right) \e^{\lambda_k t}
+\end{equation*}
+where $C_{1,0},\cdots,C_{n,r_n-1}$ are $N$ constants to be determined.
+
+\subsection{Particular Solution \& Forced Response}
+
+
+
+
+\part{Linear Constant-Coefficient Difference Equations}
+
+
+\end{document}

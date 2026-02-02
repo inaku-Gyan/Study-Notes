@@ -1,0 +1,483 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipbox}
+{\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{conceptbox}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{thmbox}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+\newcommand{\perm}[2]{\ensuremath{{}_{#1}\mathrm{P}_{#2}}}  % 排列数
+\newcommand{\comb}[2]{\ensuremath{{}_{#1}\mathrm{C}_{#2}}}  % 组合数
+
+\newcommand{\E}[1]{\mathbb{E}\qty[#1]}  % 期望
+\newcommand{\Prob}{\mathbb{P}\qty}
+\newcommand{\Var}[1]{\mathrm{Var}\qty(#1)}  % 方差
+
+\begin{document}
+
+\part*{Discrete Distributions}
+
+\section{Random Variables of the Discrete Type}
+
+\begin{definition}[Random Variables]
+    Given a random experiment with sample space $S$,
+    a function $X\colon S\rightarrow \mathbb{R}$
+    that assigns a real number $X(s)=x$ to each $s\in S$
+    is called a \textbf{random variable} (RV).
+\end{definition}
+
+\begin{definition}[Discrete Random Variable]
+    A random variable is said to be of the \textbf{discrete type}
+    if its range is \emph{finite} or \emph{countably infinite}.
+\end{definition}
+
+\begin{definition}[Probability Mass Function]
+    A function $f\colon\mathbb{R}\rightarrow[0,1]$
+    is called the \textbf{probability mass function} (pmf) of
+    a DRV $X$ with range $S$ if it satisfies:
+    \begin{itemize}
+        \item $f(x)>0$ for $x\in S$, and $f(x)=0$ for $x\notin S$
+        \item $\displaystyle\sum_{x\in S}f(x)=1$
+        \item $\displaystyle \Prob(X\in A)=\sum_{x\in A}f(x)$, where $A\subseteq S$
+    \end{itemize}
+    Then $S$ is called the \textbf{support} or \textbf{space} of $X$.
+\end{definition}
+
+\begin{remark}
+    From the third property, we have:
+    \begin{equation*}
+        \Prob(X=x) = f(x)
+    \end{equation*}
+\end{remark}
+
+
+\begin{definition}[Cumulative Distribution Function]
+    The function $F\colon\mathbb{R}\rightarrow[0,1]$
+    defined by
+    \begin{equation*}
+        F(x) := \Prob(X\leq x)
+    \end{equation*}
+    is called the \textbf{cumulative distribution function} (cdf) of $X$.
+\end{definition}
+Then we have:
+\begin{equation*}
+    \Prob(a<X\leq b) = F(b) - F(a)
+\end{equation*}
+
+\begin{definition}[Line Graph and Probability Histogram]
+    \centering
+    \includegraphics*[width=0.5\textwidth]{assests/Line Graph and Histogram Graph.png}
+\end{definition}
+
+
+\begin{definition}[Uniform Distribution]
+    An RV $X$ is said to have a \textbf{uniform distribution} if
+    its pmf $f(x)$ is constant for all $x\in S$.
+\end{definition}
+
+\section{Mathmetical Expectation}
+
+\begin{definition}[Mathmetical Expectation]
+    Let $f(x)$ be the pmf of the DRV $X$ with space $S$.
+    Suppose $g$ is a function of $X$, then
+    \begin{equation*}
+        \E{g(X)} := \sum_{x\in S}g(x)f(x)
+    \end{equation*}
+    is called the \textbf{mathmetical expectation} or \textbf{expected value} of $g$,
+    if the sum exists.
+    \begin{remark}
+        $g(X)$ gives another RV.
+    \end{remark}
+\end{definition}
+
+\subsection{Properties}
+
+\begin{theorem}
+    \begin{itemize}
+        \item For any constant $c$:\quad $\E{c} = c$
+        \item Linearity:\quad $\E{a X+b Y} = a\E{X} + b\E{Y}$
+    \end{itemize}
+\end{theorem}
+\begin{proof}[Linearity]
+    The linearity dose \textbf{not} depend on the independence of $X$ and $Y$.
+    Here gives a proof for the continuous case.
+    \begin{align*}
+        \E{a X+Y} &=
+    \int_{-\infty}^{\infty}\int_{-\infty}^{\infty} (a x+y) f_{X,Y}(x, y)\dd{x}\dd{y} \\
+    &= a \int_{-\infty}^{\infty}x \int_{-\infty}^{\infty}f_{X,Y}(x, y)\dd{y}\dd{x}
+    + \int_{-\infty}^{\infty}y \int_{-\infty}^{\infty}f_{X,Y}(x, y)\dd{x}\dd{y} \\
+    &= a \int_{-\infty}^{\infty}x f_X(x)\dd{x}
+    + \int_{-\infty}^{\infty}y f_Y(y)\dd{y} \\
+        &= a \E{X} + \E{Y}
+    \end{align*}
+\end{proof}
+
+\section{Special Mathmetical Expectations}
+
+\subsection{Mean \& Variance}
+
+\begin{definition}[Mean]
+    The \textbf{mean} of a DRV $X$ (or of its distribution) is defined as
+    \begin{equation*}
+        \mu := \E{X} = \sum_{x\in S}x f(x)
+    \end{equation*}
+\end{definition}
+
+\begin{definition}[Variance \& Standard Deviation]
+    The \textbf{variance} of a DRV $X$ (or of its distribution) is defined as
+    \begin{equation*}
+        \sigma^2 := \Var{X} := \E{(X-\mu)^2} = \E{(X-\E{X})^2}
+    \end{equation*}
+
+    The \textbf{standard deviation} is defined as
+    \begin{equation*}
+        \sigma := \sqrt{\Var{X}}
+    \end{equation*}
+\end{definition}
+
+\begin{remark}
+    {Standard deviations} are not {mathmetical expectations}.
+\end{remark}
+
+\begin{remark}
+    $b=\mu$ minimizes $\E{(X-b)^2}$.
+    \begin{equation*}
+        \Var{X} = \min_{b}\qty{ \E{(X-b)^2} }
+    \end{equation*}
+\end{remark}
+
+\subsection{Properties of Variances}
+
+\begin{theorem}
+    Ways to compute the variance:
+    \begin{equation*}
+        \Var{X} = \E{(X-\mu_X)^2} = \E{X^2} - \E{X}^2 = \E{X(X-\mu_X)}
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}
+    \begin{itemize}
+        \item $\Var{c} = 0$
+        \item $\Var{c X} = c^2 \Var{X}$
+    \end{itemize}
+\end{theorem}
+
+\subsection{The \texorpdfstring{$r$}{r}th Moment}
+
+\begin{definition}[$r$th Moment]
+    Given a positive integer $r$, the $r$th moment of an RV $X$ is defined as
+    \begin{equation*}
+        \E{X^r} = \sum_{x\in S}x^r f(x)
+    \end{equation*}
+
+    The $r$th moment of the distribution about $b$:
+    \begin{equation*}
+        \E{(X-b)^r} = \sum_{x\in S}(x-b)^r f(x)
+    \end{equation*}
+
+    The $r$th factorial moment:
+    \begin{equation*}
+        \E{(X)_r} :=  \E{X(X-1)(X-2)\cdots(X-r+1)}
+    \end{equation*}
+\end{definition}
+
+\begin{definition}[Moment Generating Function]
+    The \textbf{moment generating function} (mgf) of a DRV $X$ is defined as
+    \begin{equation*}
+        M_X(t) := \E{\e^{t X}} = \sum_{x\in S}\e^{t x} f(x)
+    \end{equation*}
+    if the sum exists and finite for $-h < t < h$.
+\end{definition}
+
+\begin{theorem}[Properties of Mgf]
+    \begin{itemize}
+        \item $M(0) = 1$
+        \item $\displaystyle M^{(r)}(t) = \sum_{x\in S}x^r \e^{tx} f(x)$
+        \item $\displaystyle M'(0) = \E{X}$
+        \item $\displaystyle M^{(r)}(0) = \E{X^r}$
+    \end{itemize}
+\end{theorem}
+
+\begin{remark}
+    If moments of all order of $X$ exists, then
+    \begin{equation*}
+        M_X(t) = \sum_{k=0}^{\infty} \frac{\E{X^k}}{k!} t^k
+    \end{equation*}
+\end{remark}
+
+\begin{theorem}
+    2 RVs have the \textbf{same mgf}
+    $\quad\iff\quad$
+    they have the \textbf{same probability distribution},
+    i.e., the \textbf{same pmf}
+\end{theorem}
+
+
+\section{The Binomial Distribution}
+
+
+\subsection{The Bernoulli Distribution}
+
+\paragraph{Bernoulli Experiment}
+The outcomes can be classified in one of two mutually
+exclusive and exhaustive ways, say either success or failure.
+
+\begin{definition}[Bernoulli Distribution]
+    Let $X$ be an RV associated with a \emph{Bernoulli experiment} with the
+probability of success $p$.
+    Then $X\in\{0,1\}$, and the pmf of $X$ is given by
+    \begin{equation*}
+        f(x) = p^x (1-p)^{1-x},\quad x\in\{0,1\}
+    \end{equation*}
+    Then we say $X$ has a \emph{Bernoulli distribution} with probability of success $p$.
+\end{definition}
+
+
+\begin{theorem}
+    \begin{itemize}
+        \item $\E{X} = p$
+        \item $\Var{X} = p(1-p)$
+        \item $M(t) = \e^t p + (1-p)$
+    \end{itemize}
+\end{theorem}
+
+
+\begin{definition}[Bernoulli Trials]
+    If a Bernoulli experiment is performed $n$ times
+    \begin{itemize}
+        \item independently
+        \item with the probability of success remaining the same each
+    \end{itemize}
+    then these $n$ repetitions of the Bernoulli experiment is called
+    $n$ Bernoulli trials.
+\end{definition}
+
+\paragraph{
+    A random sample of size $n$ from a Bernoulli distribution
+}
+An observed sequence of $n$ Bernoulli trials that will be an $n$-tuple of zeros
+and ones.
+
+
+\subsection{The Binomial Distribution}
+
+\paragraph{Desciption}
+The DRV $X$ is the number of successes in $n$ Bernoulli trials.
+
+\begin{definition}[Binomial Distribution]
+    An RV $X$ is said to have a \textbf{binomial distribution},
+    if the pmf is given by
+    \begin{equation*}
+        f(x) = \binom{n}{p}p^x (1-p)^{n-x} \qfor x\in\{0,1,2,\cdots,n\}
+    \end{equation*}
+    Then it is denoted by $X \sim \mathrm{B}(n,p)$.
+\end{definition}
+
+\begin{theorem}
+    \begin{itemize}
+        \item $M(t) = [\e^t p + (1-p)]^n$
+        \item $\E{X} = n p$
+        \item $\Var{X} = n p(1-p)$
+    \end{itemize}
+\end{theorem}
+
+
+\section{The Negative Binomial Distribution}
+
+\subsection{The Negative Binomial Distribution}
+
+\paragraph{Description}
+The DRV $X$ is the number of Bernoulli trials needed to get $r$ successes.
+
+\begin{definition}[Negative Binomial Distribution]
+    An RV $X$ is said to have a \textbf{negative binomial distribution},
+    if the pmf is given by
+    \begin{equation*}
+        f(x) = \binom{x-1}{r-1}p^r (1-p)^{x-r} \qfor x\in\{r,r+1,\cdots\}
+    \end{equation*}
+\end{definition}
+
+
+\begin{definition}[Negative Binomial Series]
+    The negative binomial series is given by Maclaurin's series expansion:
+    \begin{equation*}
+        (1-w)^{-r}
+        = \sum_{k=0}^{\infty} \binom{k+r-1}{r-1} w^k
+        = \sum_{x=r}^{\infty} \binom{x-1}{r-1} w^{x-r}
+        \qfor w\in(-1, 1)
+    \end{equation*}
+\end{definition}
+
+\begin{theorem}
+    \begin{itemize}
+        \item $\E{X} = \dfrac{r}{p}$
+        \item $\Var{X} = \E{X^2} - \E{X}^2 = \dfrac{1-p}{p^2}r$
+        \item $\displaystyle
+            M(t) = \E{\e^{t X}} = \left[\frac{p \e^t}{1-(1-p)\e^t}\right]^r
+            \qfor (1-p)\e^t < 1$
+    \end{itemize}
+\end{theorem}
+
+\subsection{The Geometric Distribution}
+
+\paragraph{Description}
+The DRV $X$ has a \emph{negative binomial distribution} with $r=1$.
+
+\begin{definition}[Geometric Distribution]
+    An RV $X$ is said to have a \textbf{geometric distribution} with the probability of success $p$,
+    if the pmf is given by
+    \begin{equation*}
+        f(x) = p(1-p)^{x-1} \qfor x\in\{1,2,\cdots\}
+    \end{equation*}
+\end{definition}
+
+\begin{theorem}
+    For a positive integer $k$,
+    \begin{gather*}
+        \Prob(X > k) = \sum_{x=k+1}^{\infty} p(1-p)^{x-1} = (1-p)^k \\
+        \Prob(X \leqslant k) = 1 - (1-p)^k
+    \end{gather*}
+\end{theorem}
+
+
+\section{The Poisson Distribution}
+
+\begin{definition}[Approximate Poisson Process (APP)]
+    Let the number of occurrences of some event in a given continuous interval be counted.
+    Then we have an APP with parameter $\lambda > 0$ if
+    \begin{itemize}
+        \item The number of occurrences in non-overlapping subintervals are \textbf{independent}.
+        \item The probability of exactly one occurrence in a
+        sufficiently short subinterval of length $h$ is
+        approximately $\lambda h$.
+        \item The probability of two or more occurrences in a
+        sufficiently short subinterval is essentially $0$.
+    \end{itemize}
+\end{definition}
+
+\paragraph{Description}
+Let $X$ be the \textbf{number of occurrences} in an APP
+within a \textbf{unit interval}.
+
+\begin{remark}
+    It can be seen as a binomial distribution
+    with $n\to\infty$ and $p=\dfrac{\lambda}{n}$,
+    i.e., $\displaystyle \mathrm{Poisson}(\lambda) = 
+    \lim_{n\to\infty} \mathrm{B}(n,\frac{\lambda}{n})$.
+\end{remark}
+
+\begin{definition}[Poisson Distribution]
+    An RV $X$ is said to have a \textbf{Poisson distribution} with parameter $\lambda$,
+    if the pmf is given by
+    \begin{equation*}
+        f(x) = \frac{\lambda^x \e^{-\lambda}}{x!} \qfor x\in\{0,1,2,\cdots\}
+    \end{equation*}
+    Then it is denoted by $X \sim \mathrm{Poisson}(\lambda)$.
+\end{definition}
+
+\begin{theorem}
+    \begin{itemize}
+        \item $\displaystyle M(t) = \e^{\lambda (\e^t - 1)}$
+        \item $\displaystyle \E{X} = \lambda$
+        \item $\displaystyle \Var{X} = \lambda$
+    \end{itemize}
+\end{theorem}
+
+The Poisson distribution works on a \textbf{unit interval},
+so when considering an interval of length $T$,
+we should also treat it as a unit interval.
+Let $X$ be the number of occurrences.
+Then $\E{X} = \lambda T$, $X\sim \mathrm{Poisson}(\lambda T)$.
+\begin{equation*}
+    f(x) = \frac{(\lambda T)^x \e^{-\lambda T}}{x!}
+    \qfor x\in\{0,1,2,\cdots\}
+\end{equation*}
+
+
+\end{document}

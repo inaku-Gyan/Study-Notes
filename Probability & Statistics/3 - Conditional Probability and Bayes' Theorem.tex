@@ -1,0 +1,220 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{times}
+
+% \usepackage{makecell}
+% \usepackage{multirow}
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipbox}
+{\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{conceptbox}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{thmbox}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+
+\newcommand{\perm}[2]{\ensuremath{{}_{#1}P_{#2}}}  % 排列数
+\newcommand{\comb}[2]{\ensuremath{{}_{#1}C_{#2}}}  % 组合数
+\newcommand{\Prob}{\mathbb{P}\qty}
+
+
+\begin{document}
+
+\part*{Conditional Probability and Bayes' Theorem}
+
+\section{Conditional Probability}
+
+\subsection{Definition}
+
+\begin{definition}[Conditional Probability]
+    The conditional probability of an event $A$, given that
+    the event $B$ has occurred, is defined by
+    \begin{equation*}
+        \Prob(A\mid B) := \frac{\Prob(A\cap B)}{\Prob(B)}
+    \end{equation*}
+    provided that $\Prob(B)\ne 0$.
+\end{definition}
+
+\begin{remark}
+    It can be easily verified that the \emph{conditional probability} defined above
+    satisfies the \emph{probability axioms}.
+    Thus it is actually a \emph{probability function} whose \emph{sample space} is $B$.
+    
+    The essence of conditional probability is that
+    it is a corresponding probability function
+    of a given probability function.
+\end{remark}
+
+\subsection{Multiplication Rule}
+
+\begin{definition}[Multiplication Rule]
+    The probability that two events, $A$ and $B$, both occur is given
+    by the multiplication rule
+    \begin{gather*}
+        \Prob(A\cap B) = \Prob(A)\Prob(B\mid A) \qq{provided} \Prob(A) > 0 \\
+        \shortintertext{or}
+        \Prob(A\cap B) = \Prob(B)\Prob(A\mid B) \qq{provided} \Prob(B) > 0
+    \end{gather*}
+\end{definition}
+
+
+\section{Independent Events}
+
+\subsection{Definition}
+\begin{definition}[Independent Events]
+    Events $A$ and $B$ are \textbf{independent} iff
+    \begin{equation*}
+        \Prob(A\cap B) = \Prob(A)\Prob(B)
+    \end{equation*}
+    Otherwise, they are called \textbf{dependent} events.
+\end{definition}
+    
+\subsection{Consequence}
+
+\paragraph{I}
+When $\Prob(A)>0$, we have
+\begin{equation*}
+    \Prob(B\mid A) = \Prob(B) \quad \iff \quad A \text{ and } B \text{ are independent}
+\end{equation*}
+
+\paragraph{II}
+When $\Prob(B)>0$, we have
+\begin{equation*}
+    \Prob(A\mid B) = \Prob(A) \quad \iff \quad A \text{ and } B \text{ are independent}
+\end{equation*}
+
+\paragraph{III}
+$A$ and $B$ are independent, iff the following pairs of events are also independent:
+\begin{itemize}
+    \item $A$ and $B'$
+    \item $A'$ and $B$
+    \item $A'$ and $B'$
+\end{itemize}
+
+\subsection{Mutually Independent Events}
+
+\begin{definition}[Three Mutually Independent Events]
+    Events $A$, $B$, and $C$ are \textbf{(mutually) independent}
+    iff the following two conditions hold:
+    \begin{itemize}
+        \item $A$, $B$, and $C$ are \textbf{pairwise independent}, i.e.,
+        $A$ and $B$, $B$ and $C$, and $A$ and $C$ are independent, respectively.
+        \item $\Prob(A\cap B\cap C) = \Prob(A)\Prob(B)\Prob(C)$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[Mutually Independence for More Events]
+    $A_1, A_2, \cdots, A_n$ are \textbf{(mutually) independent} iff
+    \begin{equation*}
+        \Prob(\bigcap_{i=1}^k A_i) = \prod_{i=1}^k \Prob(A_i)
+    \end{equation*}
+    holds for all $k=2,3,\cdots,n$.
+\end{definition}
+
+\section{Bayes' Theorem}
+
+\begin{theorem}[Bayes' Theorem]
+    \paragraph*{}Assume that
+    \begin{enumerate}
+        \item $B_1, B_2, \cdots, B_n$ are \textbf{mutually exclusive} and \textbf{exhaustively} events.
+        \item The \textbf{prior probability} of all $B_i$ is nonzero, i.e.,
+        \begin{equation*}
+            \Prob(B_i) > 0, \quad i = 1, 2, \cdots, n
+        \end{equation*}
+    \end{enumerate}
+
+    \paragraph*{}Then, for any event $A$, we have
+    \begin{itemize}
+        \item \textbf{Law of Total Probability}:
+        \begin{equation*}
+            \Prob(A) = \sum_{i=1}^n \Prob(A \cap B_i) = \sum_{i=1}^n \Prob(A\mid B_i) \Prob(B_i)
+        \end{equation*}
+        \item \textbf{Bayes' Rule}: If $\Prob(A)>0$, then we have
+        the \textbf{posterior probability} of $B_k$:
+        \begin{equation*}
+            \Prob(B_k\mid A) = \frac{\Prob(B_k\cap A)}{\Prob(A)} = 
+            \frac{\Prob(A\mid B_k) \Prob(B_k)}{\displaystyle\sum_{i=1}^n \Prob(A\mid B_i) \Prob(B_i)}
+        \end{equation*}
+    \end{itemize}
+\end{theorem}
+
+\end{document}

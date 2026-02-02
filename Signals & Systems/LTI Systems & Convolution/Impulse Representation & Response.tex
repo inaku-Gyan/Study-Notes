@@ -1,0 +1,139 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\ju}{\mathrm{j}{\mkern 1 mu}}  % 虚数单位
+
+
+
+\begin{document}
+
+
+\section{Impulse Representation}
+
+\paragraph*{(Sifting Property)}
+
+The sifting property is the ability of the Dirac delta function to ``pick out'' the value of a function at a specific point during integration.
+
+\noindent
+\begin{minipage}[t]{.5\textwidth}
+    \subsection{DT}
+    \begin{equation*}
+        x[n] = \sum_{k=-\infty}^{\infty} x[k] \delta[n-k]
+        = x[n] \ast \delta[n]
+    \end{equation*}
+\end{minipage}\hfill
+\begin{minipage}[t]{.5\textwidth}
+    \subsection{CT}
+    \begin{equation*}
+        x(t) = \int_{-\infty}^{\infty} x(\tau) \delta(t-\tau) \dd{\tau}
+        = x(t) \ast \delta(t)
+    \end{equation*}
+\end{minipage}
+
+\section{Impulse Response}
+
+Let $S$ be an \emph{LTI system} and $x[n] \xlongrightarrow{S} y[n]$.
+
+Suppose $\delta[n] \xlongrightarrow{S} h[n]$ and $\delta[n-k]\xlongrightarrow{S} h_k[n]$.
+Since $S$ is time-invariant, we have $h_k[n] = h[n-k]$.
+Together with the linearity, we have
+\begin{align*}
+    x[n] = \sum_{k=-\infty}^{\infty} x[k] \delta[n-k]
+    \quad\xlongrightarrow{S}\quad y[n] &=
+    \sum_{k=-\infty}^{\infty} x[k] h_k[n] \\
+    &= \sum_{k=-\infty}^{\infty} x[k] h[n-k] \\
+    &= x[n] \ast h[n]
+\end{align*}
+
+\begin{remark}
+    In the impulse representation $x[n] \ast \delta[n]$,
+    $x[n]$ becomes a constant sequence of scalers,
+    and $\delta[n]$ becomes the one that actually carries the signal.
+\end{remark}
+
+The same for continuous-time:
+\begin{align*}
+    x(t) = \int_{-\infty}^{\infty} x(\tau) \delta(t-\tau) \dd{\tau}
+    \quad\xlongrightarrow{S}\quad y(t) &=
+    \int_{-\infty}^{\infty} x(\tau) h_\tau(t) \dd{\tau} \\
+    &= \int_{-\infty}^{\infty} x(\tau) h(t-\tau) \dd{\tau} \\
+    &= x(t) \ast h(t)
+\end{align*}
+
+
+\end{document}

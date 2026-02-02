@@ -1,0 +1,179 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\ju}{\mathrm{j}}  % 虚数单位
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+\newcommand{\Ev}{\,\mathcal{E}\ensuremath{v}\qty}
+\newcommand{\Od}{\,\mathcal{O}\ensuremath{d}\qty}
+
+\renewcommand{\Re}{\,\mathcal{R}\ensuremath{e}\qty}
+\renewcommand{\Im}{\,\mathcal{I}\ensuremath{m}\qty}
+
+
+\begin{document}
+
+\part*{Sampling}
+
+\section{Representation by Samples}
+
+\begin{theorem}[Nyquist-Shannon Sampling Theorem]
+    Let $x(t)$ be a \textbf{band-limited} signal
+    with a maximum frequency component of $\omega_M$, i.e.
+    $X(\ju\omega) = 0$ for all $\abs{\omega} > \omega_M$.
+    Then, $x(t)$ can be completely determined by its samples $x[n] = x(n T)$,
+    where $T$ is the sampling period,
+    if the sampling frequency $\omega_s=2\pi/T$ satisfies the condition:
+    \begin{equation*}
+        \omega_s > 2\omega_M
+    \end{equation*}
+    where $\omega_M$ is then called the \textbf{Nyquist frequency},
+    and $2\omega_M$ is the \textbf{Nyquist rate}.
+\end{theorem}
+
+\subsection{Impulse Train Sampling}
+
+\textbf{Sampling Function}: \quad
+$\displaystyle p(t) = \sum_{n=-\infty}^{\infty} \delta(t-n T_s)$
+\qquad with \textbf{sampling period} $T_s$
+and \textbf{sampling frequency} $\omega_s = \dfrac{2\pi}{T_s}$.
+\begin{align*}
+    x_p(t) &= x(t) p(t) \\
+    &= \sum_{n=-\infty}^{\infty} x(n T_s) \delta(t-n T_s)
+\end{align*}
+\begin{align*}
+    p(t) = \sum_{n=-\infty}^{\infty} \delta(t-n T_s)
+    \quad\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    P(\ju\omega) &= \frac{2\pi}{T_s} \sum_{k=-\infty}^{\infty} \delta\qty(\omega - k \omega_s)
+\end{align*}
+\begin{align*}
+    x_p(t) = x(t) p(t)
+    \quad\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    X_p(\ju\omega) &= \frac{1}{2\pi} X(\ju\omega) \ast P(\ju\omega) \\
+    &= \frac{1}{T_s} \sum_{k=-\infty}^{\infty} X\qty(\ju\qty(\omega - k \omega_s)) \\
+\end{align*}
+For a periodic signal $x(t)$ whose Fourier series is $a_k$,
+\begin{gather*}
+    x(t)
+    \quad\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    a_k \\
+    p(t) = \sum_{n=-\infty}^{\infty} \delta(t-n T_s)
+    \quad\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    b_k = \frac{1}{T_s} \\
+    x_p(t) = x(t) p(t)
+    \quad\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    c_k = \frac{1}{T_s} \sum_{n=-\infty}^{\infty} a_{k - n \cdot \frac{T}{T_s}}
+\end{gather*}
+
+\subsection{}
+Suppose $x(t)$ is a \textbf{band-limited} signal with
+a maximum frequency component of $\omega_M$.
+\begin{align*}
+    x(t)
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    X(\ju\omega) \\
+    x_p(t) := \sum_{n=-\infty}^{\infty} x(n T_s) \delta(t-n T_s)
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    X_p(\ju\omega) =
+    \frac{1}{T_s} \sum_{k=-\infty}^{\infty} X\qty(\ju\qty(\omega - k \omega_s))
+    \qq{where} \omega_s = \frac{2\pi}{T_s} \\
+    x_d[n] := x(n T_s)
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    X_d(\e^{\ju\omega}) = X_p\qty(\ju\frac{\omega}{T_s})
+    = \frac{1}{T_s} \sum_{k=-\infty}^{\infty} X\qty(\ju\frac{\omega-2 k\pi}{T_s})
+\end{align*}
+
+
+\section{Reconstruction via Interpolation}
+Impulse train sampling is not practical.
+
+\subsection{Zero-Order Hold (ZOH)}
+
+\subsection{First-Order Hold (FOH)}
+
+\section{Aliasing}
+
+
+\section{DT processing of CT signals}
+
+
+\section{Sampling of DT signals}
+
+
+
+\end{document}

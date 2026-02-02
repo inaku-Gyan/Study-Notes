@@ -1,0 +1,659 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{bm}
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{centernot}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipbox}
+{\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{conceptbox}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{thmbox}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+\newcommand{\perm}[2]{\ensuremath{{}_{#1}\mathrm{P}_{#2}}}  % 排列数
+\newcommand{\comb}[2]{\ensuremath{{}_{#1}\mathrm{C}_{#2}}}  % 组合数
+
+\newcommand{\E}[1]{\mathbb{E}\qty[#1]}  % 期望
+\newcommand{\Prob}{\mathbb{P}\qty}
+\newcommand{\Var}{\mathrm{Var}\qty}  % 方差
+\newcommand{\Cov}{\mathrm{Cov}\qty}  % 协方差
+
+\begin{document}
+
+\part*{Bivariate Distributions}
+
+\begin{itemize}
+    \item a random experiment whose outcome is a scalar
+    $\quad\rightarrow\quad$ \textbf{univariate} RV
+    \item two random experiments jointly each of whose outcome is a
+    scalar,
+    
+    or a random experiment whose outcome is a pair of
+    two scalars $\quad\rightarrow\quad$ \textbf{bivariate} RV
+\end{itemize}
+
+\noindent
+Let $(X,Y)$ be a bivariate RV. Then
+\begin{itemize}
+    \item the range: $S\subseteq\mathbb{R}^2$
+    \item the range of $X$: $S_X\subseteq\mathbb{R}$,
+    and the range of $Y$: $S_Y\subseteq\mathbb{R}$
+    \item it holds that $S\subseteq S_X\times S_Y$
+\end{itemize}
+\begin{remark}
+    $X$ and $Y$ can be dependent. Therefore, it may hold that
+    $S\subset S_X\times S_Y$.
+\end{remark}
+
+
+\section{Bivariate Distributions of Discrete Type}
+
+\subsection{Definitions}
+
+\begin{definition}[Discrete Bivariate Random Variable]
+    A bivariate random variable is said to be of the \textbf{discrete type}
+    if its range is \emph{finite} or \emph{countably infinite}.
+\end{definition}
+
+\begin{definition}[Joint Probability Mass Function]
+    A function $f\colon S\subset\mathbb{R}^2\rightarrow[0,1]$
+    is called the \textbf{joint probability mass function} (joint pmf) of
+    a DRV $(X,Y)$ with range $S$ if it satisfies:
+    \begin{itemize}
+        \item $f(x,y)>0$ for $(x,y)\in S$,
+        and $f(x,y)=0$ for $(x,y)\notin S$
+        \item $\displaystyle\sum_{(x,y)\in S}f(x,y)=1$
+        \item $\displaystyle \Prob[(X,Y)\in A]=\sum_{(x,y)\in A}f(x,y)$, where $A\subseteq S$
+    \end{itemize}
+    Then $S$ is called the \textbf{support} or \textbf{space} of $X$.
+\end{definition}
+
+\begin{remark}
+    From the third property, we have:
+    \begin{equation*}
+        \Prob(X=x, Y=y) = f(x, y)
+    \end{equation*}
+\end{remark}
+
+\begin{remark}
+    The summation of the pmf over a set $A\subseteq S$ can be split into two single summations.
+
+    Define $A_X := \{x\mid(x,y)\in A\}$, and
+    $A_Y(x) := \{y\mid(x,y)\in A\}$ for $x\in A_X$.
+    \begin{equation*}
+        \Prob[(X,Y)\in A] =
+        \sum_{(x,y)\in A}f(x,y) = \sum_{x\in A_X}\sum_{y\in A_Y(x)}f(x,y)
+    \end{equation*}
+\end{remark}
+
+\begin{definition}[Marginal Probability Mass Function]
+    Let $(X,Y)$ has a joint pmf $f(x,y)$ with space $S$.
+    The pmf of $X$ alone,
+    called the \textbf{marginal probability mass function}
+    (marginal pmf) of $X$, is defined as:
+    \begin{equation*}
+        f_X(x) := \Prob(X=x) = \sum_{y\in S_Y(x)}f(x,y)
+    \end{equation*}
+    where
+    \begin{equation*}
+        S_Y(x) := \{y\mid(x,y)\in S\} \qfor x\in S_X
+    \end{equation*}
+\end{definition}
+
+\subsection{Independence}
+
+\begin{definition}[Independence]
+    $X\in S_X$ and $Y\in S_Y$ are said to be \textbf{independent}
+    iff
+    \begin{align*}
+        \Prob(X=x,Y=y) &= \Prob(X=x)\Prob(Y=y)
+    \shortintertext{or equivalently}
+        f(x,y) &= f_X(x)f_Y(y)
+    \end{align*}
+\end{definition}
+When $X$ and $Y$ are independent, we have:
+\begin{gather*}
+    S = S_X \times S_Y \qq{is rectangular} \\
+    S_X = S_X(y) \qfor \forall y\in S_Y \\
+    S_Y = S_Y(x) \qfor \forall x\in S_X
+\end{gather*}
+However, the converse is not true.
+
+
+\subsection{Mathmetical Expectations}
+
+\begin{definition}[Mathmetical Expectation]
+    Let $X$ and $Y$ be discrete RVs with joint pmf $f\colon S\rightarrow [0,1]$.
+    The \textbf{mathmetical expectation} of a function $g(X,Y)$ is
+    \begin{equation*}
+        \E{g(X,Y)} := \sum_{(x,y)\in S}g(x,y)f(x,y)
+    \end{equation*}
+\end{definition}
+
+\begin{theorem}
+    Two ways to compute the mean of $X$:
+    \begin{equation*}
+        \E{X} = \sum_{x\in S_X}x f_X(x)
+        = \sum_{(x,y)\in S}x f(x,y)
+    \end{equation*}
+\end{theorem}
+
+
+\section{The Corelation Coefficient}
+
+\begin{definition}[Covariance]
+    The \textbf{covariance} of two discrete RVs $X$ and $Y$ is defined as
+    \begin{equation*}
+        \sigma_{X Y} = \Cov(X,Y) := \E{(X-\E{X})(Y-\E{Y})\vphantom{\Big|}}
+        = \E{X Y} - \E{X}\E{Y}
+    \end{equation*}
+    \begin{itemize}
+        \item $\Cov(X,Y)<0\quad\implies\quad X$ and $Y$ are \textbf{negatively correlated}
+        \item $\Cov(X,Y)>0\quad\implies\quad X$ and $Y$ are \textbf{positively correlated}
+        \item $\Cov(X,Y)=0\quad\implies\quad X$ and $Y$ are \textbf{uncorrelated}
+    \end{itemize}
+\end{definition}
+
+\begin{theorem box}
+    \begin{equation*}
+        \E{X Y} = \E{X\cdot\E{Y\mid X}}
+        = \E{Y\cdot\E{X\mid Y}}
+    \end{equation*}
+    Meaning: $\E{X Y} = \E{g(X)}$, where $g(x) = x\cdot\E{Y\mid X=x}$.
+\end{theorem box}
+\begin{proof}
+    \begin{equation*}
+        \E{X Y} = \sum_{(x,y)\in S} x y f(x,y)
+        = \sum_{x\in S_X} x \qty(\sum_{y\in S_y(x)} y\cdot f_{Y|X}(y\mid x))f(x)
+        = \sum_{x\in S_X} x\E{Y\mid X=x} f(x)
+        = \E{X\cdot\E{Y\mid X=X}}
+    \end{equation*}
+\end{proof}
+
+\begin{theorem}[Properties of Covariance]
+    Let $X,Y,Z$ be RVs, and let $a,b,c,d$ be constants. Then:
+    \begin{itemize}
+        \item $\Cov(X,X) = \Var(X)$
+        \item $\Cov(X,Y) = \Cov(Y,X)$
+        \item $\Cov(X+Y,Z) = \Cov(X,Z) + \Cov(Y,Z)$
+        \item $\Cov(a X + b, c Y + d) = a c\ \Cov(X,Y)$
+        \item $\Cov(X, a) = 0$
+    \end{itemize}
+\end{theorem}
+
+\begin{theorem}
+    In terms of two RVs $X$ and $Y$, generally,
+    \begin{align*}
+        \qq{Independent} &\implies \qq{Uncorrelated}\qq{i.e.}\Cov(X,Y)=0 \\
+        \qq{Independent} &\centernot\impliedby \qq{Uncorrelated}
+    \end{align*}
+\end{theorem}
+\begin{proof}[Independence implies uncorrelation]
+    \begin{equation*}
+        f(x,y) = f_X(x)f_Y(y) \quad\implies\quad
+        \E{X Y} = \sum_{x\in S_X}\sum_{y\in S_Y} x y f_X(x)f_Y(y)
+        = \E{X}\E{Y} \quad\implies\quad
+        \Cov(X,Y) = 0
+    \end{equation*}
+\end{proof}
+
+\begin{definition}[Correlation Coefficient]
+    The \textbf{correlation coefficient} of two discrete RVs $X$ and $Y$ is defined as
+    \begin{equation*}
+        \rho(X,Y) := \frac{\Cov(X,Y)}{\sqrt{\Var(X)\Var(Y)}}
+        = \frac{\sigma_{X Y}}{\sigma_X\sigma_Y}
+        \in [-1,1]
+    \end{equation*}
+    provided that $\sigma_X\sigma_Y\neq 0$.
+\end{definition}
+
+\begin{remark}
+    $\rho$ is a normalized  version of $\Cov(X,Y)$.
+\end{remark}
+
+\begin{theorem}
+    $\rho$ provides a normalized measure of the strength of the
+    linear relationship between $X$ and $Y$.
+    \begin{equation*}
+        \abs{\rho} = 1 \quad\iff\quad
+        \exists c \qq{s.t.}
+            Y - \E{Y} = c(X-\E{X})
+    \end{equation*}
+    where $c$ shares the same sign as $\rho$ and
+    \begin{equation*}
+        \abs{c} = \sqrt{\frac{\Var(Y)}{\Var(X)}}
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}[Cauchy-Schwarz Inequality]
+    For any two RVs $X$ and $Y$,
+    \begin{equation*}
+        \Cov(X,Y)^2 \leqslant \Var(X)\Var(Y)
+    \end{equation*}
+\end{theorem}
+\begin{proof}[Cauchy-Schwarz Inequality]
+    Let $U=X-\E{X}$ and $V=Y-\E{Y}$.
+    Let $f(t)=\E{(U+t V)^2}$. Then
+    \begin{equation*}
+        f(t) = \E{U^2} + 2 t\E{U V} + t^2\E{V^2}
+        = \Var(X) + 2 t\Cov(X,Y) + t^2\Var(Y)
+        \geqslant 0
+    \end{equation*}
+    The discriminant of $f(t)$ is
+    \begin{equation*}
+        \Delta = 4\Cov(X,Y)^2 - 4\Var(X)\Var(Y)
+        = 4\Cov(X,Y)^2 - 4\Var(X)\Var(Y) \leqslant 0
+    \end{equation*}
+\end{proof}
+
+\section{Conditional Distributions}
+
+\begin{definition}[Conditional Probability Mass Function]
+    The \textbf{conditional pmf} of $X$ given $Y=y$ is defined as
+    \begin{equation*}
+        f_{X|Y}(x\mid y) := \frac{f_{X,Y}(x,y)}{f_Y(y)}
+        \qfor x\in S_X(y)
+    \end{equation*}
+    provided that $f_Y(y)>0$.
+\end{definition}
+
+\begin{proof}
+    \begin{equation*}
+        f_{X|Y}(x\mid y) = \Prob(X=x\mid Y=y) = \frac{\Prob(X=x,Y=y)}{\Prob(Y=y)}
+        = \frac{f_{X,Y}(x,y)}{f_Y(y)}
+    \end{equation*}
+\end{proof}
+
+\begin{remark}
+    Easy to check that conditional pmf is well-defined.
+\end{remark}
+\begin{remark}
+    When $X$ and $Y$ are independent, we have:
+    \begin{equation*}
+        f_{X|Y}(x\mid y) = \frac{f_X(x)f_Y(y)}{f_Y(y)} = f_X(x)
+    \end{equation*}
+\end{remark}
+    
+\begin{definition}[Conditional Mathmetical Expectation]
+    Let $g(Y)$ be a function of $Y$. The \textbf{conditional expectation} of
+    $g(Y)$ given $X=x$ is defined as
+    \begin{equation*}
+        \E{g(Y)\mid X=x} := \sum_{y\in S_Y(x)}g(y)\cdot f_{Y|X}(y\mid x)
+    \end{equation*}
+    where $x\in S_X$.
+    \begin{itemize}
+        \item Conditional mean:
+        $\quad \E{Y\mid X=x}$
+        \item Conditional variance:
+        $\quad \Var(Y\mid X=x) := \E{(Y-\E{Y\mid X=x})^2\mid X=x}$
+    \end{itemize}
+\end{definition}
+\begin{remark}
+    \begin{equation*}
+        \Var(Y\mid X=x) = \E{Y^2\mid X=x} - \big(\E{Y\mid X=x}\big)^2
+    \end{equation*}
+\end{remark}
+
+\begin{theorem}
+    \begin{equation*}
+        \E{X} = \E{\E{X\mid Y=Y}} = \sum_{y\in S_Y}\E{X\mid Y=y}f_Y(y)
+        = \sum_{(x,y)\in S} x f_{X,Y}(x,y)
+    \end{equation*}
+\end{theorem}
+
+
+\section{Examples}
+
+\subsection{Trinomial Distribution}
+
+\paragraph{Desciption}
+A random experiment that has three \emph{mutually exclusive}
+and \emph{exhaustive} outcomes is repeated $n$ independent times,
+and the probabilities of each outcome remain the same
+for each repetition.
+Such $n$ repetitions can be called a trinomial experiment.
+Let $X$, $Y$, and $n-X-Y$ be the number of the three outcomes,
+respectively.
+
+\begin{definition}[Trinomial Distribution]
+    \textbf{Parameters}\qquad $n=1,2,3,\cdots \qquad p_X\in[0,1]
+    \qquad p_Y\in[0,1] \qq{s.t.} p_X+p_Y\leqslant 1$.
+
+    $(X,Y)$ is said to have a \textbf{trinomial distribution},
+    if the \textbf{joint pmf} is given by
+    \begin{equation*}
+        f_{X,Y}(x,y) = \binom{n}{x,y,n-x-y}p_X^x p_Y^y (1-p_X-p_Y)^{n-x-y}
+        = \frac{n!}{x!y!(n-x-y)!}p_X^x p_Y^y (1-p_X-p_Y)^{n-x-y}
+    \end{equation*}
+    The \textbf{marginal pmf} of $X$ is given by
+    \begin{equation*}
+        f_X(x) = \binom{n}{x}p_X^x(1-p_X)^{n-x}
+    \end{equation*}
+    Namely, $X\sim\mathrm{B}(n,p_X)$, $Y\sim\mathrm{B}(n,p_Y)$.
+\end{definition}
+
+\begin{remark}
+    Trinomial Expansion
+    \begin{equation*}
+        (a+b+c)^n = \sum_{x=0}^{n}\sum_{y=0}^{n-x}
+        \binom{n}{x,y,n-x-y}a^x b^y c^{n-x-y}
+        = \sum_{x=0}^{n}\sum_{y=0}^{n-x}
+        \frac{n!}{x!y!(n-x-y)!}a^x b^y c^{n-x-y}
+    \end{equation*}
+\end{remark}
+
+\begin{theorem}[Trinomial Distribution]
+    The conditional pmf of $Y$ given $X=x$ is
+    \begin{equation*}
+        f_{Y|X}(y\mid x) =
+        \binom{n-x}{y} \qty(\frac{p_Y}{1-p_X})^y \qty(1-\frac{p_Y}{1-p_X})^{n-x-y}
+    \end{equation*}
+    Namely, $(Y\mid X=x)\sim\mathrm{B}\qty(n-x,\dfrac{p_Y}{1-p_X})$,
+    and $(X\mid Y=y)\sim\mathrm{B}\qty(n-y,\dfrac{p_X}{1-p_Y})$.
+
+    The covariance of $X$ and $Y$ can be computed as
+    \begin{equation*}
+        \E{X Y} = n(n-1)\cdot p_X p_Y \qquad\qquad
+        \Cov(X,Y) = -n \cdot p_X p_Y
+    \end{equation*}
+\end{theorem}
+\begin{proof}[Covariance of trinomial distribution]
+    \noindent\textbf{Method 1} \quad Conditional Expectation Method
+    \begin{gather*}
+        \E{Y^2} = (n^2-n)\cdot p_Y^2 + n\cdot p_Y \\
+        \E{X Y} = \E{Y\cdot\E{X\mid Y}}
+        = \frac{p_X}{1-p_Y}\E{Y(n-Y)}
+        = n(n-1)\cdot p_X p_Y
+    \end{gather*}
+    \noindent\textbf{Method 2} \quad Indicator Variable Method
+    \par
+    For each trial $i$, define the indicator variables $X_i$ and $Y_i$:
+    \begin{equation*}
+        X_i = \mycases{
+            1 & \text{if the $i$-th trial is the outcome of $X$} \\
+            0 & \text{otherwise}
+        } \qquad\qquad
+        Y_i = \mycases{
+            1 & \text{if the $i$-th trial is the outcome of $Y$} \\
+            0 & \text{otherwise}
+        }
+    \end{equation*}
+    Then $X_i$ and $Y_j$ are independent for $i\neq j$,
+    and $X_i Y_i=0$. Therefore,
+    \begin{align*}
+        \E{X Y} = \E{\sum_{i=1}^n X_i \sum_{i=1}^n Y_i}
+        = \sum_{i=1}^n \sum_{j=1}^n \E{X_i Y_j}
+        = \sum_{i\neq j}\E{X_i}\E{Y_j}
+        = \sum_{i\neq j} p_X p_Y
+        = n(n-1) p_X p_Y
+    \end{align*}
+\end{proof}
+
+
+\section{Bivariate Distributions of Continuous Type}
+
+\begin{definition}[Joint Probability Density Function]
+    A function $f\colon S\subseteq\mathbb{R}^2\rightarrow[0,+\infty)$
+    is called the \textbf{joint probability density function} (joint pdf) of
+    a CRV $(X,Y)$ with range $S$ if it satisfies:
+    \begin{itemize}
+        \item $f(x,y)>0$ for $(x,y)\in S$,
+        and $f(x,y)=0$ for $(x,y)\notin S$
+        \item $\displaystyle\iint_{S}f(x,y)\dd{x}\dd{y}=1$
+        \item $\displaystyle \Prob[(X,Y)\in A]=\iint_{A}f(x,y)\dd{x}\dd{y}$,
+        where $A\subseteq S$
+    \end{itemize}
+    Then $S$ is called the \textbf{support} or \textbf{space} of $X$.
+\end{definition}
+
+\begin{definition}[Marginal Probability density Function]
+    Let $(X,Y)$ has a joint pdf $f(x,y)$ with space $S$.
+    The pdf of $X$ alone,
+    called the \textbf{marginal probability density function}
+    (marginal pdf) of $X$, is defined as:
+    \begin{equation*}
+        f_X(x) :=  \int_{S_Y(x)}\!\!\!\!\!\!\!\!\!f(x,y)\dd{y}
+        \qfor x\in S_X
+    \end{equation*}
+    where
+    \begin{equation*}
+        S_Y(x) := \{y\mid(x,y)\in S\} \qfor x\in S_X
+    \end{equation*}
+\end{definition}
+
+
+\subsection{Mathmetical Expectations}
+
+\begin{definition}[Mathmetical Expectation]
+    Let $X$ and $Y$ be CRVs with joint pdf $f\colon S\rightarrow [0,+\infty)$.
+    The \textbf{mathmetical expectation} of a function $g(X,Y)$ is
+    \begin{equation*}
+        \E{g(X,Y)} := \iint_{S}g(x,y)f(x,y)\dd{x}\dd{y}
+    \end{equation*}
+\end{definition}
+\begin{theorem}
+    \begin{equation*}
+        \E{X} = \int_{S_X}x f_X(x)\dd{x}
+        = \iint_{S}x f(x,y)\dd{x}\dd{y}
+        = \int_{S_Y}\!\!\!\! \E{X\mid Y=y}f_Y(y)\dd{y}
+        = \E{\E{X\mid Y=Y}}
+    \end{equation*}
+\end{theorem}
+
+\subsection{Covariance \& Correlation Coefficient}
+
+\begin{definition}[Independence]
+    $X\in S_X$ and $Y\in S_Y$ are said to be \textbf{independent}
+    iff
+    \begin{align*}
+        f(x,y) &= f_X(x)f_Y(y)
+    \end{align*}
+\end{definition}
+
+If $X$ and $Y$ are independent, then
+\begin{gather*}
+    S = S_X\times S_Y
+\end{gather*}
+
+\begin{definition}[Covariance \& Correlation Coefficient]
+    Let $X$ and $Y$ be CRVs.
+    \begin{align*}
+        \Cov(X,Y) &:= \E{(X-\E{X})(Y-\E{Y})\vphantom{\Big|}} \\
+        &= \E{X Y} - \E{X}\E{Y}
+    \end{align*}
+    \begin{gather*}
+        \rho(X,Y) := \frac{\Cov(X,Y)}{\sqrt{\Var(X)\Var(Y)}}
+        \qfor \Var(X)\Var(Y) \neq 0
+    \end{gather*}
+\end{definition}
+
+\subsection{Conditional Distributions}
+
+
+\begin{definition}[Conditional Probability Density Function]
+    The \textbf{conditional pdf} of $X$ given $Y=y$ is defined as
+    \begin{equation*}
+        f_{X|Y}(x\mid y) := \frac{f_{X,Y}(x,y)}{f_Y(y)}
+        \qfor x\in S_X(y)
+    \end{equation*}
+    provided that $f_Y(y)>0$.
+\end{definition}
+
+\begin{definition}[Conditional Mathmetical Expectation]
+    Let $g(Y)$ be a function of $Y$. The \textbf{conditional expectation} of
+    $g(Y)$ given $X=x$ is defined as
+    \begin{equation*}
+        \E{g(Y)\mid X=x} := \int_{S_Y(x)}\!\!\!\!\!\!\!\!\!g(y)f_{Y|X}(y\mid x)\dd{y}
+    \end{equation*}
+    where $x\in S_X$.
+    \begin{itemize}
+        \item Conditional mean:
+            $\quad\displaystyle
+            \E{Y\mid X=x} = \int_{S_Y(x)}\!\!\!\!\!\!\!\!\!y\cdot f_{Y|X}(y\mid x)\dd{y}$
+            \item Conditional variance:
+            $\quad \begin{aligned}[t]
+                \Var(Y\mid X=x) &:= \E{(Y-\E{Y\mid X=x})^2\mid X=x} \\
+                &= \E{Y^2\mid X=x} - \big(\E{Y\mid X=x}\big)^2
+            \end{aligned}$
+    \end{itemize}
+\end{definition}
+
+
+\section{Bivariate Normal Distribution}
+
+\begin{definition}[Bivariate Normal Distribution]
+    \textbf{Parameters}\qquad $\mu_X\in\mathbb{R} \qquad \mu_Y\in\mathbb{R} \qquad
+    \sigma_X>0 \qquad \sigma_Y>0 \qquad \rho\in[-1,1]$
+
+    $X$ and $Y$ are said to have a \textbf{bivariate normal distribution} if the joint pdf is given by
+    \begin{gather*}
+        f(x,y) = \frac{1}{2\pi\sigma_X\sigma_Y\sqrt{1-\rho^2}}
+        \exp(-\frac{1}{2(1-\rho^2)}\qty[
+            \qty(\frac{x-\mu_X}{\sigma_X})^2
+            - 2\rho\qty(\frac{x-\mu_X}{\sigma_X})\qty(\frac{y-\mu_Y}{\sigma_Y})
+            +\qty(\frac{y-\mu_Y}{\sigma_Y})^2
+        ])
+    \end{gather*}
+    where $\rho$ is the \emph{correlation coefficient} of $X$ and $Y$.
+\end{definition}
+
+\begin{theorem}[Bivariate Normal Distribution]
+    \begin{itemize}
+        \item Marginal:\quad
+            $\displaystyle
+            X\sim\mathrm{N}(\mu_X,\sigma_X^2),\quad
+            Y\sim\mathrm{N}(\mu_Y,\sigma_Y^2)$
+        \item Conditional:\quad
+        $\begin{gathered}[t]
+            [X\mid Y=y] \sim\mathrm{N}\qty(
+                \mu_X + \rho\frac{\sigma_X}{\sigma_Y}(y-\mu_Y),\;
+                (1-\rho^2)\sigma_X^2
+            ) \\
+            [Y\mid X=x] \sim\mathrm{N}\qty(
+                \mu_Y + \rho\frac{\sigma_Y}{\sigma_X}(x-\mu_X),\;
+                (1-\rho^2)\sigma_Y^2
+            )
+        \end{gathered}$
+        \item Covariance:\quad
+            $\Cov(X,Y) = \rho\sigma_X\sigma_Y$
+        \item Correlation Coefficient:\quad
+            $\rho(X,Y) = \rho$
+    \end{itemize}
+\end{theorem}
+
+\begin{proof}[Covariance of bivariate normal distribution]
+    Since $X\sim\mathrm{N}(\mu_X,\sigma_X^2)$, $\E{X^2}=\sigma_X^2-\mu_X^2$.
+    Moreover, $\E{Y\mid X=X} = \mu_Y + \rho\dfrac{\sigma_Y}{\sigma_X}(x-\mu_X)$.
+    Then,
+    \begin{gather*}
+        \E{X Y} = \E{X\cdot\E{Y\mid X=X}\vphantom{\Big|}}
+        = \rho\frac{\sigma_X}{\sigma_Y}\E{X^2}
+        + \qty(\mu_Y-\mu_X\rho\frac{\sigma_X}{\sigma_Y})\E{X}
+        = \rho\sigma_X\sigma_Y + \mu_X\mu_Y \\
+        \Cov(X,Y) = \E{X Y} - \E{X}\E{Y} = \rho\sigma_X\sigma_Y
+    \end{gather*}
+\end{proof}
+
+\begin{theorem}
+    For a bivariate normal distribution,
+    \begin{equation*}
+        \qq{Independence} \iff \qq{Uncorrelation}
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+    For any bivariate RV,
+    independence implies uncorrelation.
+    Therefore, we only need to prove the converse.
+    \begin{gather*}
+        \Cov(X,Y) = 0 \quad\implies\quad \rho = 0 \quad\implies\quad
+        [X\mid Y=y] \sim\mathrm{N}(\mu_X,\sigma_X^2)
+        \quad\implies\quad [X\mid Y=y] = X
+    \end{gather*}
+\end{proof}
+
+\end{document}

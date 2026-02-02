@@ -1,0 +1,566 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{bm}
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipbox}
+{\begin{tcolorbox}[colback=green!5!white,colframe=green!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{conceptbox}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{thmbox}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+{\end{tcolorbox}}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+\newcommand{\perm}[2]{\ensuremath{{}_{#1}\mathrm{P}_{#2}}}  % 排列数
+\newcommand{\comb}[2]{\ensuremath{{}_{#1}\mathrm{C}_{#2}}}  % 组合数
+
+\newcommand{\E}[1]{\mathbb{E}\qty[#1]}  % 期望
+\newcommand{\Prob}{\mathbb{P}\qty}
+\newcommand{\Var}[1]{\mathrm{Var}\qty(#1)}  % 方差
+
+\begin{document}
+
+\part*{Continuous Distributions}
+
+\section{Random Variables of the Continuous Type}
+
+\begin{definition}[Probability Density Function]
+    A function $f\colon\mathbb{R}\rightarrow[0,1]$
+    is called the \textbf{probability density function} (pdf) of
+    a CRV $X$ with range $S$ if it satisfies:
+    \begin{itemize}
+        \item $f(x)>0$ for $x\in S$, and $f(x)=0$ for $x\notin S$
+        \item $\displaystyle\int_{S}f(x)\dd{x}=\int_{-\infty}^{\infty}f(x)\dd{x}=1$
+        \item $\displaystyle \Prob(X\in A)=\int_{A}f(x)\dd{x}$, where $A\subseteq S$
+    \end{itemize}
+    Then $S$ is called the \textbf{support} or \textbf{space} of $f(x)$.
+\end{definition}
+
+\begin{remark}
+    Pdf may not be continuous or bounded.
+\end{remark}
+
+\begin{remark}
+    Different from pmfs, if $f$ is a pdf of a CRV $X$, then, generally,
+    \begin{equation*}
+        f(x) \neq \Prob(X=x)
+    \end{equation*}
+\end{remark}
+
+\begin{definition}[Cumulative Distribution Function]
+    The function $F\colon\mathbb{R}\rightarrow[0,1]$
+    defined by
+    \begin{equation*}
+        F(x) := \Prob(X\leq x) = \int_{-\infty}^{x}f(t)\dd{t}
+        \qquad -\infty<x<\infty
+    \end{equation*}
+    is called the \textbf{cumulative distribution function} (cdf)
+    or \textbf{distribution function} of $X$.
+\end{definition}
+\begin{remark}
+    \begin{equation*}
+        F(b) - F(a) =
+        \Prob(a<X< b) = \Prob(a\leqslant X< b) =
+        \Prob(a<X\leqslant b) = \Prob(a\leqslant X\leqslant b)
+        = \int_{a}^{b}f(t)\dd{t}
+    \end{equation*}
+    \begin{equation*}
+        f(x) = F'(x)
+        \qq{for those $x$ at which $F(x)$ is differentiable}
+    \end{equation*}
+\end{remark}
+
+\begin{theorem}
+    For two CRVs $X$ and $Y$, if $Y=g(X)$,
+    where $g$ is a one-to-one function,
+    then their pdfs have the following relationship:
+    \begin{equation*}
+        f_Y(y) = \frac{f_X(x)}{\abs{\dv*{y}{x}}}
+        = f_X(g^{-1}(y))\abs{\dv{y}g^{-1}(y)}
+        \qor f_Y(y)\abs{\dd{y}} = f_X(x)\abs{\dd{x}}
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+    By the definition, we have:
+    \begin{equation*}
+        f_X(x) = \dv{x}F_X(x) \qquad
+        F_X(x) = \Prob(X\leqslant x) \qquad
+        f_Y(y) = \dv{y}F_Y(y) \qquad
+        F_Y(y) = \Prob(Y\leqslant y) = \Prob[g(X)\leqslant g(x)]
+    \end{equation*}
+    Since $g$ is one-to-one, it is strictly monotonic.
+    \begin{gather*}
+    \shortintertext{When $g'=\dv*{y}{x}>0$,}
+        F_Y(y) = \Prob[g(X)\leqslant g(x)]
+        = \Prob(X\leqslant x) = F_X(x) \\
+        \implies f_Y(y) = \dv{y} F_Y(y) = \dv{y} F_X(x)
+        = \dv{x}{y}\dv{x}F_X(x) = \frac{f_X(x)}{\dv*{y}{x}}
+    \shortintertext{When $g'=\dv*{y}{x}<0$,}
+        F_Y(y) = \Prob[g(X)\leqslant g(x)]
+        = \Prob(X\geqslant x) = 1 - F_X(x) \\
+        \implies f_Y(y) = -\dv{y} F_X(x)
+        = - \frac{f_X(x)}{\dv*{y}{x}}
+    \end{gather*}
+\end{proof}
+
+\begin{definition}[Uniform Distribution]
+    A CRV $X$ is said to have a \textbf{uniform distribution}
+    if its pdf is given by
+    \begin{equation*}
+        f(x) = \mycases{
+            \dfrac{1}{b-a} &\qfor a\leqslant x\leqslant b \\
+            0 & \qotherwise
+        }
+    \end{equation*}
+    and denoted as $X\sim U(a,b)$.
+\end{definition}
+
+\begin{theorem}
+    For $X\sim U(a,b)$,
+    \begin{itemize}
+        \item $\E{X} = \dfrac{a+b}{2}$
+        \item $\Var{X} = \dfrac{(b-a)^2}{12}$
+        \item $M_X(t) = \mycases{
+            \dfrac{\e^{b t} - \e^{a t}}{(b-a)t}
+            &\qfor t\neq 0 \\
+            1 &\qfor t=0
+        }$
+    \end{itemize}
+\end{theorem}
+
+\begin{remark}
+    $M_X(0)=1$ makes it the continuous extension to $t=0$.
+\end{remark}
+
+
+\begin{definition}[Mathmetical Expectation]
+    Let $f(x)$ be the pdf of the CRV $X$ with space $S$.
+    Suppose $g$ is a function of $X$, then
+    \begin{equation*}
+        \E{g(X)} := \int_{S}g(x)f(x)\dd{x}
+        = \int_{-\infty}^{\infty}g(x)f(x)\dd{x}
+    \end{equation*}
+    is called the \textbf{mathmetical expectation}
+    or \textbf{expected value} of $g$,
+    if the integral exists.
+    \begin{remark}
+        $g(X)$ gives another RV.
+    \end{remark}
+\end{definition}
+
+
+\begin{definition}[Special Mathmetical Expectations]
+    \begin{itemize}
+        \item Mean: $\displaystyle \E{X} = \int_{S}x f(x)\dd{x}$
+        \item Variance: $\displaystyle \Var{X}
+        := \E{(X-\E{X})^2} = \int_{S}(x-\E{X})^2 f(x)\dd{x}$
+        \item Moments: $\displaystyle \E{X^r} = \int_{S}x^r f(x)\dd{x}$
+        \item Mgf: $\displaystyle M_X(t) := \E{\e^{tX}} = \int_{S}\e^{tx}f(x)\dd{x}$
+        \qquad $-h<t<h$ for some $h>0$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[The (100p)th Percentile]
+    Given $p\in(0,1)$, $\pi_p$ is a number such that
+    \begin{equation*}
+        \Prob(X\leqslant \pi_p) =
+        F_X(\pi_p) = \int_{-\infty}^{\pi_p}f_X(x)\dd{x} = p
+    \end{equation*}
+    \begin{itemize}
+        \item The \textbf{first quartile} (the 25th percentile):
+            \qquad$q_1 := \pi_{0.25}$
+        \item The \textbf{third quartile} (the 75th percentile):
+            \qquad$q_3 := \pi_{0.75}$
+        \item The \textbf{median} or the \textbf{second quartile}:
+            \qquad$m := q_2 := \pi_{0.50}$
+    \end{itemize}
+\end{definition}
+
+\begin{definition}[The Upper $100\alpha$ Percent Point]
+    Given $\alpha\in(0,1)$, $z_\alpha$ is a number such that
+    \begin{equation*}
+        \Prob(Z \geqslant z_\alpha) = 1-F_Z(z_\alpha) = \alpha
+    \end{equation*}
+\end{definition}
+
+\begin{theorem}
+    $z_\alpha$ is the $100(1-\alpha)$th percentile of $Z$.
+    \begin{equation*}
+        \Prob(Z \leqslant z_\alpha) = 1-\alpha
+    \end{equation*}
+\end{theorem}
+
+
+\section{The Exponential Distribution}
+
+\paragraph{Desciption}
+Consider an APP on the time interval $[0,+\infty)$,
+with the average number of occurrences per unit time $\lambda$.
+Let the CRV $X$ be the \textbf{waiting time} until the \textbf{first} occurrence.
+
+\begin{definition}[Exponential Distribution]
+    \textbf{Parameter}\qquad $\theta>0$
+
+    A CRV $X$ has an \textbf{exponential distribution}
+    with parameter $\theta>0$
+    if its pdf is
+    \begin{equation*}
+        f(x) = \frac{1}{\theta}\e^{-\frac{x}{\theta}}
+        \qfor x\geqslant 0, \theta>0
+    \end{equation*}
+    where $\lambda = \dfrac{1}{\theta}$ is the average number of occurrences per unit time.
+\end{definition}
+
+\begin{theorem}
+    The cdf of $X$:
+    \begin{equation*}
+        F(x) = 1 - \e^{-\frac{x}{\theta}} \qfor x\geqslant 0
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}
+    \begin{itemize}
+        \item $\displaystyle M_X(t) = \E{\e^{tX}} = \frac{1}{1-t\theta}
+         \qfor t<\frac{1}{\theta}$
+        \item $\E{X} = \theta$
+        \item $\Var{X} = \theta^2$
+    \end{itemize}
+\end{theorem}
+
+\subsection{Properties}
+
+\begin{theorem}[Memoryless Property]
+    For $X\sim\mathrm{Exp}(\lambda)$,
+    \begin{equation*}
+        \Prob(X > s+t | X > s) = \Prob(X > t)
+        \qquad\forall s,t\geqslant 0
+    \end{equation*}
+\end{theorem}
+
+\begin{definition}[Survival Function]
+    The \textbf{survival function} of a non-negative CRV $X$ is defined as
+    \begin{equation*}
+        S(x) := \Prob(X > x) = 1 - F(x)
+    \end{equation*}
+    where $F(x)$ is the cdf of $X$.
+\end{definition}
+
+\begin{theorem}
+    For two independent exponential CRVs $X_1\sim\mathrm{Exp}(\lambda_1)$
+    and $X_2\sim\mathrm{Exp}(\lambda_2)$,
+    the minimum of $X_1$ and $X_2$ is also an exponential CRV:
+    \begin{gather*}
+        \min\{X_1, X_2\} \sim\mathrm{Exp}(\lambda_1+\lambda_2) \\
+        \Prob(X_1 < X_2) = \frac{\lambda_1}{\lambda_1+\lambda_2}
+        \qquad\qquad
+        \Prob(X_1 > X_2) = \frac{\lambda_2}{\lambda_1+\lambda_2}
+    \end{gather*}
+\end{theorem}
+\begin{proof}
+    For any independent CRVs $X$ and $Y$,
+    \begin{align*}
+        \Prob(X \leqslant Y) &=
+        \int_{S_Y} \Prob(X \leqslant Y\mid Y = y)\Prob(Y=y) \\
+        &= \int_{S_Y} \Prob(X \leqslant y)f_{Y}(y)\dd{y} \\
+        &= \int_{S_Y} F_{X}(y)f_{Y}(y)\dd{y}
+    \end{align*}
+    Plugging in the pdf and cdf of exponential CRVs,
+    we have the answer.
+\end{proof}
+
+
+
+\section{The Gamma Distribution}
+
+\paragraph{Description}
+Consider an APP on the time interval $[0,+\infty)$,
+with the average number of occurrences per unit time $\lambda$.
+Let the CRV $X$ be the \textbf{waiting time}
+until the $\bm{\alpha}$\textbf{-th} occurrence.
+The \textit{exponential distribution} is a special case of the \textit{gamma distribution}.
+
+\begin{proof}
+Consider the cdf $F(x)$ when $x\geqslant 0$:
+\begin{align*}
+    1 - F(x) &= \Prob(X > x) \\
+    &= \Prob(\text{less than $\alpha$ occurrences over the time $[0,x]$}) \\
+    &= \sum_{n=0}^{\alpha-1} \frac{(\lambda x)^n \e^{-\lambda x}}{n!}
+\end{align*}
+\begin{equation*}
+    f(x) = F'(x) = 
+    \lambda \e^{-\lambda x} -
+    \e^{-\lambda x}\sum_{n=1}^{\alpha-1}\left(
+        \frac{\lambda(\lambda x)^{n-1}}{(n-1)!} -
+        \frac{\lambda(\lambda x)^{n}}{n!}
+    \right)
+    = \frac{\lambda^\alpha x^{\alpha-1}}{(\alpha-1)!}\e^{-\lambda x}
+    \qfor x\geqslant 0
+\end{equation*}
+    
+\end{proof}
+
+
+\begin{definition}[The Gamma Function]
+    (Generalized factorial)
+    \begin{equation*}
+        \Gamma(x) := \int_{0}^{\infty}t^{x-1}\e^{-t}\dd{t}
+        \qfor x>0
+    \end{equation*}
+\end{definition}
+
+\begin{theorem box}
+    \begin{gather*}
+        \Gamma(x+1) = x\Gamma(x) \qfor x>0 \\
+        (n-1)! = \Gamma(n) \qfor n\in\mathbb{N}_+ \\
+        \Gamma(\frac{1}{2}+n) = \frac{(2 n-1)!!}{2^n}\sqrt{\pi}
+    \end{gather*}
+\end{theorem box}
+
+\begin{definition}[The Gamma Distribution]
+    \textbf{Parameters}\qquad $\alpha>0\qquad\theta>0$
+
+    A CRV $X$ has a \textbf{gamma distribution}
+    with parameters $\alpha>0,\theta>0$
+    if its pdf is
+    \begin{equation*}
+        f(x) = 
+        \frac{1}{\Gamma(\alpha)\theta^\alpha}x^{\alpha-1}\e^{-\frac{x}{\theta}}
+        \qfor x\geqslant 0, \alpha>0, \theta>0
+    \end{equation*}
+where $\theta$ is the average waiting time for the first occurrences.
+\end{definition}
+
+\begin{remark}
+    $\lambda = \dfrac{1}{\theta}$ is the average number of occurrences per unit time:
+    \begin{equation*}
+        f(x)
+        =\frac{\lambda^\alpha}{\Gamma(\alpha)}x^{\alpha-1}\e^{-\lambda x}
+        \qfor x\geqslant 0, \alpha>0, \lambda>0
+    \end{equation*}
+\end{remark}
+
+\begin{theorem}
+    \begin{itemize}
+        \item $\displaystyle M_X(t) = \frac{1}{(1-\theta t)^{\alpha}}
+        \qfor t<\dfrac{1}{\theta}$
+        \item $\E{X} = \alpha\theta$
+        \item $\Var{X} = \alpha\theta^2$
+    \end{itemize}
+\end{theorem}
+
+\section{The Chi-Square Distribution}
+
+\paragraph{Description}
+$X\sim\chi^2(r) = \mathrm{Gamma}(\dfrac{r}{2},\theta=2)\qfor r=1,2,3,\cdots$.
+
+\begin{definition}[The Chi-Square Distribution]
+    \textbf{Parameter}\qquad $r=1,2,3,\cdots$
+
+    $X$ has a \textbf{chi-square distribution}
+    with degrees of freedom $r$
+    if its pdf is
+    \begin{equation*}
+        f(x) = 
+        \frac{1}{\Gamma\qty(\frac{r}{2})2^{\frac{r}{2}}}x^{\frac{r}{2}-1}\e^{-\frac{x}{2}}
+        \qfor x\geqslant 0, r=1,2,3,\cdots
+    \end{equation*}
+    and denoted as $X\sim\chi^2(r)$.
+\end{definition}
+
+\begin{theorem}
+    \begin{itemize}
+        \item $\displaystyle M_X(t) = (1-2t)^{-\frac{r}{2}}
+        \qfor t<\frac{1}{2}$
+        \item $\E{X} = r$
+        \item $\Var{X} = 2r$
+    \end{itemize}
+\end{theorem}
+
+\section{The Normal Distribution}
+
+\begin{definition}[The Normal Distribution]
+    \textbf{Parameters}\qquad $\mu\in\mathbb{R}\qquad\sigma^2\geqslant 0$
+
+    A CRV $X$ is said to be normal or Gaussian if it has a pdf of the form
+    \begin{equation*}
+        f(x) = \frac{1}{\sqrt{2\pi\sigma^2}}\exp(-\frac{(x-\mu)^2}{2\sigma^2})
+        \qfor x,\mu\in\mathbb{R},\ \;\sigma\geqslant 0
+    \end{equation*}
+    and denoted as $X\sim N(\mu,\sigma^2)$.
+\end{definition}
+
+\begin{theorem}
+    \begin{itemize}
+        \item $\displaystyle M_X(t) =
+        \exp(\mu t + \frac{1}{2}\sigma^2 t^2)
+        \qfor t\in\mathbb{R}$
+        \item $\E{X} = \mu$
+        \item $\Var{X} = \sigma^2$
+    \end{itemize}
+\end{theorem}
+
+\begin{definition}[The Standard Normal Distribution]
+    $N(0,1)$ is called the \textbf{standard normal distribution}.
+    If $Z\sim N(0,1)$, then the cdf of $Z$ is denoted as $\Phi(z)$.
+\end{definition}
+
+\begin{theorem}
+    By the symmetry,
+    \begin{equation*}
+        \Phi(-y) = 1 - \Phi(y) \qfor y\in\mathbb{R}
+    \end{equation*}
+\end{theorem}
+
+\begin{theorem}
+    If $X\sim N(\mu,\sigma^2)$ then
+    \begin{gather*}
+        Z=\frac{X-\mu}{\sigma}
+        \qquad\quad\implies\qquad\quad
+        Z\sim N(0,1), \qquad
+        Z^2\sim\chi^2(1) \\
+        \Prob(a < X < b) =
+        \Prob(\frac{a-\mu}{\sigma} < Z < \frac{b-\mu}{\sigma})
+        = \Phi\qty(\frac{b-\mu}{\sigma}) - \Phi\qty(\frac{a-\mu}{\sigma})
+    \end{gather*}
+\end{theorem}
+\begin{theorem}
+    If $Z\sim N(0,1)$ then
+    \begin{equation*}
+        \E{Z^{2 n-1}}=0
+        \qquad\qquad
+        \E{Z^{2 n}}=(2 n-1)!!
+        \qquad\qfor n=1,2,3,\cdots
+    \end{equation*}
+\end{theorem}
+
+\begin{proof}
+    \begin{gather*}
+        f_Z(z) = f_Z(-z) \quad\implies\quad
+        \E{Z^{2 n-1}}=0 \\
+        Z^2 \sim \chi^2(1) \quad\implies\quad
+        \E{Z^{2 n}} =
+        \dv[n]{}{t}M_{Z^2}(t)\bigg|_{t=0}
+        = \dv[n]{}{t}{}(1-2 t)^{-\frac{1}{2}}\bigg|_{t=0}
+        = (2 n-1)!!
+    \end{gather*}
+\end{proof}
+
+\begin{theorem}
+    Let $X_1\sim N(\mu_1, \sigma_2^2)$ and $X_2\sim N(\mu_2, \sigma_2^2)$
+    be two independent normal random variables. Then
+    \begin{equation*}
+        X_1 + X_2 \sim N(\mu_1+\mu_2, \sigma_1^2+\sigma_2^2)
+        \qquad\qquad
+        X_1 - X_2 \sim N(\mu_1-\mu_2, \sigma_1^2+\sigma_2^2)
+    \end{equation*}
+    Let $a$ and $b$ be two constants. Then
+    \begin{equation*}
+        a X_1 + b X_2 \sim N(a\mu_1+b\mu_2, a^2\sigma_1^2+b^2\sigma_2^2)
+    \end{equation*}
+\end{theorem}
+
+\begin{gather*}
+    \Gamma\qty(\frac{1}{2}) =
+    \int_{0}^{\infty}t^{-1/2}\e^{-t}\dd{t}
+    = \int_{0}^{\infty}\frac{1}{u}\e^{-u^2}\dd{\qty(u^2)}
+    = 2\int_{0}^{\infty}\e^{-u^2}\dd{u}
+    = \sqrt{\pi} \\
+    \Gamma(x+1) = x\cdot\Gamma(x) \qfor x>0
+    \qquad\qquad
+    \Gamma(n+\frac{1}{2}) = \frac{(2 n-1)!!}{2^n}\sqrt{\pi}
+    \qfor n=1,2,3,\cdots
+\end{gather*}
+
+\begin{gather*}
+    \int_{-\infty}^{\infty}\e^{-x^2}\dd{x} = \sqrt{\pi} \qquad\qquad
+    \int_{-\infty}^{\infty}\e^{-a(x+b)^2}\dd{x} = \sqrt{\frac{\pi}{a}}
+    \qfor a>0 \\
+    \int_{-\infty}^{\infty}\e^{-a(\frac{x}{c}+b)^2}\dd{x}
+    = \abs{c}\sqrt{\frac{\pi}{a}} \qfor a>0 \\
+\end{gather*}
+
+
+
+\end{document}

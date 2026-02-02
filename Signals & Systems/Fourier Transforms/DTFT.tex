@@ -1,0 +1,479 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+\allowdisplaybreaks[3]  % 允许换页
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\ju}{\mathrm{j}}  % 虚数单位
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+\newcommand{\Ev}{\,\mathcal{E}\ensuremath{v}\qty}
+\newcommand{\Od}{\,\mathcal{O}\ensuremath{d}\qty}
+
+\renewcommand{\Re}{\,\mathcal{R}\ensuremath{e}\qty}
+\renewcommand{\Im}{\,\mathcal{I}\ensuremath{m}\qty}
+
+\newcommand{\sinc}{\operatorname{sinc}} 
+\newcommand{\rect}{{\mkern 1.5 mu}\operatorname{rect}\!\qty} % 矩形函数
+
+
+\begin{document}
+
+\part*{The Discrete-Time Fourier Transform}
+
+\section{Representation of DTFT}
+
+
+\begin{definition}[The Fourier Transform Pair of a DT Aperiodic Signal]
+    If an aperiodic signal $x[n]$ has a Fourier transform, then
+    \begin{align*}
+        x[n] &=
+        \frac{1}{2\pi}\int_{2\pi}
+        X(\e^{\ju\omega})\e^{\ju\omega n}\dd{\omega}
+        \tag{The Synthesis Equation} \\
+        X(\e^{\ju\omega}) &=
+        \sum_{n=-\infty}^{+\infty}x[n]\e^{-\ju\omega n}
+        \tag{The Analysis Equation}
+    \end{align*}
+    where the function $X(\e^{\ju\omega})$ is referred to as
+    the \emph{discrete-time Fourier transform} or the \emph{spectrum} of $x[n]$.
+\end{definition}
+
+Since $\e^{\ju\omega}$ has a period of $2\pi$,
+$X(\e^{\ju\omega})$ is always periodic with a period $2\pi$.
+$\omega=0$ and $\omega=2\pi$ yield the same signal.
+Therefore, usually we only consider the spectrum from $\omega=-\pi$ to $\omega=\pi$,
+and signals at frequencies near $\omega=0$ or $\pm 2\pi$ can be considered as
+\textbf{low-frequency}, while signals at frequencies near $\omega=\pm\pi$
+can be considered as \textbf{high-frequency}.
+
+\section{Fourier Transform for Periodic Sequences}
+
+\begin{theorem}
+    For a periodic sequence $x[n]$ whose FS coefficients are $\{a_k\}$,
+    the Fourier transform $X(\e^{\ju\omega})$ is given by
+    \begin{equation*}
+        X(\e^{\ju\omega}) = \sum_{k=-\infty}^{\infty} 
+        2\pi a_k \delta(\omega-k\omega_0)
+    \end{equation*}
+\end{theorem}
+\begin{proof}
+\begin{align*}
+    X(\e^{\ju\omega})
+    \quad\xrightarrow{\mathcal{F}^{-1}}\quad
+    \frac{1}{2\pi}\int_{2\pi}
+    X(\e^{\ju\omega})\e^{\ju\omega n}\dd{\omega}
+    &=  \frac{1}{2\pi}\int_{W}^{W+2\pi}
+    \sum_{k=-\infty}^{\infty}
+    2\pi a_k \delta(\omega-k\omega_0)
+    \e^{\ju\omega n}\dd{\omega} \\
+    &= \sum_{k=-\infty}^{\infty}
+    a_k \int_{W}^{W+2\pi}
+    \delta(\omega-k\frac{2\pi}{N})
+    \e^{\ju k\omega_0 n}\dd{\omega} \\
+    &= \sum_{k=-\infty}^{\infty}
+    a_k \e^{\ju k\omega_0 n}
+    \left(\mycases{
+        1 \qfor W \leqslant k \dfrac{2\pi}{N} < W+2\pi \\
+        0 \qotherwise
+    }\right) \\
+    &= \sum_{k=\langle N\rangle}
+    a_k\e^{\ju k\omega_0 n} \\
+    &= x[n]
+\end{align*}
+\end{proof}
+
+
+
+\section{Properties of CT Fourier Transform}
+
+\subsection{}
+Suppose we have:
+\begin{gather*}
+    \mycases[0.7]{
+        x[n] \xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}
+        X(\e^{\ju\omega}) \\
+        y[n] \xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}
+        Y(\e^{\ju\omega})
+    }
+\end{gather*}
+Then we have the following results:
+\begin{align*}
+\shortintertext{Linearity}
+    a\cdot x[n] + b\cdot y[n]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    a\cdot X(\e^{\ju\omega}) + b\cdot Y(\e^{\ju\omega})
+\shortintertext{Time Shifting}
+    x[n-n_0]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \e^{-\ju\omega n_0} X(\e^{\ju\omega})
+\shortintertext{Frequency Shifting}
+    \e^{\ju\omega_0 n} x[n]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    X(\e^{\ju(\omega-\omega_0)})
+\shortintertext{Time Reversal}
+    x[-n]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    X(\e^{-\ju\omega})
+\shortintertext{Scaling}
+    x_{(k)}[n] =
+    \mycases{
+        x[\frac{n}{k}] & \text{for } \frac{n}{k}\in\mathbb{Z} \\
+        0 & \text{otherwise}
+    }
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    X(\e^{\ju k\omega})
+\shortintertext{Conjugation}
+    x^\ast[n]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    X^\ast(\e^{-\ju\omega})
+\shortintertext{Convolution}
+    x[n]\ast y[n]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    X(\e^{\ju\omega}) Y(\e^{\ju\omega})
+\shortintertext{Multiplication}
+    x[n] y[n]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \frac{1}{2\pi}\int_{2\pi}
+    X(\e^{\ju\theta})Y(\e^{\ju\omega-\ju\theta})\dd{\theta}
+\shortintertext{Differencing in Time}
+    x[n] - x[n-1]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    (1-\e^{-\ju\omega}) X(\e^{\ju\omega})
+\shortintertext{Accumulation in Time}
+    \sum_{k=-\infty}^n x[k] = x[n] \ast u[n]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \frac{1}{1-\e^{-\ju\omega}} X(\e^{\ju\omega})
+    + \pi X(\e^{\ju 0}) \sum_{k=-\infty}^{\infty}\delta[\omega-2\pi k]
+\shortintertext{Differentiation in Frequency}
+    n\cdot x[n]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \ju\dv{\omega} X(\e^{\ju\omega})
+\shortintertext{Even-Odd Decomposition for Real Signals}
+    x[n]\qq*{ real:} \Ev{x[n]}
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \Re{X(\e^{\ju\omega})} \\
+    x[n]\qq*{ real:} \Od{x[n]}
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \ju\Im{X(\e^{\ju\omega})}
+\shortintertext{Parseval's Relation for Aperiodic Signals}
+    \int_{-\infty}^{\infty} \abs{x[n]}^2 \dd{n}
+    \quad&=\quad
+    \frac{1}{2\pi}
+    \int_{2\pi} \abs{X(\e^{\ju\omega})}^2 \dd{\omega}
+\end{align*}
+
+\subsection{Symmetry}
+
+\begin{itemize}
+    \item $x[n]$ real $\quad\iff\quad$ $X(\e^{\ju\omega})=X^\ast(\e^{-\ju\omega})$
+    \item $x[n]$ purely imaginary $\quad\iff\quad$ $X(\e^{\ju\omega})=-X^\ast(\e^{-\ju\omega})$
+\end{itemize}
+
+\paragraph{Conjugate Symmetry}
+For real $x[n]$, its FT $X(\e^{\ju\omega})$ satisfies
+\begin{itemize}
+    \item $X(\e^{\ju\omega}) = X^\ast(\e^{-\ju\omega})$
+    \item $\Re{X(\e^{\ju\omega})} = \Re{X(\e^{-\ju\omega})}$
+    \item $\Im{X(\e^{\ju\omega})} = -\Im{X(\e^{-\ju\omega})}$
+    \item $\abs{X(\e^{\ju\omega})} = \abs{X(\e^{-\ju\omega})}$
+    \item $\arg X(\e^{\ju\omega}) = -\arg X(\e^{-\ju\omega})$
+\end{itemize}
+
+\paragraph{Parity}
+\begin{itemize}
+    \item $x[n]$ even $\quad\iff\quad$ $X(\e^{\ju\omega})$ even
+    \item $x[n]$ odd $\quad\iff\quad$ $X(\e^{\ju\omega})$ odd
+    \item $x[n]$ real \& even $\quad\implies\quad$
+        $X(\e^{\ju\omega})$ real \& even
+    \item $x[n]$ real \& odd $\quad\implies\quad$
+        $X(\e^{\ju\omega})$ purely imaginary \& odd
+\end{itemize}
+
+
+
+\section{Basic Fourier Transform Pairs}
+
+\begin{equation*}
+    \sinc(\theta) := \frac{\sin(\pi\theta)}{\pi\theta}
+\end{equation*}
+
+\subsection{Table}
+
+\begin{center}
+\begin{tabular}
+    {c c c}
+    Signal & Fourier Transform & Fourier Series Coefficients \\
+    \hline $\displaystyle
+    \sum_{k=\langle N\rangle}
+    a_k\e^{\ju k\omega_0 n}
+    $ & $\displaystyle
+    2\pi \sum_{k=-\infty}^{\infty} 
+    a_k \delta(\omega-k\omega_0)
+    $ & $
+    a_k
+    $ \\\hline $
+    \e^{\ju\omega_0 n}
+    $ & $\displaystyle
+    2\pi \sum_{l=-\infty}^{\infty} \delta(\omega-\omega_0-2\pi l)
+    $ & $
+    \begin{matrix*}[l]
+        \qif* \frac{\omega_0}{2\pi} = \frac{m}{N},
+        & a_k = \mycases{
+            1 & k={\scriptstyle m, m\pm N, m\pm 2N, \cdots} \\
+            0 &\qotherwise*
+        } \\
+        \qif* \frac{\omega_0}{2\pi} \notin \mathbb{Q},
+        & a_k \qq{is aperiodic}
+    \end{matrix*}
+    $ \\\hline $
+    \cos(\omega_0 n)
+    $ & $\displaystyle \!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!
+    \pi \sum_{l=-\infty}^{\infty}
+    \delta(\omega-\omega_0-2\pi l) + \delta(\omega+\omega_0-2\pi l)
+    $ & $
+    % \mycases{
+    %     a_1 = a_{-1} = \frac{1}{2}\\ a_k = 0 \qotherwise
+    % }
+    $ \\\hline $
+    \sin(\omega_0 n)
+    $ & $\displaystyle \!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!\!
+    \frac{\pi}{\ju} \sum_{l=-\infty}^{\infty}
+    \delta(\omega-\omega_0-2\pi l) - \delta(\omega+\omega_0-2\pi l)
+    $ & $
+    % \mycases{
+    %     a_1 = a_{-1} = \frac{1}{2\ju}\\ a_k = 0 \qotherwise
+    % }
+    $ \\\hline $
+    \begin{matrix}
+        \text{Periodic Square Wave} \\
+        \mycases{
+            1 & \abs{n} \leqslant N_1 \\
+            0 & N_1 < \abs{n} \leqslant N/2 \\
+        } \\
+        \text{ with period of } N
+    \end{matrix}
+    $ & $\displaystyle
+    2\pi\sum_{k=-\infty}^{\infty} a_k\delta(\omega-k\omega_0)
+    $ & $\displaystyle
+    a_k = \mycases{
+        \dfrac{(2 N_1+1) \sin(k\omega_0)}{2 N\sin(k\omega_0/2)}
+        & \qotherwise* \vspace{5pt}\\
+        \dfrac{2 N_1 + 1}{N}
+        & k = {\scriptstyle 0, \pm N, \pm 2  N, \cdots}
+    }
+    $ \\\hline $\displaystyle
+    \sum_{k=-\infty}^{+\infty}\delta[n-k N]
+    $ & $\displaystyle
+    \frac{2\pi}{N}\sum_{k=-\infty}^{+\infty}\delta\qty(\omega-\frac{2\pi k}{N})
+    $ & $\displaystyle
+    a_k = \frac{1}{N}
+    $ \\\hline $\displaystyle
+    \mycases{
+        1 & \abs{n} \leqslant N_1 \\
+        0 & N_1 < \abs{n}
+    }
+    $ & $\displaystyle
+    \frac{\sin[\omega(N_1+1/2)]}{\sin(\omega/2)}
+    $ & \\\hline $\displaystyle
+    \begin{matrix}
+        \dfrac{\sin W n}{\pi n} \\
+        0 < W < \pi
+    \end{matrix}
+    $ & $
+    \begin{matrix}
+        \mycases{
+            1 & \abs{\omega} \leqslant W \\
+            0 & W < \abs{\omega} \leqslant \pi
+        } \\
+        \text{with period of } 2\pi
+    \end{matrix}
+    $ & \\\hline $
+    1
+    $ & $\displaystyle
+    2\pi\sum_{l=-\infty}^{\infty}\delta(\omega-2\pi l)
+    $ & $
+    a_k = \mycases{
+        1 & k = 0, \pm N, \pm 2 N, \cdots \\
+        0 &\qotherwise*
+    }
+    $ \\\hline $
+    \delta[n]
+    $ & $
+    1
+    $ & \phantom{$\mycases{1\\1}$} \\\hline $
+    u[n]
+    $ & $\displaystyle
+    \frac{1}{1-\e^{-\ju\omega}} + \pi\sum_{l=-\infty}^{\infty}\delta(\omega-2\pi l)
+    $ & \phantom{$\mycases{1\\1}$} \\\hline $
+    \delta[n-n_0]
+    $ & $
+    \e^{-\ju\omega n_0}
+    $ & \phantom{$\mycases{1\\1}$} \\\hline $
+    a^{\abs{n} }\qq{with} \abs{a}<1
+    $ & $\displaystyle
+    \frac{1}{1-a\e^{-\ju\omega}} + \frac{1}{1-a\e^{\ju\omega}} - 1
+    $ & \phantom{$\mycases{1\\1}$} \\\hline $
+    a^n u[n] \qq{with} \abs{a}<1
+    $ & $\displaystyle
+    \frac{1}{1-a\e^{-\ju\omega}}
+    $ & \phantom{$\mycases{1\\1}$} \\\hline $
+    (n+1)a^n u[n] \qq{with} \abs{a}<1
+    $ & $\displaystyle
+    \frac{1}{(1-a\e^{-\ju\omega})^2}
+    $ & \phantom{$\mycases{1\\1}$} \\\hline $\displaystyle
+    \binom{n+r-1}{n}a^n u[n] \qq{with} \abs{a}<1
+    $ & $\displaystyle
+    \frac{1}{(1-a\e^{-\ju\omega})^r}
+    $ & \phantom{$\mycases{1\\1}$} \\\hline
+\end{tabular}
+\end{center}
+
+\subsection{Some Useful Techniques}
+
+\begin{gather*}
+    \delta[n] = \frac{\sin(\pi n)}{\pi n} = \sinc(n)
+\end{gather*}
+
+Expand the delta function to complex domain:
+\begin{equation*}
+    \delta(z) := \delta\big(\Re{z}\big)\delta\big(\Im{z}\big)
+    \qfor z \in \mathbb{C}
+\end{equation*}
+Then we have:
+\begin{equation*}
+    \sum_{l=-\infty}^{\infty}\delta(\omega-2\pi l) = \delta(\e^{\ju\omega}-1)
+    \qquad\qquad
+    \sum_{l=-\infty}^{\infty}\delta(\omega+\omega_0-2\pi l)
+    = \delta(\e^{\ju(\omega+\omega_0)}-1)
+    \qquad\qquad
+    \sum_{k=-\infty}^{+\infty}\delta\qty(\omega-\frac{2\pi k}{N})
+    = \delta(\e^{\ju N\omega}-1)
+\end{equation*}
+\begin{align*}
+    \e^{\ju\omega_0 n}
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    2\pi \delta(\e^{\ju(\omega-\omega_0)}-1) \\
+    \cos(\omega_0 n)
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \pi \left[
+        \delta(\e^{\ju(\omega-\omega_0)}-1) +
+        \delta(\e^{\ju(\omega+\omega_0)}-1)
+    \right] \\
+    \sin(\omega_0 n)
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \frac{\pi}{\ju} \left[
+        \delta(\e^{\ju(\omega-\omega_0)}-1) -
+        \delta(\e^{\ju(\omega+\omega_0)}-1)
+    \right] \\
+    \sum_{k=-\infty}^{+\infty}\delta[n-k N]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \frac{2\pi}{N}\delta(\e^{\ju N\omega}-1) \\
+    1
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    2\pi \delta(\e^{\ju\omega}-1) \\
+    u[n]
+    \quad&\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\quad
+    \frac{1}{1-\e^{-\ju\omega}} + \pi\delta(\e^{\ju\omega}-1) \\
+\end{align*}
+\begin{equation*}
+    a_k = \frac{X(\e^{\ju k\omega_0})}{2\pi\delta(\e^{\ju 2\pi k}-1)}
+    \qquad\xrightleftharpoons[\mathcal{FS}]{\mathcal{FS}^{-1}}\qquad
+    x[n]
+    \qquad\xrightleftharpoons[\mathcal{F}^{-1}]{\mathcal{F}}\qquad
+    X(\e^{\ju\omega}) = 2\pi a_{\omega/\omega_0}\delta(\e^{\ju N\omega}-1)
+\end{equation*}
+
+\section{Systems Characterized By LCCDEs}
+
+An LTI system with initial rest characterized by the LCCDE
+\begin{equation*}
+    \sum_{k=0}^{N} a_k y[n-k] =
+    \sum_{k=0}^{M} b_k x[n-k]
+\end{equation*}
+can be represented in the frequency domain as
+\begin{equation*}
+    H(\e^{\ju\omega}) =
+    \frac{Y(\e^{\ju\omega})}{X(\e^{\ju\omega})} =
+    \frac{\displaystyle\sum_{k=0}^{M} b_k \e^{-\ju\omega k}}
+    {\displaystyle\sum_{k=0}^{N} a_k \e^{-\ju\omega k}}
+\end{equation*}
+
+
+\end{document}

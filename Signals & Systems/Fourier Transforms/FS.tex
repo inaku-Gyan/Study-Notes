@@ -1,0 +1,451 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\ju}{\mathrm{j}}  % 虚数单位
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+
+\begin{document}
+
+\part*{Fourier Series Representation of Periodic Signals}
+
+\section{The Response of LTI Systems to Complex Exponentials}
+
+\begin{definition}[Eigenfunctions \& Eigenvalues]
+    A signal for which the system output is a
+    constant times the input is referred to as an \emph{eigenfunction} of the system,
+    and the amplitude factor is referred to as the system's \emph{eigenvalue}.
+\end{definition}
+
+It is easy to show that \emph{complex exponentials} are eigenfunctions of LTI systems.
+
+\begin{equation*}
+    \e^{s t} \xlongrightarrow{\text{a CT LTI system}} H(s) \e^{s t}
+    \qquad\qquad
+    z^{n} \xlongrightarrow{\text{a DT LTI system}} H(z) z^n
+\end{equation*}
+where $\displaystyle H(s) :=
+\int_{-\infty}^{\infty} h(\tau) \e^{-s \tau} \dd\tau$ or
+$\displaystyle H(z) := \sum_{k=-\infty}^{\infty}h[k]z^{-k}$
+is called the \emph{transfer} or
+\emph{system function} of the system.
+\begin{proof}
+    \begin{equation*}
+        h(t) \ast \left(\e^{s t}\right) = 
+        \int_{-\infty}^{\infty} h(\tau) \e^{s (\tau - t)} \dd\tau =
+        \e^{s t} \int_{-\infty}^{\infty} h(\tau) \e^{-s \tau} \dd\tau
+    \end{equation*}
+    where $H(s)$ is the eigenvalue.
+\end{proof}
+
+Therefore, we have
+\begin{equation*}
+    x(t)=\sum_i A_i \e^{s_i t} 
+    \xlongrightarrow{\text{an LTI system}}
+    y(t)=\sum_i H(s_i) A_i \e^{s_i t}
+\end{equation*}
+In the following sections,
+we only focus on the purely imaginary values of $s$, i.e., $s = \ju\omega$.
+
+\section{FS Repr of CT Periodic Signals}
+
+All CT complex exponential
+signals that are periodic with period $T$ is given by
+\begin{equation*}
+    \phi_k(t) := \e^{\ju k \omega_0 t} = \e^{\ju k \frac{2\pi}{T} t}
+    \qquad k \in \mathbb{Z}
+\end{equation*}
+where $\omega_0 = 2\pi/T$.
+
+Many periodic signals can be represented as a linear combination of harmonically
+related complex exponentials:
+\begin{equation*}
+    x(t) = \sum_{k=-\infty}^{\infty} a_k \e^{\ju k \omega_0 t}
+\end{equation*}
+We choose harmonically related complex exponentials due to their orthogonality:
+\begin{theorem box}
+    \begin{equation*}
+    \left< \e^{\ju m \omega_0 t}, \e^{\ju n \omega_0 t} \right> =
+    \int_T \e^{\ju(m-n) \omega_0 t}\dd{t} =
+    \mycases{
+        T & \qif m=n \\
+        0 & \qif m\neq n
+        }
+    \end{equation*}
+    where $m,n\in\mathbb{Z}$ and $T=\dfrac{2\pi}{\omega_0}>0$.
+\end{theorem box}
+
+\begin{definition}[The FS of a CT Periodic Signal]
+    If a signal $x(t)$ with a period $T$ has a Fourier series representation,
+    then
+    \begin{gather*}
+        x(t) = \sum_{k=-\infty}^{\infty} a_k \e^{\ju k \omega_0 t}
+        = \sum_{k=-\infty}^{\infty} a_k \e^{\ju k\frac{2\pi}{T}t}
+        \tag{The Synthesis Equation} \\
+        a_k = \frac{1}{T} \int_T x(t) \e^{-\ju k\omega_0 t} \dd{t}
+        = \frac{1}{T} \int_T x(t) \e^{-\ju k\frac{2\pi}{T}t} \dd{t}
+        \tag{The Analysis Equation}
+    \end{gather*}
+    where the set $\left\{a_k\right\}$ is called
+    the \emph{Fourier series coefficients} or
+    the \emph{spectral coefficients} of $x(t)$.
+\end{definition}
+
+\begin{remark}
+    $a_0$ is simply the average value over one period,
+    called the \emph{dc} or \emph{constant component} of $x(t)$.
+    \begin{equation*}
+        a_0 = \frac{1}{T}\int_T x(t) \dd{t}
+    \end{equation*}
+\end{remark}
+
+The coefficients can be seen as projections of the signal onto the
+eigenfunctions of the system:
+\begin{theorem box}
+\begin{equation*}
+    a_k = \frac{\displaystyle\left<x(t), \e^{\ju k \omega_0 t}\right>}
+    {\displaystyle\left<\e^{\ju k \omega_0 t}, \e^{\ju k \omega_0 t}\right>} =
+    \frac{\displaystyle\int_T x(t) \e^{-\ju k\omega_0 t} \dd{t}}
+    {\displaystyle\int_T \e^{\ju k \omega_0 t} \e^{-\ju k\omega_0 t} \dd{t}}
+    = \frac{1}{T} \int_T x(t) \e^{-\ju k\omega_0 t} \dd{t}
+\end{equation*}
+\end{theorem box}
+
+\section{The FS of a DT Periodic Signal}
+
+All DT complex exponential
+signals that are periodic with period $N$ is given by
+\begin{equation*}
+    \phi_k[n] := \e^{\ju k \omega_0 n} = \e^{\ju k \frac{2\pi}{N} n}
+    \qquad k \in \mathbb{Z}
+\end{equation*}
+where $\omega_0 = 2\pi/N$.
+
+However, there are only $N$ distinct signals given by this, because
+\begin{theorem box}
+    \begin{equation*}
+        \phi_{k+N}[n] = \e^{\ju k \frac{2\pi}{N} n + \ju k 2\pi}
+        = \e^{\ju k \frac{2\pi}{N} n} = \phi_k[n]
+        \qquad \forall k \in \mathbb{Z}
+    \end{equation*}
+\end{theorem box}
+
+For a single $\phi_k$, the following property holds:
+\begin{theorem box}
+    \begin{equation*}
+        \sum_{n=\langle N\rangle} \phi_k[n] = 
+        \sum_{n=\langle N\rangle} \e^{\ju k \frac{2\pi}{N} n} = 
+        \mycases{
+            N & \qfor k=0,\pm N, \pm 2N, \cdots \\
+            0 & \qotherwise
+        }
+    \end{equation*}
+\end{theorem box}
+\begin{proof}
+    \begin{equation*}
+        \sum_{n=\langle N\rangle} \e^{\ju k \frac{2\pi}{N} n}
+        = \sum_{n=n_0}^{n_0+N-1} \e^{\ju k \frac{2\pi}{N} n}
+        = \mycases{
+            \displaystyle
+            \sum_{n=\langle N\rangle} 1
+            = N & \qfor \e^{\ju k \frac{2\pi}{N}}=1 \\\\
+            \displaystyle
+            \frac{\displaystyle \e^{\ju k \frac{2\pi}{N} n_0}\left(
+                1-\e^{\ju k \frac{2\pi}{N}N}\right)}
+            {\displaystyle 1-\e^{\ju k \frac{2\pi}{N}}}
+            = 0 & \qotherwise
+        }
+    \end{equation*}
+\end{proof}
+
+\begin{remark}
+    ``$\sum\limits_{\scriptscriptstyle n=\langle N\rangle}$''
+    means the sum over any interval of $N$ integers.
+\end{remark}
+
+\paragraph{Orthogonality}
+\begin{equation*}
+    \left\langle \phi_k[n], \phi_l[n] \right\rangle
+    = \sum_{n=\langle N\rangle}\phi_k[n]\phi_l^\ast[n]
+    = \sum_{n=\langle N\rangle}\e^{\ju (k-l)\omega_0 n}
+    = \mycases{
+        N & \qfor k=l \\
+        0 & \qfor k\neq l
+    }
+\end{equation*}
+where $k,l$ are in the same period, i.e., $\abs{k-l}<N$.
+
+\begin{definition}[The FS of a DT Periodic Signal]
+    If a signal $x[n]$ with a period $N$ has a Fourier series representation,
+    then
+    \begin{gather*}
+        x[n] = \sum_{k=\langle N\rangle} a_k \e^{\ju k \omega_0 n}
+        = \sum_{k=\langle N\rangle} a_k \e^{\ju k\frac{2\pi}{T}n}
+        \tag{The Synthesis Equation} \\
+        a_k = \frac{1}{N} \sum_{n=\langle N\rangle} x[n] \e^{-\ju k\omega_0 n}
+        = \frac{1}{N} \sum_{n=\langle N\rangle} x[n] \e^{-\ju k\frac{2\pi}{N}n}
+        \tag{The Analysis Equation}
+    \end{gather*}
+    where the set $\left\{a_k\right\}$ is called
+    the \emph{Fourier series coefficients} or
+    the \emph{spectral coefficients} of $x[n]$.
+\end{definition}
+The coefficients are also periodic with period $N$, i.e.,
+\begin{theorem box}
+    \begin{equation*}
+        a_k = a_{k+N} \qquad \forall k \in \mathbb{Z}
+    \end{equation*}
+\end{theorem box}
+
+\section{Properties of the Fourier Series}
+
+\subsection{}
+
+Suppose we have $x(t)$ and $y(t)$, or $x[n]$ and $y[n]$,
+of the \textbf{same period} $T$ or $N$, and
+\begin{gather*}
+    \mycases[0.7]{
+        x(t) \xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}} a_k \\
+        y(t) \xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}} b_k
+    } \qor
+    \mycases[0.7]{
+        x[n] \xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}} a_k \\
+        y[n] \xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}} b_k
+    }
+\end{gather*}
+Then we have the following results:
+\begin{align*}
+\shortintertext{Linearity}
+    A\cdot x(t) + B\cdot y(t)
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    A\cdot a_k + B\cdot b_k
+    &
+    A\cdot x[n] + B\cdot y[n]
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    A\cdot a_k + B\cdot b_k
+\shortintertext{Time Shifting}
+    x(t-t_0)
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    \e^{-\ju k\omega_0 t_0} a_k
+    &
+    x[n-n_0]
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    \e^{-\ju k\omega_0 n_0} a_k
+\shortintertext{Frequency Shifting}
+    \e^{\ju M \omega_0 t} x(t)
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    a_{k-M}
+    &
+    \e^{\ju M \omega_0 n} x[n]
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    a_{k-M}
+\shortintertext{Time Reversal}
+    x(-t)
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    a_{-k}
+    &
+    x[-n]
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    a_{-k}
+\shortintertext{Time Scaling}
+    x(\alpha t)
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    a_k \begin{pmatrix}
+        \text{with fundamental} \\
+        \text{frequency } \alpha\omega_0
+    \end{pmatrix}
+    &
+    \mycases{
+        x[\frac{n}{m}] & \text{for } \frac{n}{m}\in\mathbb{Z} \\
+        0 & \text{otherwise}
+    }
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    \frac{1}{m}a_k \begin{pmatrix}
+        \text{with period} \\
+        \text{of } m N
+    \end{pmatrix}
+\shortintertext{Conjugation}
+    x^\ast(t)
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    a_k^\ast
+    &
+    x^\ast[n]
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    a_k^\ast
+\shortintertext{Periodic Convolution}
+    \int_T x(\tau) y(t-\tau)\dd{\tau}
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    T a_k b_k
+    &
+    \sum_{r=\langle N\rangle} x[r] y[n-r]
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    N a_k b_k
+\shortintertext{Multiplication}
+    \begin{pmatrix}
+        \text{of same} \\
+        \text{period}
+    \end{pmatrix}
+    x(t) y(t)
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    a_k \ast b_k
+    &
+    x[n] y[n]
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    \sum_{r=\langle N\rangle} a_r b_{k-r}
+\shortintertext{Differentiation \& Difference}
+    \dv{x(t)}{t}
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    \left(\ju k\omega_0\right) a_k
+    &
+    x[n] - x[n-1]
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    \left(1-\e^{-\ju \omega_0}\right) a_k
+\shortintertext{Integration \& Running Sum}
+    \int_{-\infty}^{t}x(\tau)\dd{\tau}
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    \frac{1}{\ju k\omega_0} a_k
+    &
+    \sum_{k=-\infty}^{n} x[k]
+    \quad&\xrightleftharpoons[\mathcal{FS}^{-1}]{\mathcal{FS}}\quad
+    \frac{1}{1-\e^{-\ju k\omega_0}} a_k
+\shortintertext{Parseval's Relation for Periodic Signals}
+    \frac{1}{T} \int_T \abs{x(t)}^2 \dd{t}
+    \quad&=\quad
+    \sum_{k=-\infty}^{\infty} \abs{a_k}^2
+    &
+    \frac{1}{N} \sum_{n=\langle N\rangle} \abs{x[n]}^2
+    \quad&=\quad
+    \sum_{k=\langle N\rangle} \abs{a_k}^2
+\end{align*}
+
+\subsection{Symmetry}
+
+Both CTFS and DTFS have exactly the same symmetry properties as the CTFT,
+including conjugate symmetry, parity, and even-odd decomposition.
+
+\section{Transfer Functions}
+
+For a given system, $H$ is called the \textbf{transfer function},
+\textbf{system function}, or \textbf{frequency response}.
+
+\subsection{CT Periodic Signals}
+\begin{definition}[Transfer Function of a CT System]
+    Suppose $h(t)$ is the \emph{impulse response} of the system,
+    then the transfer function $H$ is given by
+    \begin{equation*}
+        H(\ju\omega) := \int_{-\infty}^{\infty} h(t) \e^{-\ju\omega t} \dd{t}
+    \end{equation*}
+\end{definition}
+
+\begin{theorem box}
+    Suppose $x(t)$ is a periodic signal and
+    $a_k$ is the FS representation of $x(t)$.
+    \begin{gather*}
+        y(t) = x(t) \ast h(t)
+        \quad\xlongrightarrow{\mathcal{FS}}\quad
+        a_k\cdot H(\ju k\omega_0)
+    \end{gather*}
+\end{theorem box}
+\begin{proof}
+    \begin{gather*}
+        x(t) = \sum_{k=-\infty}^{\infty} a_k \e^{\ju k \omega_0 t}
+        \quad\xlongrightarrow{\mathcal{FS}}\quad
+        y(t) = \sum_{k=-\infty}^{\infty} a_k H(\ju k\omega_0)\e^{\ju k \omega_0 t}
+    \end{gather*}
+\end{proof}
+
+\begin{definition}[Transfer Function of a DT System]
+    Suppose $h[n]$ is the \emph{impulse response} of the system,
+    then the transfer function $H$ is given by
+    \begin{equation*}
+        H(\e^{\ju\omega}) := \sum_{n=-\infty}^{\infty} h[n] \e^{-\ju\omega n}
+    \end{equation*}
+\end{definition}
+
+\begin{theorem box}
+    Suppose $x[n]$ is a periodic signal and
+    $a_k$ is the FS representation of $x[n]$.
+    ($a_k$ is periodic.)
+    \begin{gather*}
+        y[n] = x[n] \ast h[n]
+        \quad\xlongrightarrow{\mathcal{FS}}\quad
+        a_k\cdot H(\e^{\ju k\omega_0})
+    \end{gather*}
+\end{theorem box}
+
+\end{document}

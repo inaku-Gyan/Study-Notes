@@ -1,0 +1,429 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage[bookmarksnumbered=true]{hyperref}  % 生成大纲
+
+
+
+\usepackage{times}  % 设置正文字体为 Adobe Times Roman
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+\allowdisplaybreaks[3]  % 允许换页
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{definition box}
+{\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+
+\newenvironment{theorem box}
+{\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before upper=\par,before lower=\par]}
+{\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+            
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{\begin{definition box}\begin{definition inner}[#1]\hfill\par}
+{\end{definition inner}\end{definition box}}
+
+\theoremstyle{plain}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{\begin{theorem box}\begin{theorem inner}[#1]\hfill\par}
+{\end{theorem inner}\end{theorem box}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{\begin{proof inner}[#1]\hfill\par}
+{\qed\end{proof inner}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\mycases}[2][0.8]{
+    \left\{\vphantom{\scalebox{#1}{
+        $\begin{matrix}#2\end{matrix}$
+    }}\right.\!\!\!\!
+    \begin{array}{l@{\quad}l}#2\end{array}
+}
+
+\newcommand{\ju}{\mathrm{j}}  % 虚数单位
+\newcommand{\e}{\mathrm{e}{\mkern 1 mu}}
+
+\newcommand{\Ev}{\,\mathcal{E}\ensuremath{v}\qty}
+\newcommand{\Od}{\,\mathcal{O}\ensuremath{d}\qty}
+
+\renewcommand{\Re}{\,\mathcal{R}\ensuremath{e}\qty}
+\renewcommand{\Im}{\,\mathcal{I}\ensuremath{m}\qty}
+
+\newcommand{\sinc}{\operatorname{sinc}} 
+\newcommand{\rect}{{\mkern 1.5 mu}\operatorname{rect}\!\qty} % 矩形函数
+
+
+\begin{document}
+
+\part*{The z-Transform}
+
+\section{The z-Transform}
+
+\begin{definition}[The z-Transform]
+The (bilateral) z-transform of a general signal $x[n]$ is defined as
+\begin{equation*}
+    X(z) =
+    \sum_{n=-\infty}^{+\infty} x[n] z^{-n}
+\end{equation*}
+where $z=r\e^{\ju\omega}$ is a complex variable.
+\end{definition}
+
+\begin{remark}
+\textbf{Connection with the Fourier Transform}
+\begin{equation*}
+    \mathcal{Z}\{x[n]\} = X(z) =
+    X(r\e^{\ju\omega}) = \mathcal{F}\{x[n] r^{-n}\}
+\end{equation*}
+\end{remark}
+
+\begin{definition}[The Inverse z-Transform]
+The inverse z-transform of a function $X(z)$ is defined as
+\begin{equation*}
+    x[n] = \frac{1}{2\pi\ju} \oint_{\abs{z}=r}\!\!\!\!\!\!\!\!
+    X(z) z^{n-1} \dd{z}
+\end{equation*}
+A contour integration around a counterclockwise closed
+circular contour centered at the origin and with radius $r$.
+\end{definition}
+
+
+
+\section{Properties of the ROC}
+
+\begin{enumerate}
+    \item The ROC consists of circular regions centered about the origin.
+    \item The ROC dose not include any poles.
+    \item If $x[n]$ is of finite duration and is absolutely integrable,
+    then the ROC is the entire $z$-plane.
+    \item If $x[n]$ is right-sided, then the ROC is of the form $\abs{z} > r_0$
+    for some $r_0$.
+    \item If $x[n]$ is left-sided, then the ROC is of the form $0<\abs{z}<r_0$
+    for some $r_0$.
+    \item If $x[n]$ is two-sided, then the ROC is of
+    the form $r_1 < \Re(z) < r_2$ for some $r_1$ and $r_2$.
+\end{enumerate}
+
+
+
+\section{Basic z-Transform Pairs}
+
+\begin{center}
+\begin{tabular}
+    { c @{\qquad} c @{\qquad} c}
+    Signal & Laplace Transform & ROC \\
+    \hline $\displaystyle
+    \delta[n]
+    $ & $\displaystyle
+    1
+    $ & $
+    \mathbb{C} \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    \delta(n-m)
+    $ & $\displaystyle
+    z^{-m}
+    $ & $
+    \mathbb{C} \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    u[n]
+    $ & $\displaystyle
+    \frac{1}{1-z^{-1}}
+    $ & $
+    \abs{z} > 1 \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    -u[-n-1]
+    $ & $\displaystyle
+    \frac{1}{1-z^{-1}}
+    $ & $
+    \abs{z} < 1 \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    a^n u[n]
+    $ & $\displaystyle
+    \frac{1}{1-a z^{-1}}
+    $ & $
+    \abs{z} > \abs{a} \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    -a^n u[-n-1]
+    $ & $\displaystyle
+    \frac{1}{1-a z^{-1}}
+    $ & $
+    \abs{z} < \abs{a} \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    b^{\abs{n}}
+    $ & $\displaystyle
+    \frac{1}{1-b z^{-1}} - \frac{1}{1-b^{-1} z^{-1}}
+    $ & $
+    \abs{b} < \abs{z} < \abs{b}^{-1} \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    n a^n u[n]
+    $ & $\displaystyle
+    \frac{a z^{-1}}{(1-a z^{-1})^2}
+    $ & $
+    \abs{z} > \abs{a} \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    -n a^n u[-n-1]
+    $ & $\displaystyle
+    \frac{a z^{-1}}{(1-a z^{-1})^2}
+    $ & $
+    \abs{z} < \abs{a} \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \cos(\omega_0 n) u[n]
+    $ & $\displaystyle
+    \frac{1 - z^{-1}\cos\omega_0}{1 - 2 z^{-1}\cos\omega_0 + z^{-2}}
+    $ & $\displaystyle
+    \abs{z} > 1 \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \sin(\omega_0 n) u[n]
+    $ & $\displaystyle
+    \frac{z^{-1}\sin\omega_0}{1 - 2 z^{-1}\cos\omega_0 + z^{-2}}
+    $ & $\displaystyle
+    \abs{z} > 1 \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    r^n\cos(\omega_0 n) u[n]
+    $ & $\displaystyle
+    \frac{1 - z^{-1}r\cos\omega_0}{1 - 2 z^{-1}r\cos\omega_0 + z^{-2}r^2}
+    $ & $\displaystyle
+    \abs{z} > r \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    r^n\sin(\omega_0 n) u[n]
+    $ & $\displaystyle
+    \frac{z^{-1}r\sin\omega_0}{1 - 2 z^{-1}r\cos\omega_0 + z^{-2}r^2}
+    $ & $\displaystyle
+    \abs{z} > r \vphantom{\mycases{1\\1}}
+    $ \\\hline
+\end{tabular}
+\end{center}
+
+
+
+\section{Properties of the Bilateral z-Transform}
+
+\subsection{}
+
+\begin{center}
+\begin{tabular}
+    { c @{\qquad} c @{\qquad} c}
+    Signal & Transform & ROC \\
+    \hline $\displaystyle
+    x[n]
+    $ & $\displaystyle
+    X(z)
+    $ & $
+    R
+    $ \\\hline $
+    x_1[n]
+    $ & $\displaystyle
+    X_1(z)
+    $ & $
+    R_1
+    $ \\\hline $
+    x_2[n]
+    $ & $\displaystyle
+    X_2(z)
+    $ & $
+    R_2
+    $ \\\hline $
+    a x_1[n] + b x_2[n]
+    $ & $\displaystyle
+    a X_1(z) + b X_2(z)
+    $ & $
+    \text{At least } R_1 \cap R_2
+    $ \\\hline $
+    x[n-n_0]
+    $ & $\displaystyle
+    z^{-n_0} X(z)
+    $ & $
+    R
+    $ \\\hline $\displaystyle
+    x[-n]
+    $ & $\displaystyle
+    X\qty(\frac{1}{z})
+    $ & $\displaystyle
+    \frac{1}{R} \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    z_0^n x[n]
+    $ & $\displaystyle
+    X\qty(\frac{z}{z_0})
+    $ & $
+    \abs{z_0} R \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    x_{(k)}[n] = \mycases{
+        x[n/k] \\ 0
+    }
+    $ & $\displaystyle
+    X(z^k)
+    $ & $
+    R^{1/k}
+    $ \\\hline $
+    x^*[n]
+    $ & $\displaystyle
+    X^*(z^*)
+    $ & $
+    R
+    $ \\\hline $
+    x_1[n] \ast x_2[n]
+    $ & $\displaystyle
+    X_1(z) X_2(z)
+    $ & $
+    \text{At least } R_1 \cap R_2
+    $ \\\hline $\displaystyle
+    n x[n]
+    $ & $\displaystyle
+    -z \dv{z} X(z)
+    $ & $\displaystyle
+    R \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \sum_{k=-\infty}^{n} x[k]
+    $ & $\displaystyle
+    \frac{1}{1-z^{-1}} X(z)
+    $ & $\displaystyle
+    \text{At least } R \cap \{\abs{z}>1\} \vphantom{\mycases{1\\1}}
+    $ \\\hline
+\end{tabular}
+\end{center}
+
+\subsection{Initial- and Final-Value Theorem}
+
+\begin{theorem}[Initial-Value and Final-Value Theorem]
+    If $x[n]=0$ for $n<0$, then
+    \begin{gather*}
+        x(0) = \lim_{z\to+\infty} X(z) \\
+        \lim_{n\to+\infty} x[n] = \lim_{z\to 1} (z-1) X(z)
+    \end{gather*}
+\end{theorem}
+
+
+
+\section{The Unilateral z-Transform}
+
+\subsection{}
+
+\begin{definition}[The Unilateral z-Transform]
+The unilateral z-transform of a general signal $x[n]$ is defined as
+\begin{equation*}
+    \mathfrak{X}(z) =
+    \sum_{n=0}^{+\infty} x[n] z^{-n}
+\end{equation*}
+where $z=r\e^{\ju\omega}$ is a complex variable.
+\end{definition}
+
+
+\subsection{Properties of the Unilateral z-Transform}
+
+For causal signals, the unilateral z-transform is the same as the bilateral z-transform.
+
+\subsubsection{}
+
+\begin{center}
+\begin{tabular}
+    { c @{\qquad} c @{\qquad} c}
+    Signal & Transform \\
+    \hline $\displaystyle
+    x[n]
+    $ & $\displaystyle
+    \mathfrak{X}(z)
+    $ \\\hline $
+    x_1[n]
+    $ & $\displaystyle
+    \mathfrak{X}_1(z)
+    $ \\\hline $
+    x_2[n]
+    $ & $\displaystyle
+    \mathfrak{X}_2(z)
+    $ \\\hline $
+    a x_1[n] + b x_2[n]
+    $ & $\displaystyle
+    a \mathfrak{X}_1(z) + b \mathfrak{X}_2(z)
+    $ \\\hline $
+    x[n-1]
+    $ & $\displaystyle
+    z^{-1} \mathfrak{X}(z) + x[-1]
+    $ \\\hline $\displaystyle
+    x[n+1]
+    $ & $\displaystyle
+    z \mathfrak{X}(z) - z x[0]
+    $ \\\hline $\displaystyle
+    z_0^n x[n]
+    $ & $\displaystyle
+    \mathfrak{X}\qty(\frac{z}{z_0}) \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    x_{(k)}[n] = \mycases{
+        x[n/k] \\ 0
+    }
+    $ & $\displaystyle
+    \mathfrak{X}(z^k) \vphantom{\mycases{1\\1}}
+    $ \\\hline $
+    x^*[n]
+    $ & $\displaystyle
+    \mathfrak{X}^*(z^*)
+    $ \\\hline $
+    \begin{matrix}
+        x_1[n] \ast x_2[n] \\
+        \text{both causal}
+    \end{matrix}
+    $ & $\displaystyle
+    \mathfrak{X}_1(z) \mathfrak{X}_2(z)
+    $ \\\hline $\displaystyle
+    n x[n]
+    $ & $\displaystyle
+    -z \dv{z} \mathfrak{X}(z) \vphantom{\mycases{1\\1}}
+    $ \\\hline $\displaystyle
+    \sum_{k=0}^{n} x[k]
+    $ & $\displaystyle
+    \frac{1}{1-z^{-1}} \mathfrak{X}(z) \vphantom{\mycases{1\\1}}
+    $ \\\hline
+\end{tabular}
+\end{center}
+
+\subsubsection{Initial- and Final-Value Theorem}
+\begin{theorem}[Initial-Value and Final-Value Theorem]
+    For any signal $x[n]$,
+    \begin{gather*}
+        x(0) = \lim_{z\to+\infty} \mathfrak{X}(z) \\
+        \lim_{n\to+\infty} x[n] = \lim_{z\to 1} (z-1) \mathfrak{X}(z)
+    \end{gather*}
+\end{theorem}
+
+
+
+
+\end{document}
