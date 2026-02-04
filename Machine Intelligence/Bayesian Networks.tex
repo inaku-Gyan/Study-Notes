@@ -655,4 +655,98 @@ the \textbf{min-fill} heuristic chooses the variable
 that minimizes the number of edges added to the graph
 when the variable is eliminated.
 
+\subsection{Rejection Sampling}
+
+Rejection sampling is a Monte Carlo method for approximate inference.
+
+\subparagraph*{Main idea}
+Simulate the generation of a large number of samples,
+reject those that do not match the observed Evidence,
+and finally calculate the frequency of the query variable appearing
+in the remaining samples.
+
+\subsubsection{Algorithm Steps}
+
+Assume we want to compute \( P(X_Q \mid X_E=\tilde{e}) \),
+where \(X_Q\) is the query variable
+and \(X_E=\tilde{e}\) is the evidence.
+
+\subparagraph*{1. Topological sort}
+Obtain the sorted sequence \(X_1, X_2, \ldots, X_n\),
+where every node is behind its parents.
+
+\subparagraph*{2. Samples generation}
+In each sample, nodes are instantiated in topological order.
+This guarantees that when generating \(X_i\),
+its parents already hold concrete values,
+thereby determining the distribution of \(X_i\) via its CPT\@.
+
+\subparagraph*{3. Consistency check (rejection step)}
+If the value of the evidence variable \(X_E\) in the generated sample
+does not match the observed value, reject this sample (do not count it).
+Note: reject the whole sample (including the parents generated).
+
+\bigskip
+
+Suppose we generate \(N\) samples (including both accepted and rejected ones):
+\(S^{(1)}, S^{(2)}, \ldots, S^{(N)}\),
+where each sample \(S^{(i)}\) is a tuple of values\@:
+\(S^{(i)} = (x_{1}^{(i)}, x_{2}^{(i)}, \ldots, x_{n}^{(i)})\).
+Suppose the query variable is \(X_Q\).
+Then the query distribution can be approximated as:
+\[
+  P(X_Q = \hat{x} \mid X_E=\tilde{e}) \; \; = \; \;
+  \frac{\displaystyle\sum_{i=1}^N \big[{x_Q^{(i)} = \hat{x}} \big]
+  \cdot \big[{x_E^{(i)} = \tilde{e}} \big]}
+  {\displaystyle\sum_{i=1}^N \big[{x_E^{(i)} = \tilde{e}} \big]}
+\]
+where \(\displaystyle\sum_{i=1}^N \big[{x_E^{(i)} = \tilde{e}} \big]\)
+is the number of accepted samples.
+
+\subsubsection{Problems}
+
+Low efficiency:
+when the evidence \(X_E=e\) is a rare event,
+lots of samples are rejected, wasting a lot of time.
+
+\subsection{Likelihood Weighting}
+
+A directly improved version of rejection sampling.
+
+\subparagraph*{Topological sort}
+Same as in the rejection sampling.
+
+\subparagraph*{Evidence instantiation}
+Instead of randomly generating a value for the evidence variable \(E\),
+we fix it to the observed value \(e\),
+and continue to generate values for the following variables.
+
+\subparagraph*{Weight}
+The final sample is assigned a weight
+\(w = P(E=e \mid \big \{
+      \Pa(E) = \text{generated values for the parents of } E \big
+\}) \).
+By the definition, the weight can directly obtained from the CPT of \(E\).
+If there are multiple evidence variables,
+the final weight is the product of the weights calculated for each
+evidence variable.
+
+\bigskip
+
+Suppose we generate \(N\) samples:
+\(S^{(1)}, S^{(2)}, \ldots, S^{(N)}\),
+where each sample \(S^{(i)}\) has a weight \(w^{(i)}\) and is a tuple of
+values for all variables in the BN\@:
+\(S^{(i)} = (x_{1}^{(i)}, x_{2}^{(i)}, \ldots, x_{n}^{(i)})\).
+Suppose the query variable is \(X_Q\).
+Then the query distribution can be approximated as:
+\[
+  P(X_Q = \hat{x} \mid E=e) \; \; = \; \;
+  \frac{\displaystyle\sum_{i=1}^N w^{(i)} \cdot
+  \big[{x_Q^{(i)} = \hat{x}} \big]}
+  {\displaystyle\sum_{i=1}^N w^{(i)}}
+\]
+
+
+
 \end{document}
