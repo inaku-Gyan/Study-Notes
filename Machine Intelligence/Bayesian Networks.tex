@@ -147,11 +147,12 @@ urlcolor=blue]{hyperref}
 \usepackage{tkz-graph}
 \usetikzlibrary{shapes.geometric} % 引入椭圆形状支持
 
-\newcommand{\Pa}{\mathrm{Parents}} % Parents
-\newcommand{\Ch}{\mathrm{Children}} % Children
-\newcommand{\De}{\mathrm{Desc}} % Descendants
-\newcommand{\Nd}{\mathrm{NonDesc}} % Non-descendants
-\newcommand{\An}{\mathrm{Ancestors}} % Ancestors
+\DeclareMathOperator{\Pa}{Parents} % Parents
+\DeclareMathOperator{\Ch}{Children} % Children
+\DeclareMathOperator{\De}{Descendants} % Descendants
+\DeclareMathOperator{\Nd}{NonDescendants} % Non-descendants
+\DeclareMathOperator{\An}{Ancestors} % Ancestors
+
 \begin{document}
 
 \part*{Bayesian Networks (BN)}
@@ -384,6 +385,8 @@ Different algorithms can be used for inference in Bayesian Networks, including:
 
 \subsection{Inference by Enumeration}
 
+\subsubsection{The Method}
+
 \begin{itemize}
   \item Query variable: \(X\)
   \item The tuple of evidence variables: \(\bm{E} = (E_1, E_2, \ldots, E_m)\)
@@ -412,7 +415,7 @@ after computing
 The term \(P(X=x, \bm{H}=\bm{h}, \bm{E}=\bm{e})\) is a joint
 probability distribution and can be computed using the Factorization Theorem.
 
-\subsubsection*{Time Complexity}
+\subsubsection{Time Complexity}
 
 Suppose:
 \begin{itemize}
@@ -431,7 +434,7 @@ or \(O(n\cdot d^n)\) as the evidence variables are usually only a few.
 
 \subsection{Variable Elimination}
 
-\subsubsection*{Concepts}
+\subsubsection{Some Definitions}
 
 \paragraph*{1. Factors}
 A \textbf{factor} is a multi-variable function that maps some values taken
@@ -479,7 +482,7 @@ yields a new factor \(\phi \) defined as:
   \phi(y_1, y_2, \ldots, y_n) := \sum_{x} f(x, y_1, y_2, \ldots, y_n)
 \]
 
-\subsubsection*{The Algorithm}
+\subsubsection{Algorithm Steps}
 
 Throughout the algorithm,
 we maintain a set of factors.
@@ -517,7 +520,7 @@ Normalize it to get the final result:
   P(X=x \mid \bm{E}=\bm{e}) = \frac{\tau(x)}{\sum_{x'} \tau(x')}
 \]
 
-\subsubsection*{Time Complexity}
+\subsubsection{Time Complexity}
 
 Suppose:
 \begin{itemize}
@@ -543,7 +546,7 @@ The time complexity is \(O(n\cdot d^{w+1})\),
 where \(w\) is the treewidth of the graph.
 In the worst case, \(w\) can be about \(n\).
 
-\subsubsection*{Another View of the Algorithm}
+\subsubsection{Another View of the Algorithm}
 
 We use an example to illustrate the process of variable elimination,
 to provide another perspective to understand the algorithm.
