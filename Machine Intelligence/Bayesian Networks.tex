@@ -152,6 +152,9 @@ urlcolor=blue]{hyperref}
 \DeclareMathOperator{\De}{Descendants} % Descendants
 \DeclareMathOperator{\Nd}{NonDescendants} % Non-descendants
 \DeclareMathOperator{\An}{Ancestors} % Ancestors
+\DeclareMathOperator{\MB}{MarkovBlanket} % Markov Blanket
+
+\newcommand{\blue}[1]{{\color{blue!50!black}#1}} % 蓝色字体
 
 \begin{document}
 
@@ -747,6 +750,114 @@ Then the query distribution can be approximated as:
   {\displaystyle\sum_{i=1}^N w^{(i)}}
 \]
 
+\subsection{Gibbs Sampling}
 
+Gibbs sampling is a Markov Chain Monte Carlo (MCMC) method for
+approximate inference.
+
+\subparagraph*{Main idea}
+Different from rejection sampling and likelihood weighting,
+Gibbs sampling does not generate each sample independently.
+Instead, it starts from an initial state (a sample),
+and randomly walks through the state space
+(generating a sequence of samples, where each sample is generated
+based on the previous one).
+
+\subsubsection{Algorithm Steps}
+
+Suppose the BN has \(n\) variables.
+
+\subparagraph*{1. Initial state}
+Pick an initial state by fixing the evidence variables
+to their observed values,
+and randomly assigning values to all other variables.
+Let the initial state be
+\(S_1 = (x_1^{(1)}, x_2^{(1)}, \ldots, x_n^{(1)})\).
+
+\subparagraph*{2. Sample sequence generation}
+In each iteration, we update the value of one non-evidence variable
+based on the current values of all other variables.
+Let the \(i\)-th state (sample) be
+\(S_i = (x_1^{(i)}, x_2^{(i)}, \ldots, x_n^{(i)})\).
+To generate the next state \(S_{i+1}\):
+
+\begin{enumerate}
+  \item Pick a non-evidence variable. Suppose it is \(\blue{X_k}\).
+  \item Compute the conditional distribution of \(X_k\)
+    given the current values of all other variables:
+    \[
+      P\Big(\blue{X_k} \mid
+        \big \{ X_1 = x_1^{(i)}, \ldots, X_{k-1} = x_{k-1}^{(i)},
+      X_{k+1} = x_{k+1}^{(i)}, \ldots, X_n = x_n^{(i)} \big \} \Big)
+    \]
+  \item Sample a new value for \(\blue{X_k}\) from the above distribution.
+    Let the new value be \(\blue{x_k^{(i+1)}}\).
+  \item New state \(S_{i+1}\) is obtained by updating \(\blue{X_k}\):
+    \[
+      S_{i+1} = (x_1^{(i)}, \ldots, x_{k-1}^{(i)},
+      \blue{x_k^{(i+1)}}, x_{k+1}^{(i)}, \ldots, x_n^{(i)})
+    \]
+\end{enumerate}
+
+\subparagraph*{3. Derive the query distribution}
+After generating a sufficiently large sample set,
+the conditional distribution of the query variable can be
+approximated by empirical frequency counts of its possible values.
+
+\subsubsection{Some Optimizations}
+
+\paragraph*{Markov Blanket}
+When computing the conditional distribution of a variable \(\blue{X_k}\),
+we do not need to consider all other variables.
+In Bayesian Networks,
+a variable is \emph{conditionally independent} of all other variables
+given its \textbf{Markov Blanket}, which consists of:
+\begin{itemize}
+  \item Its parents.
+  \item Its children.
+  \item The other parents of its children (co-parents).
+\end{itemize}
+Thus, we only need to compute:
+\begin{align*}
+  & P\Big(\blue{X_k} \mid
+  \big \{ \text{other variables} = \text{their previous values} \big \} \Big) \\
+  &\qquad = P\Big(\blue{X_k} \mid
+  \big \{ \MB(\blue{X_k}) = \text{their previous values} \big \} \Big) \\
+  &\qquad \propto P\Big(\blue{X_k} \mid
+  \big \{ \Pa(\blue{X_k}) = \text{their previous values} \big \} \Big) \cdot
+  \! \! \! \! \!
+  \prod_{C \, \in \, \Ch(\blue{X_k})} \! \! \! \! \! \! \! \! \!
+  P\Big(C = \text{its previous value} \mid
+  \big \{ \Pa(C) = \text{their previous values} \big \} \Big)
+\end{align*}
+
+\paragraph*{Burn-in}
+It takes some time for the Markov chain to converge to
+its stationary distribution.
+To reduce the influence of the initial state,
+we can discard the first several samples (for example, the first 1000 samples)
+and only use the later samples to estimate the query distribution.
+The discarded samples are called \textbf{burn-in} samples.
+
+\paragraph*{Thinning}
+In the generated sample sequence,
+consecutive samples are highly correlated,
+which is against the assumption of
+\emph{independent identically distributed (i.i.d.)} samples
+in statistical estimation.
+To reduce the correlation between samples,
+we can keep \(1\) sample every \(k\) samples
+(for example, every \(100\) samples) and discard the others.
+
+\subsubsection{Pros and Cons}
+
+\paragraph*{Pros}
+Usually more efficient than likelihood weighting,
+especially in the presence of strong evidence in downstream variables.
+
+\paragraph*{Cons}
+Can be slow to converge,
+especially when there exist multiple separated high-probability regions in the
+state space.
 
 \end{document}
