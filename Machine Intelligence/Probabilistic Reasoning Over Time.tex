@@ -1,0 +1,198 @@
+\documentclass[10pt,UTF8]{article}
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+\usepackage{booktabs}
+
+% \usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+% \usepackage{lmodern} % Latin Modern 字体，兼容 Computer Modern 字体
+
+% \usepackage{newtxtext}  % 设置正文为 TeX Gyre Termes (类似 Times)
+% \usepackage{newtxmath}  % 设置数学字体匹配
+
+\usepackage{fourier} % 设置正文字体为 Utopia
+% \usepackage{eulervm} % 设置数学字体为 Euler
+\setmainfont{Times New Roman} % 设置正文字体为 Times New Roman
+
+\usepackage{bm} % 数学粗体（避免斜体被取消）
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+% \usepackage{esint} % 提供更丰富的积分符号
+% \usepackage{amssymb}
+% \usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+% \usepackage{bussproofs} % 自然演绎推理树
+
+% 交叉引用
+% 关闭边框，设置颜色
+\usepackage[colorlinks=true, linkcolor=darkgray, citecolor=teal,
+urlcolor=blue]{hyperref}
+% 使 \cref 和 \Cref 可用
+\usepackage{cleveref}
+
+\usepackage{bookmark}  % 生成 PDF 大纲
+
+\allowdisplaybreaks[3]  % 允许换页
+
+\usepackage{xcolor}
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipBox}
+{
+  \begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{conceptBox}
+{
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{theoremBoxNoIndent}
+{
+\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{definitionBox}
+{
+  \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{theoremBox}
+{
+  \begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{
+  \begin{definitionBox}
+  \begin{definition inner}[#1]\hfill\par}
+    {
+    \end{definition inner}
+\end{definitionBox}}
+
+\theoremstyle{definition}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{
+  \begin{theoremBox}
+  \begin{theorem inner}[#1]\hfill\par}
+    {
+    \end{theorem inner}
+\end{theoremBox}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{
+\begin{proof inner}[#1]\hfill\par}
+  {\qed{}
+\end{proof inner}}
+
+\theoremstyle{plain}
+\newtheorem{tip inner}{Tip}[section]
+\newenvironment{tip}[1][]
+{
+  \begin{tipBox}
+  \begin{tip inner}[#1]\hfill\par}
+    {
+    \end{tip inner}
+\end{tipBox}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \usepackage{tikz}
+% \usetikzlibrary{graphs, graphdrawing}
+% \usegdlibrary{trees, layered, force} % 可选布局算法
+
+\usepackage{tkz-graph}
+\usetikzlibrary{shapes.geometric} % 引入椭圆形状支持
+
+\DeclareMathOperator{\Pa}{Parents} % Parents
+\DeclareMathOperator{\Ch}{Children} % Children
+\DeclareMathOperator{\De}{Descendants} % Descendants
+\DeclareMathOperator{\Nd}{NonDescendants} % Non-descendants
+\DeclareMathOperator{\An}{Ancestors} % Ancestors
+\DeclareMathOperator{\MB}{MarkovBlanket} % Markov Blanket
+
+\newcommand{\blue}[1]{{\color{blue!50!black}#1}} % 蓝色字体
+
+\begin{document}
+
+\part*{Probabilistic Reasoning Over Time}
+
+\section{Markov Chains}
+
+\paragraph*{Stochastic Process}
+A stochastic process is a family of random variables
+\( \big \{ X(t) \colon t \in T \big \} \)
+defined on a \emph{probability space},
+where \(T\) is the \emph{parameter set}.
+When \( T = \big \{ 0, 1, 2, 3, \ldots \big \} \),
+it is usually referred to as a time series.
+When \(T\) is a vector space, the stochastic process is called a random field.
+The collection of all possible states (values) of \(X(t)\) forms the
+\emph{state space}, which can be either discrete or continuous.
+
+\paragraph*{Markov Assumption / Markov Property; Markov Process / Markov Chain}
+A Markov process (or Markov chain) is a stochastic process indexed by time,
+which satisfies the Markov assumption (or Markov property)
+--- namely, the \emph{conditional probability distribution}
+of the current state depends on only a
+\emph{finite fixed number} of previous states, i.e.,
+\begin{equation*}
+  P(X_t \mid \big \{ X_{t-1}, X_{t-2}, \ldots \big \} )
+  = P(X_t \mid \big \{ X_{t-1}, X_{t-2}, \ldots, X_{t-k} \big \} )
+  \qq{for any \(t\)}
+\end{equation*}
+
+\paragraph*{First-Order Markov Process}
+A first-order Markov process is a Markov process where
+the current state depends only on the immediately preceding state, i.e.,
+\begin{equation*}
+  P(X_t \mid \big \{ X_{t-1}, X_{t-2}, \ldots \big \} )
+  = P(X_t \mid X_{t-1})
+  \qq{for any \(t\)}
+\end{equation*}
+In the following sections, we will focus on first-order Markov processes.
+
+\end{document}
