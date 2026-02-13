@@ -249,6 +249,9 @@ Bernoulli equations can be transformed into linear ODEs by the substitution \(v 
     \[
         \ln\abs{\mu(t)} = (1-r)\int p(t)\dd{t}
     \]
+
+    Note: If \(r > 0\), then \(y = 0\) is also a solution,
+    which is not captured by the above formula.
 \end{theoremBox}
 
 \begin{proof}
@@ -256,7 +259,8 @@ Bernoulli equations can be transformed into linear ODEs by the substitution \(v 
     \begin{align*}
         \dv{y}{t} + p(t)\cdot y = q(t)\cdot y^r
         \quad & \implies\quad
-        y^{-r}\dv{y}{t} + p(t)\cdot y^{1-r} = q(t) \\
+        y^{-r}\dv{y}{t} + p(t)\cdot y^{1-r} = q(t)
+        \qfor y \neq 0 \\
         \quad & \implies\quad
         \dv{t}( y^{1-r}) + (1-r)p(t)\cdot y^{1-r} = (1-r) q(t)
     \end{align*}
