@@ -404,4 +404,108 @@ If \((N_t - M_y) / M\) depends on \(y\) alone, then we can solve for \(\mu(y)\).
 If neither case applies, then try some substitutions to transform the
 ODE into a solvable form.
 
+\section{The Existence and Uniqueness Theorem}
+
+\subsection{The Theorem}
+
+\begin{theorem}[Existence and Uniqueness Theorem for First Order Linear ODEs]
+  For the IVP\@:
+  \begin{equation*}
+    \dv{y}{t} = p(t)\cdot y + q(t) \qand y(t_0) = y_0
+  \end{equation*}
+  if there exists an interval \(I \subseteq \mathbb{R}\) such that
+  \(t_0 \in I\) and \(p(t)\), \(q(t)\) are \textbf{continuous} on \(I\),
+  then there exists a \textbf{unique} solution \(y(t)\) defined on \(I\)
+  that satisfies the IVP\@.
+\end{theorem}
+
+\begin{remark}
+  The solution is defined on the entire interval \(I\).
+\end{remark}
+
+To make it simpler, we let the initial point be the origin.
+If some other initial point is given,
+we can always make a preliminary change of variables.
+
+\begin{theorem}[Existence and Uniqueness Theorem]
+  For the IVP\@:
+  \begin{equation*}
+    \dv{y}{t} = f(t,y) \qand y(0) = 0
+  \end{equation*}
+  if there exists a rectangle
+  \(R: \abs{t} \leqslant a, \abs{y} \leqslant b\)
+  such that \(f(t,y)\) and \(\pdv*{f(t,y)}{y}\)
+  are \textbf{continuous} on \(R\),
+  then there exists a \textbf{unique} solution \(y = \phi(t)\)
+  defined for \(\abs{t} \leqslant h\),
+  where \(0 < \min \{b/M, a\} \leqslant h \leqslant a \)
+  and \(M = \max\limits_{(t,y) \in R}\abs{f(t,y)} < +\infty \).
+\end{theorem}
+
+\begin{remark}
+  The solution is guaranteed to be defined at least on the interval
+  \(\abs{t} \leqslant \min \{b/M, a\} \),
+  where \(M\) is the bound of \(f(t,y)\) on the rectangle \(R\).
+\end{remark}
+
+\begin{remark}
+  If the conditions of the theorem are not satisfied,
+  then the solution may not be unique or may not exist.
+\end{remark}
+
+\subsection{The Preliminary before the Proof}
+
+\begin{definition}[Pointwise Convergence]
+  A sequence of functions \( \{f_n\} \) defined on a set
+  \(\mathcal{D} \subseteq \mathbb{R}\) is said to
+  \textbf{converge pointwise} to a function \(f\) if:
+  \begin{equation*}
+    \forall x^* \in \mathcal{D}, \lim_{n\to\infty} f_n(x^*) = f(x^*)
+  \end{equation*}
+  The \textbf{rate of convergence} can be \textbf{different}
+  for different points in \(\mathcal{D}\).
+\end{definition}
+
+\begin{definition}[Uniform Convergence]
+  A sequence of functions \( \{f_n\} \) defined on a set
+  \(\mathcal{D} \subseteq \mathbb{R}\) is said to
+  \textbf{converge uniformly} to a function \(f\) if:
+  \begin{equation*}
+    \forall \varepsilon > 0, \exists N \in \mathbb{N}, \forall n > N,
+    \forall x \in \mathcal{D}, \abs{f_n(x) - f(x)} < \varepsilon
+  \end{equation*}
+  The \textbf{rate of convergence} is the \textbf{same} for all points in
+  \(\mathcal{D}\).
+\end{definition}
+
+\begin{theoremBox}
+  Uniform convergence implies pointwise convergence.
+\end{theoremBox}
+
+\begin{theorem}[Weierstrass M-test]
+  Let \( \{\phi_n\} \) be a sequence of functions defined on a set
+  \(\mathcal{D} \subseteq \mathbb{R}\).
+  If there exists a sequence of positive numbers \( \{M_n\} \) such that
+  \begin{equation*}
+    \forall n \in \mathbb{N}, \forall x \in \mathcal{D},
+    \abs{\phi_n(x)} < M_n
+    \qand \sum_{n=1}^{\infty} M_n \text{ converges}
+  \end{equation*}
+  then the new sequence \( \{\Phi_n(x)\} \),
+  where \(\displaystyle \Phi_n(x) := \sum_{k=1}^{n} \phi_k(x)\),
+  \textbf{converges uniformly} on \(\mathcal{D}\).
+\end{theorem}
+
+\begin{theorem}
+  Suppose \( \{\phi_n(x)\} \) is a sequence of functions defined on an interval
+  \([a,b] \subseteq \mathbb{R}\) and is \textbf{uniformly convergent},
+  then the operations of limit and integration can be interchanged:
+  \begin{equation*}
+    \lim_{n\to\infty} \int_{a}^{b} \phi_n(x) \dd{x} =
+    \int_{a}^{b} \lim_{n\to\infty} \phi_n(x) \dd{x}
+  \end{equation*}
+\end{theorem}
+
+\subsection{The Proof}
+
 \end{document}
