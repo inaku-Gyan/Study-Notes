@@ -460,7 +460,7 @@ we can always make a preliminary change of variables.
   \(\mathcal{D} \subseteq \mathbb{R}\) is said to
   \textbf{converge pointwise} to a function \(f\) if:
   \begin{equation*}
-    \forall x^* \in \mathcal{D}, \lim_{n\to\infty} f_n(x^*) = f(x^*)
+    \forall x \in \mathcal{D}, \lim_{n\to\infty} f_n(x) = f(x)
   \end{equation*}
   The \textbf{rate of convergence} can be \textbf{different}
   for different points in \(\mathcal{D}\).
@@ -481,6 +481,93 @@ we can always make a preliminary change of variables.
 \begin{theoremBox}
   Uniform convergence implies pointwise convergence.
 \end{theoremBox}
+\begin{proof}
+  The proof is given in first-order formal logic.
+  The inference rules used are the following:
+  \begin{itemize}
+    \item \(\alpha \to \beta \iff \neg \alpha \lor \beta \)
+    \item \(\textcolor{red}{\forall x}(\textcolor{blue}{\alpha} \; \lor P(x))
+        \iff \textcolor{blue}{\alpha}\; \lor \; \textcolor{red}{\forall x} P(x)
+        \qand \exists x (\textcolor{blue}{\alpha} \; \lor P(x))
+        \iff \textcolor{blue}{\alpha}\; \lor \;
+      \exists x P(x)\)
+    \item \(\textcolor{red}{\forall x} \forall y P(x,y) \iff
+        \forall y \textcolor{red}{\forall x} P(x,y)
+        \qand \exists x \textcolor{red}{\forall y} P(x,y)
+        \textcolor{blue}{\implies}
+      \textcolor{red}{\forall y} \exists x P(x,y)\)
+  \end{itemize}
+  To make it easier,
+  we suppose all the variables are restricted to real numbers.
+  Rewrite the definition of uniform convergence into first-order formal logic
+  (suppose all the variables are restricted to real numbers):
+  \begin{align*}
+    \text{Uniform Convergence}
+    &\iff
+    \forall \varepsilon \Big(
+      \varepsilon > 0 \to \exists N \Big[
+        N \in \mathbb{N} \to \forall n \Big(
+          n > N \to
+          \forall x \big(
+            x \in \mathcal{D} \to
+            \abs{f_n(x) - f(x)} < \varepsilon
+          \big)
+        \Big)
+      \Big]
+    \Big) \\
+    &\iff
+    \forall \varepsilon \Big(
+      \varepsilon \leqslant 0 \; \lor \; \exists N \Big[
+        N \notin \mathbb{N} \; \lor \; \forall n \Big(
+          n \leqslant N \; \lor \;
+          \textcolor{red}{\forall x} \big(
+            x \notin \mathcal{D} \; \lor \;
+            \abs{f_n(x) - f(x)} < \varepsilon
+          \big)
+        \Big)
+      \Big]
+    \Big) \\
+    &\textcolor{blue}{\implies}
+    \textcolor{red}{\forall x} \forall \varepsilon \Big(
+      \varepsilon \leqslant 0 \; \lor \; \exists N \Big[
+        N \notin \mathbb{N} \; \lor \; \forall n \Big(
+          n \leqslant N \; \lor \;
+          \textcolor{blue}{x \notin \mathcal{D}} \; \lor \;
+          \abs{f_n(x) - f(x)} < \varepsilon
+        \Big)
+      \Big]
+    \Big) \\
+    &\iff
+    \forall x \Big[
+      \textcolor{blue}{x \notin \mathcal{D}} \; \lor \;
+      \forall \varepsilon \Big(
+        \varepsilon \leqslant 0 \; \lor \; \exists N \Big[
+          N \notin \mathbb{N} \; \lor \; \forall n \Big(
+            n \leqslant N \; \lor \;
+            \abs{f_n(x) - f(x)} < \varepsilon
+          \Big)
+        \Big]
+      \Big)
+    \Big] \\
+    &\iff
+    \forall x \Big[
+      x \in \mathcal{D} \to
+      \forall \varepsilon \Big(
+        \varepsilon > 0 \to \exists N \Big[
+          N \in \mathbb{N} \to \forall n \Big(
+            n > N \to
+            \abs{f_n(x) - f(x)} < \varepsilon
+          \Big)
+        \Big]
+      \Big)
+    \Big] \\
+    &\iff
+    \forall x \in \mathcal{D}, \forall \varepsilon > 0,
+    \exists N \in \mathbb{N}, \forall n > N,
+    \abs{f_n(x) - f(x)} < \varepsilon \\
+    &\iff \text{Pointwise Convergence}
+  \end{align*}
+\end{proof}
 
 \begin{theorem}[Weierstrass M-test]
   Let \( \{\phi_n\} \) be a sequence of functions defined on a set
@@ -497,7 +584,8 @@ we can always make a preliminary change of variables.
 \end{theorem}
 
 \begin{theorem}
-  Suppose \( \{\phi_n(x)\} \) is a sequence of functions defined on an interval
+  Suppose \( \{\phi_n(x)\} \) is a sequence of functions defined on
+  an interval
   \([a,b] \subseteq \mathbb{R}\) and is \textbf{uniformly convergent},
   then the operations of limit and integration can be interchanged:
   \begin{equation*}
