@@ -521,7 +521,7 @@ ODE into a solvable form.
     &\iff
     \forall \varepsilon \Big(
       \varepsilon > 0 \to \exists N \Big[
-        N \in \mathbb{N} \to \forall n \Big(
+        N \in \mathbb{N} \; \land \; \forall n \Big(
           n > N \to
           \forall x \big(
             x \in \mathcal{D} \to
@@ -533,7 +533,7 @@ ODE into a solvable form.
     &\iff
     \forall \varepsilon \Big(
       \varepsilon \leqslant 0 \; \lor \; \exists N \Big[
-        N \notin \mathbb{N} \; \lor \; \forall n \Big(
+        N \in \mathbb{N} \; \land \; \forall n \Big(
           n \leqslant N \; \lor \;
           \textcolor{red}{\forall x} \big(
             x \notin \mathcal{D} \; \lor \;
@@ -545,7 +545,7 @@ ODE into a solvable form.
     &\textcolor{blue}{\implies}
     \textcolor{red}{\forall x} \forall \varepsilon \Big(
       \varepsilon \leqslant 0 \; \lor \; \exists N \Big[
-        N \notin \mathbb{N} \; \lor \; \forall n \Big(
+        N \in \mathbb{N} \; \land \; \forall n \Big(
           n \leqslant N \; \lor \;
           \textcolor{blue}{x \notin \mathcal{D}} \; \lor \;
           \abs{f_n(x) - f(x)} < \varepsilon
@@ -557,7 +557,7 @@ ODE into a solvable form.
       \textcolor{blue}{x \notin \mathcal{D}} \; \lor \;
       \forall \varepsilon \Big(
         \varepsilon \leqslant 0 \; \lor \; \exists N \Big[
-          N \notin \mathbb{N} \; \lor \; \forall n \Big(
+          N \in \mathbb{N} \; \land \; \forall n \Big(
             n \leqslant N \; \lor \;
             \abs{f_n(x) - f(x)} < \varepsilon
           \Big)
@@ -569,7 +569,7 @@ ODE into a solvable form.
       x \in \mathcal{D} \to
       \forall \varepsilon \Big(
         \varepsilon > 0 \to \exists N \Big[
-          N \in \mathbb{N} \to \forall n \Big(
+          N \in \mathbb{N} \; \land \; \forall n \Big(
             n > N \to
             \abs{f_n(x) - f(x)} < \varepsilon
           \Big)
