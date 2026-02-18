@@ -423,34 +423,49 @@ ODE into a solvable form.
   The solution is defined on the entire interval \(I\).
 \end{remark}
 
-To make it simpler, we let the initial point be the origin.
-If some other initial point is given,
-we can always make a preliminary change of variables.
-
-\begin{theorem}[Existence and Uniqueness Theorem]
-  For the IVP\@:
-  \begin{equation*}
-    \dv{y}{t} = f(t,y) \qand y(0) = 0
-  \end{equation*}
-  if there exists a rectangle
-  \(R: \abs{t} \leqslant a, \abs{y} \leqslant b\)
-  such that \(f(t,y)\) and \(\pdv*{f(t,y)}{y}\)
-  are \textbf{continuous} on \(R\),
-  then there exists a \textbf{unique} solution \(y = \phi(t)\)
-  defined for \(\abs{t} \leqslant h\),
-  where \(0 < \min \{b/M, a\} \leqslant h \leqslant a \)
-  and \(M = \max\limits_{(t,y) \in R}\abs{f(t,y)} < +\infty \).
-\end{theorem}
+\begin{theorem}[Existence and Uniqueness Theorem]\label{thm: Existence and Uniqueness Theorem} % tex-fmt: skip
+For the IVP\@:
+\begin{equation*}
+  \dv{y}{t} = f(t,y) \qand y(t_0) = y_0
+\end{equation*}
+if there exists a closed rectangle
+\(R: t \in [t_0 - a, t_0 + a], y \in [y_0 - b, y_0 + b]\)
+such that \(f(t,y)\) and \(\pdv*{f(t,y)}{y}\)
+are \textbf{continuous} on \(R\),
+then there exists a \textbf{unique} solution \(y = \phi(t)\)
+defined for \(t \in [t_0 - h, t_0 + h]\),
+where \(h\) is some number satisfying
+\(0 < \min \{b/M, a\} \leqslant h \leqslant a \)
+and \(M = \max\limits_{(t,y) \in R}\abs{f(t,y)} < +\infty \).
+\end{theorem} % tex-fmt: skip
 
 \begin{remark}
-  The solution is guaranteed to be defined at least on the interval
-  \(\abs{t} \leqslant \min \{b/M, a\} \),
-  where \(M\) is the bound of \(f(t,y)\) on the rectangle \(R\).
+  The solution is guaranteed to be defined at least on the interval of \(t\)
+  such that \(\abs{t - t_0} \leqslant \min \{b/M, a\} \),
+  where \(M\) is the bound of \(f(t,y)\) on the closed rectangle \(R\).
 \end{remark}
 
 \begin{remark}
   If the conditions of the theorem are not satisfied,
   then the solution may not be unique or may not exist.
+\end{remark}
+
+\begin{theorem}[Existence Theorem]
+  For the IVP\@:
+  \begin{equation*}
+    \dv{y}{t} = f(t,y) \qand y(t_0) = y_0
+  \end{equation*}
+  if there exists a closed rectangle
+  \(R: t \in [t_0 - a, t_0 + a], y \in [y_0 - b, y_0 + b]\)
+  such that \(f(t,y)\) is \textbf{continuous} on \(R\),
+  then there exists \textbf{at least one} solution \(y = \phi(t)\)
+  defined for \(t \in [t_0 - h, t_0 + h]\),
+  where \(h\) is some number satisfying
+  \(0 < \min \{b/M, a\} \leqslant h \leqslant a \)
+  and \(M = \max\limits_{(t,y) \in R}\abs{f(t,y)} < +\infty \).
+\end{theorem}
+\begin{remark}
+  When \(\pdv*{f}{y}\) may not be continuous, the solution may not be unique.
 \end{remark}
 
 \subsection{The Preliminary before the Proof}
@@ -568,7 +583,7 @@ we can always make a preliminary change of variables.
   \end{align*}
 \end{proof}
 
-\begin{theorem}[Weierstrass M-test]
+\begin{theorem}[Weierstrass M-test]\label{thm: Weierstrass M-test}
   Let \( \{\phi_n\} \) be a sequence of functions defined on a set
   \(\mathcal{D} \subseteq \mathbb{R}\).
   If there exists a sequence of positive numbers \( \{M_n\} \) such that
@@ -582,7 +597,7 @@ we can always make a preliminary change of variables.
   \textbf{converges uniformly} on \(\mathcal{D}\).
 \end{theorem}
 
-\begin{theorem}
+\begin{theorem}\label{thm: limit and integration can be interchanged}
   Suppose \( \{\phi_n(x)\} \) is a sequence of functions defined on
   an interval
   \([a,b] \subseteq \mathbb{R}\) and is \textbf{uniformly convergent},
@@ -594,5 +609,163 @@ we can always make a preliminary change of variables.
 \end{theorem}
 
 \subsection{The Proof}
+
+In this section, we will use the \textbf{method of successive approximations},
+aka \textbf{Picard's iteration method},
+to prove Theorem~\ref{thm: Existence and Uniqueness Theorem}.
+Suppose the IVP is given by \( \dv*{y}{t} = f(t,y) \) and \( y(t_0) = y_0 \).
+And both the functions \(f\) and \(\pdv*{f}{y}\) are continuous on the rectangle
+\(R: t \in [t_0 - a, t_0 + a], y \in [y_0 - b, y_0 + b]\).
+
+We start by defining a sequence of functions \( \{\phi_n\} \) as follows:
+\begin{gather*}
+  \phi_0(t) = y_0 \\
+  \phi_{n+1}(t) = y_0 + \int_{t_0}^{t} f(\tau, \phi_n(\tau)) \dd{\tau}
+  \qquad\text{for } n = 0, 1, 2, \dots
+\end{gather*}
+Note that each \(\phi_n\) satisfies the initial condition \(
+\phi_n(t_0) = y_0 \).
+Then we will take the following steps to complete the proof:
+\begin{enumerate}
+  \item Find the interval of \(t\) on which all \(\phi_n\) are
+    well-defined and continuous.
+  \item Show that \( \{ \phi_n(t) \} \) is uniformly convergent on
+    that interval.
+  \item Show that the limit function
+    \( \phi(t) := \lim\limits_{n\to\infty} \phi_n(t) \)
+    is a solution to the IVP\@.
+  \item Show that the solution is unique.
+\end{enumerate}
+
+\subsubsection*{Step 1. The Solution Interval}
+
+Since \(f(t,y)\) is continuous on the rectangle
+\(R: [t_0 - a, t_0 + a] \times [y_0 - b, y_0 + b]\),
+we need to find an interval of \(t\)
+such that \((t, \phi_n(t))\) is in \(R\) for all \(n\),
+so that all \(\phi_n(t)\) are well-defined and continuous on that interval.
+The result is \([t_0 - h, t_0 + h]\),
+where \(h := \min \{b/M, a\} \) and
+\(M := \max\limits_{(t,y) \in R} \abs{f(t,y)} \).
+We can verify this by mathematical induction.
+
+First, it is clear that \(\phi_0(t) = y_0\) is continuous and
+is restricted to \(R\) when \(t \in [t_0 - h, t_0 + h]\).
+Now suppose the conclusion holds for \(\phi_k(t)\).
+Then we have
+\begin{align*}
+  \abs{\phi_{k+1}(t) - y_0}
+  &= \abs{y_0 + \int_{t_0}^{t} f(\tau, \phi_k(\tau)) \dd{\tau} - y_0} \\
+  &= \abs{\int_{t_0}^{t} f(\tau, \phi_k(\tau)) \dd{\tau}} \\
+  &\leqslant \int_{t_0}^{t} \abs{f(\tau, \phi_k(\tau))} \dd{\tau}
+\end{align*}
+Since \(f(t,y)\) is continuous on \(R\) and
+\((\tau, \phi_k(\tau))\) is in \(R\) for all \(\tau \) in the integral,
+\(f(\tau, \phi_k(\tau))\) is bounded, thus
+\begin{align*}
+  \abs{\phi_{k+1}(t) - y_0}
+  &\leqslant \int_{t_0}^{t} \abs{f(\tau, \phi_k(\tau))} \dd{\tau} \\
+  &\leqslant \int_{t_0}^{t} M \dd{\tau}
+  \qq{where} M := \max_{(t,y) \in R} \abs{f(t,y)} \\
+  &= M|t - t_0| \leqslant M h \leqslant b
+\end{align*}
+which implies that \(\phi_{k+1}(t) \in [y_0 - b, y_0 + b]\)
+for all \(t \in [t_0 - h, t_0 + h]\).
+And since \(f(\tau, \phi_k(\tau))\) is continuous,
+the integral also results in a continuous function.
+Therefore, by induction, we have proven that the sequence
+\( \{\phi_n(t)\} \) is well-defined and continuous on \([t_0 - h, t_0 + h]\).
+
+\subsubsection*{Step 2. Uniform Convergence}
+
+We show that the sequence \( \{\phi_n(t)\} \) is uniformly convergent
+using Theorem~\ref{thm: Weierstrass M-test}, the Weierstrass M-test.
+
+Define \(g_n(t) := \phi_n(t) - \phi_{n-1}(t)\) for \(n = 1, 2, \dots \),
+so that \(\displaystyle\phi_n(t) = \phi_0(t) + \sum_{k=1}^{n} g_k(t)\).
+Then we need to find a sequence of positive numbers \( \{M_n\} \) such that
+\begin{equation*}
+  \forall t \in [t_0 - h, t_0 + h], \abs{g_n(t)} < M_n
+  \qand \sum_{n=1}^{\infty} M_n \text{ converges.}
+\end{equation*}
+
+Since \(\displaystyle \pdv{f}{y}\) is continuous on \(R\),
+for any \((t,y_1), (t,y_2) \in R\),
+there exists \(y_3\) between \(y_1\) and \(y_2\) such that
+\begin{equation*}
+  \frac{f(t,y_1) - f(t,y_2)}{y_1 - y_2} =
+  \pdv{f(t,y)}{y}\Big|_{y=y_3}
+\end{equation*}
+Since \(\displaystyle \pdv{f}{y}\) is also bounded on \(R\),
+there exists \(K > 0\) such that
+\begin{equation*}
+  \abs{f(t,y_1) - f(t,y_2)} \leqslant K \abs{y_1 - y_2}
+\end{equation*}
+Thus we have
+\begin{align*}
+  \abs{g_{n+1}(t)}
+  &= \abs{\phi_{n+1}(t) - \phi_n(t)} \\
+  &\leqslant \int_{t_0}^{t} \abs{ \vphantom{\frac{}{}}
+  f(\tau, \phi_n(\tau)) - f(\tau, \phi_{n-1}(\tau))} \dd{\tau} \\
+  &\leqslant K \int_{t_0}^{t} \abs{g_n(\tau)} \dd{\tau}
+  \intertext{Let \(\displaystyle M := \max\limits_{(t,y) \in R} \abs{f(t,y)}\).}
+  \abs{g_{1}(t)}
+  &\leqslant \int_{t_0}^{t} \abs{f(\tau, y_0)} \dd{\tau} \\
+  &\leqslant M|t - t_0|
+  \intertext{By mathematical induction, we can prove that}
+  \abs{g_{n}(t)}
+  &\leqslant \frac{M K^{n-1} |t - t_0|^n}{n!}
+  \intertext{Then, let
+  \(\displaystyle M_n := \frac{M K^{n-1} h^n}{n!}\), we have}
+  \abs{g_{n}(t)} &\leqslant M_n \qquad \forall t \in [t_0 - h, t_0 + h] \\
+  \sum_{n=1}^{\infty} M_n
+  &= \frac{M}{K} \sum_{n=1}^{\infty} \frac{{(K h)}^n}{n!} \\
+  &= \frac{M}{K} (e^{K h} - 1)
+  \qq{converges}
+\end{align*}
+
+Therefore, by Theorem~\ref{thm: Weierstrass M-test},
+the sequence \( \{\phi_n(t)\} \) is uniformly convergent
+on \([t_0 - h, t_0 + h]\).
+
+\subsubsection*{Step 3. The Existence of the Solution}
+
+Let \(\displaystyle \phi(t) := \lim_{n\to\infty} \phi_n(t)\). Then
+\begin{align*}
+  &
+  \phi_{n+1}(t) = y_0 + \int_{t_0}^{t} f(\tau, \phi_n(\tau)) \dd{\tau} \\
+  &\implies \lim_{n\to\infty} \phi_{n+1}(t) =
+  y_0 + \lim_{n\to\infty} \int_{t_0}^{t} f(\tau, \phi_n(\tau)) \dd{\tau} \\
+  &\implies \lim_{n\to\infty} \phi_{n+1}(t) =
+  y_0 + \int_{t_0}^{t} \lim_{n\to\infty}  f(\tau, \phi_n(\tau)) \dd{\tau}
+  \qquad\qq{by Theorem~\ref{thm: limit and integration can be interchanged}} \\
+  &\implies \phi(t) = y_0 + \int_{t_0}^{t} f(\tau, \phi(\tau)) \dd{\tau}
+  \qquad\qq{as \(f(t,y)\) is continuous} \\
+\end{align*}
+Therefore, \(\phi(t)\) is a solution to the IVP\@.
+
+\subsubsection*{Step 4. The Uniqueness of the Solution}
+
+Suppose \(\psi(t)\) is another solution to the IVP\@.
+Then we have
+\begin{align*}
+  \abs{\phi(t) - \psi(t)}
+  &= \abs{\int_{t_0}^{t} f(\tau, \phi(\tau)) - f(\tau, \psi(\tau)) \dd{\tau}} \\
+  &\leqslant K \int_{t_0}^{t} \abs{\phi(\tau) - \psi(\tau)} \dd{\tau}
+  \qq{since \(\displaystyle\pdv{f}{y}\) is continuous and bounded on \(R\)}
+\end{align*}
+Let \(\Psi(t) := \abs{\phi(t) - \psi(t)}\).
+\begin{align*}
+  &\dv{t} \Psi(t) \leqslant K \Psi(t)
+  \qand \Psi(t_0) = 0 \\
+  &\implies e^{-K t} \left(\dv{t}\Psi(t) - K \Psi(t)\right) \leqslant 0 \\
+  &\implies \dv{t}(e^{-K t} \Psi(t)) \leqslant 0 \\
+  &\implies \int_{t_0}^{t} \dv{\tau}(e^{-K \tau} \Psi(\tau))
+  \dd{\tau} \leqslant 0 \\
+  &\implies e^{-K t} \Psi(t) \leqslant e^{-K t_0} \Psi(t_0) = 0 \\
+  &\implies \Psi(t) = 0 \qquad \forall t \in [t_0 - h, t_0 + h] \\
+  &\implies \phi(t) = \psi(t) \qquad \forall t \in [t_0 - h, t_0 + h]
+\end{align*}
+Therefore, the solution to the IVP\@ is unique.
 
 \end{document}
