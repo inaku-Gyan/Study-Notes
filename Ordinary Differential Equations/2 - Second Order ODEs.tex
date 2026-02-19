@@ -203,11 +203,111 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   \]
 \end{definition}
 
+\begin{theorem}[Abel's Theorem]
+  {}\label{thm: Abel's Theorem}
+  Suppose \(p(t)\) and \(q(t)\) are continuous on an open interval \(I\),
+  and \(y_1\) and \(y_2\) are two non-zero solutions of the ODE
+  \begin{equation}
+    y'' + \textcolor{blue}{p(t)}\cdot y' + q(t)\cdot y = 0
+    \label{eq: local.06 ODE}
+  \end{equation}
+  Then, the Wronskian of \(y_1\) and \(y_2\) is given by
+  \begin{equation*}
+    W(y_1,y_2)(t) = \textcolor{red}{c} \cdot
+    \exp(-\int \textcolor{blue}{p(t)} \dd{t})
+    \qquad\text{ where } \textcolor{red}{c}
+    \text{ is a constant depending on } y_1, y_2
+  \end{equation*}
+\end{theorem}
+
+\begin{theoremBox}\noindent
+  \textbf{Corollary}
+  {}\label{thm: corollary of Abel's Theorem}
+  \qquad\qquad\qquad
+  \begin{math}
+    \exists t_0 \in I \text{ s.t. } W(y_1,y_2)(t_0) \neq 0
+    \quad\implies\quad
+    \forall t \in I, \; W(y_1,y_2)(t) \neq 0
+  \end{math}
+\end{theoremBox}
+
+\begin{proof}[Abel's Theorem]\noindent
+  \begin{align*}
+    \begin{cases}
+      y_2 y_1'' + y_2 p y_1' + y_2 q y_1 = 0 \\
+      y_1 y_2'' + y_1 p y_2' + y_1 q y_2 = 0
+    \end{cases}
+    &\implies
+    (y_2 y_1'' - y_1 y_2'') + p \cdot (y_2 y_1' - y_1 y_2') = 0 \\
+    &\implies
+    W' + p \cdot W = 0 \\
+    &\implies
+    W = c \cdot \exp(-\int p(t) \dd{t})
+    \qq{ for some constant} c \in \mathbb{R}
+  \end{align*}
+\end{proof}
+
+\begin{theorem}[Linear Dependence and Wronskian]
+  {}\label{thm: linear dependence and Wronskian}
+  Suppose \(y_1\) and \(y_2\) are two solutions of an ODE
+  in the form of \cref{eq: local.06 ODE}. Then,
+  \begin{equation*}
+    y_1(t) \qand y_2(t) \qq{are \textbf{linearly independent} on}
+    t \in I
+    \qquad\iff\qquad
+    \forall t \in I, \;
+    W(y_1,y_2)(t) \neq 0
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}\noindent
+  \begin{align*}
+    \text{linear independence}
+    \quad&\iff\quad
+    \forall c_1, c_2 \in \mathbb{R},\;
+    \Big(c_1 y_1(t) + c_2 y_2(t) = 0\Big)
+    \; \to \; \Big(c_1 = c_2 = 0\Big)
+    \tag{Proposition 1} \\
+    &\iff\quad
+    \forall c_1, c_2 \in \mathbb{R},\;
+    \begin{bmatrix}
+      y_1(t) & y_2(t) \\
+      y_1'(t) & y_2'(t)
+    \end{bmatrix}
+    \begin{bmatrix}
+      c_1 \\ c_2
+    \end{bmatrix} =
+    \begin{bmatrix}
+      0 \\ 0
+    \end{bmatrix} \; \to \;
+    \begin{bmatrix}
+      c_1 \\ c_2
+    \end{bmatrix} =
+    \begin{bmatrix}
+      0 \\ 0
+    \end{bmatrix}
+    \tag{Proposition 2} \\
+    &\iff\quad
+    W(y_1,y_2)(t) \not\equiv 0 \\
+    &\iff\quad
+    \forall t \in I, \; W(y_1,y_2)(t) \neq 0
+    \qq{by the \hyperref[thm: corollary of Abel's Theorem]{
+    corollary of Abel's Theorem}}
+  \end{align*}
+  [(Proposition 2) \(\implies \) (Proposition 1)] is obtained by
+  combining (Proposition 2) with the following fact:
+  \begin{equation*}
+    \forall c_1, c_2 \in \mathbb{R},\;
+    \Big(c_1 y_1(t) + c_2 y_2(t) = 0\Big)
+    \; \to \;
+    \Big(c_1 y_1'(t) + c_2 y_2'(t) = 0\Big)
+  \end{equation*}
+\end{proof}
+
 \begin{theorem}
   {}\label{thm: Wronskian and IVP with homogeneous ODE}
   Suppose \(p(t)\) and \(q(t)\) are continuous on an open interval \(I\),
-  and \(y_1\) and \(y_2\) are two linearly independent solutions
-  of the homogeneous equation
+  and \(y_1\) and \(y_2\) are two solutions of the ODE
   \begin{equation}
     y'' + p(t)\cdot y' + q(t)\cdot y = 0
     \qfor t \in I
@@ -223,13 +323,22 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
     \label{eq: local.02 IVP of y}
   \end{equation}
   Then, for \(t \in I\),
-  \begin{equation*}
+  \begin{equation}
     \exists !\, c_1, c_2 \in \mathbb{R} \text{ s.t. }
     \phi(t) = c_1 y_1(t) + c_2 y_2(t)
     \qquad\iff\qquad
     W(y_1,y_2)(t_0) \neq 0
-  \end{equation*}
+    \label{eq: local.05 the proposition}
+  \end{equation}
 \end{theorem}
+
+\begin{remark}
+  In the assumption, \(y_1\) and \(y_2\) are not required to be
+  linearly independent.
+  Thus \(c_1,c_2\) are required to be unique in
+  the left hand side of
+  \cref{eq: local.05 the proposition}.
+\end{remark}
 
 \begin{proof}\noindent
   \subparagraph*{Sufficiency.}
@@ -305,8 +414,7 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
 \begin{theorem}
   {}\label{thm: Wronskian and general solution of a homogeneous ODE}
   Suppose \(p(t)\) and \(q(t)\) are continuous on an open interval \(I\),
-  and \(y_1\) and \(y_2\) are two linearly independent solutions of
-  the homogeneous equation
+  and \(y_1\) and \(y_2\) are two solutions of ODE
   \begin{equation*}
     y'' + p(t)\cdot y' + q(t)\cdot y = 0
   \end{equation*}
@@ -323,6 +431,19 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   \textbf{fundamental set of solutions (FSS)} of the ODE,
   if their Wronskian is non-zero.
 \end{theorem}
+
+\begin{remark}
+  Theorem~\ref{thm: Wronskian and general solution of a homogeneous ODE}
+  is used to determine whether a given pair of solutions
+  \(y_1, y_2\) form a FSS,
+  rather than verifying the existence and form of solutions.
+  An ODE satisfying the condition (continuous coefficients)
+  always has solutions, and the solutions form a 2D vector space.
+  By Theorem~\ref{thm: linear dependence and Wronskian}
+  (\nameref{thm: linear dependence and Wronskian}),
+  the linear independence of \(y_1, y_2\) also indicates
+  that they form a FSS\@.
+\end{remark}
 
 \begin{proof}
   \newcommand{\Sivp}[1]{\mathcal{S}_{\mathtt{IVP}}[#1]}
@@ -416,6 +537,47 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
     \Big)
   \end{equation*}
   This completes the proof.
+\end{proof}
+
+\begin{theorem}[Existence of Fundamental Set of Solutions]
+  {}\label{thm: Existence of Fundamental Set of Solutions}
+  If \(p(t)\) and \(q(t)\) are continuous on an open interval \(I\),
+  then there must exist fundamental sets of solutions for the following ODE\@:
+  \begin{equation}
+    y'' + p(t)\cdot y' + q(t)\cdot y = 0
+    \qfor t \in I
+    \label{eq: local.04 ODE}
+  \end{equation}
+
+  A FSS can be constructed as follows:
+  Pick any \(t_0 \in I\), and let \(y_1\) be the solution
+  of \cref{eq: local.04 ODE} with initial conditions
+  \begin{equation*}
+    y_1(t_0) = 1, \quad y_1'(t_0) = 0
+  \end{equation*}
+  Let \(y_2\) be the solution of \cref{eq: local.04 ODE} with initial conditions
+  \begin{equation*}
+    y_2(t_0) = 0, \quad y_2'(t_0) = 1
+  \end{equation*}
+  Then, \(y_1\) and \(y_2\) form a FSS of \cref{eq: local.04 ODE}.
+\end{theorem}
+
+\begin{proof}
+  Theorem~\ref{thm: Existence and Uniqueness Theorem}
+  (\nameref{thm: Existence and Uniqueness Theorem})
+  guarantees the existence of \(y_1\) and \(y_2\).
+  By the definition of Wronskian, we have
+  \begin{equation*}
+    W(y_1,y_2)(t_0) =
+    \begin{vmatrix}
+      1 & 0 \\
+      0 & 1
+    \end{vmatrix} = 1 \neq 0
+  \end{equation*}
+  By the \hyperref[thm: corollary of Abel's Theorem]{
+  corollary of Abel's Theorem},
+  \(W(y_1,y_2)(t) \neq 0\) for all \(t \in I\).
+  \(y_1\) and \(y_2\) form a FSS of \cref{eq: local.04 ODE}.
 \end{proof}
 
 
