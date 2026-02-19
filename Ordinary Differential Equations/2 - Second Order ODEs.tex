@@ -1,0 +1,422 @@
+\documentclass[10pt,UTF8]{article}
+
+
+\usepackage{geometry}
+
+\usepackage{ctex}
+
+\geometry{a4paper,scale=0.9}
+\ctexset{today=old}
+
+% \usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+
+\usepackage{bm} % 数学粗体（避免斜体被取消）
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{esint} % 提供更丰富的积分符号
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+% \usepackage{bussproofs} % 自然演绎推理树
+
+% 交叉引用
+% 关闭边框，设置颜色
+\usepackage[colorlinks=true, linkcolor=darkgray, citecolor=teal,
+urlcolor=blue]{hyperref}
+% 使 \cref 和 \Cref 可用
+\usepackage{cleveref}
+
+\usepackage{bookmark}  % 生成 PDF 大纲
+
+\allowdisplaybreaks[3]  % 允许换页
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipBox}
+{
+  \begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{conceptBox}
+{
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{theoremBoxNoIndent}
+{
+\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{definitionBox}
+{
+  \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{theoremBox}
+{
+  \begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{
+  \begin{definitionBox}
+  \begin{definition inner}[#1]\hfill\par}
+    {
+    \end{definition inner}
+\end{definitionBox}}
+
+\theoremstyle{definition}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{
+  \begin{theoremBox}
+  \begin{theorem inner}[#1]\hfill\par}
+    {
+    \end{theorem inner}
+\end{theoremBox}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{
+\begin{proof inner}[#1]\hfill\par}
+  {\qed\vphantom{.}
+\end{proof inner}}
+
+\theoremstyle{plain}
+\newtheorem{tip inner}{Tip}[section]
+\newenvironment{tip}[1][]
+{
+  \begin{tipBox}
+  \begin{tip inner}[#1]\hfill\par}
+    {
+    \end{tip inner}
+\end{tipBox}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\iu}{\mathrm{i}}  % 虚数单位 i
+
+
+\begin{document}
+
+\part*{Second Order ODEs}
+
+The \textbf{general form} of a second order ODE is
+\[
+  \dv[2]{y}{t} = f(t,y,\dv{y}{t})
+\]
+for some given function \(f\).
+
+\section{Linear Homogeneous Equations}
+
+\begin{definition}[Linear Equation]
+  A second order ODE is called \textbf{linear}
+  if it can be written in the form
+  \[
+    a(t)\cdot y'' + b(t)\cdot y' + c(t)\cdot y = g(t)
+  \]
+\end{definition}
+
+If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
+\( y'' + p(t)\cdot y' + q(t)\cdot y = r(t) \).
+
+\begin{definition}[Homogeneous Equation]
+  A linear equation is called \textbf{homogeneous}
+  if it can be written in the form
+  \[
+    a(t)\cdot y'' + b(t)\cdot y' + c(t)\cdot y = 0
+  \]
+  Otherwise, it is called \textbf{non-homogeneous}.
+\end{definition}
+
+\begin{theorem}[Existence and Uniqueness Theorem]
+  {}\label{thm: Existence and Uniqueness Theorem}
+  Consider the IVP\@:
+  \begin{equation*}
+    y'' + p(t)\cdot y' + q(t)\cdot y = r(t),
+    \qquad y(t_0) = y_0, \quad y'(t_0) = y_1
+  \end{equation*}
+  if there exists an open interval \(I \subseteq \mathbb{R}\)
+  such that \(t_0 \in I\) and \(p\), \(q\) and \(r\)
+  are \textbf{continuous} on \(I\),
+  then there is a \textbf{exact one} solution \(y = \phi(t)\),
+  and it exists \textbf{throughout} \(I\).
+\end{theorem}
+
+\begin{theorem}[Principle of Superposition]
+  {}\label{thm: Principle of Superposition}
+  If \(y_1\) and \(y_2\) are two solutions of the \textbf{homogeneous equation}
+  \[
+    a(t)\cdot y'' + b(t)\cdot y' + c(t)\cdot y = 0
+  \]
+  then any linear combination \(c_1 y_1(t) + c_2 y_2(t)\)
+  is also a solution of the ODE\@.
+\end{theorem}
+
+\begin{definition}[Wronskian]
+  {}\label{def: Wronskian}
+  The \textbf{Wronskian}, or \textbf{Wronskian determinant},
+  of two functions \(y_1\) and \(y_2\) is defined as
+  \[
+    W(y_1,y_2)(t) :=
+    \begin{vmatrix}
+      y_1(t) & y_2(t) \\
+      y_1'(t) & y_2'(t)
+    \end{vmatrix} = y_1(t)\cdot y_2'(t) - y_2(t)\cdot y_1'(t)
+  \]
+\end{definition}
+
+\begin{theorem}
+  {}\label{thm: Wronskian and IVP with homogeneous ODE}
+  Suppose \(p(t)\) and \(q(t)\) are continuous on an open interval \(I\),
+  and \(y_1\) and \(y_2\) are two linearly independent solutions
+  of the homogeneous equation
+  \begin{equation}
+    y'' + p(t)\cdot y' + q(t)\cdot y = 0
+    \qfor t \in I
+    \label{eq: local.01 ODE of y}
+  \end{equation}
+  Let \(\phi(t)\) be the \textbf{unique} solution
+  (by Theorem~\ref{thm: Existence and Uniqueness Theorem})
+  of the IVP\@:
+  \begin{equation}
+    y'' + p(t)\cdot y' + q(t)\cdot y = 0
+    \qquad y(t_0) = m, \quad y'(t_0) = n
+    \qfor t \in I \qand t_0 \in I
+    \label{eq: local.02 IVP of y}
+  \end{equation}
+  Then, for \(t \in I\),
+  \begin{equation*}
+    \exists !\, c_1, c_2 \in \mathbb{R} \text{ s.t. }
+    \phi(t) = c_1 y_1(t) + c_2 y_2(t)
+    \qquad\iff\qquad
+    W(y_1,y_2)(t_0) \neq 0
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}\noindent
+  \subparagraph*{Sufficiency.}
+  Since \(\phi(t_0) = m\) and \(\phi'(t_0) = n\), we have
+  \begin{align*}
+    \exists !\, c_1, c_2 \in \mathbb{R} \text{ s.t. }
+    \phi(t) = c_1 y_1(t) + c_2 y_2(t)
+    \quad&\implies\quad
+    \exists !\, c_1, c_2 \in \mathbb{R}\;
+    \text{ s.t.}
+    \begin{bmatrix}
+      y_1(t_0) & y_2(t_0) \\
+      y_1'(t_0) & y_2'(t_0)
+    \end{bmatrix}
+    \begin{bmatrix} c_1 \\ c_2
+    \end{bmatrix} =
+    \begin{bmatrix} m \\ n
+    \end{bmatrix} \\
+    &\implies\quad
+    \exists b_1, b_2 \in \mathbb{R},\;
+    \exists !\, c_1, c_2 \in \mathbb{R}\;
+    \text{ s.t.}
+    \begin{bmatrix}
+      y_1(t_0) & y_2(t_0) \\
+      y_1'(t_0) & y_2'(t_0)
+    \end{bmatrix}
+    \begin{bmatrix} c_1 \\ c_2
+    \end{bmatrix} =
+    \begin{bmatrix} b_1 \\ b_2
+    \end{bmatrix} \\
+    &\iff\quad
+    W(y_1,y_2)(t_0) \neq 0
+  \end{align*}
+  \subparagraph*{Necessity.}
+  \begin{equation*}
+    W(y_1,y_2)(t_0) \neq 0
+    \quad\implies\quad
+    \exists !\, c_1, c_2 \in \mathbb{R}\;
+    \text{ s.t.}
+    \begin{bmatrix}
+      y_1(t_0) & y_2(t_0) \\
+      y_1'(t_0) & y_2'(t_0)
+    \end{bmatrix}
+    \begin{bmatrix}
+      c_1 \\ c_2
+    \end{bmatrix} =
+    \begin{bmatrix}
+      m \\ n
+    \end{bmatrix}
+  \end{equation*}
+  Let \(\varphi(t) := c_1 y_1(t) + c_2 y_2(t), t\in I\).
+  Then we have \(\varphi(t_0) = m\) and \(\varphi'(t_0) = n\).
+  \begin{gather*}
+    \text{Theorem~\ref{thm: Principle of Superposition}
+    (\nameref{thm: Principle of Superposition})}
+    \quad\implies\quad
+    \varphi(t) \text{ is a solution of the ODE \cref{eq: local.01 ODE of y}.} \\
+    \text{Theorem~\ref{thm: Existence and Uniqueness Theorem}
+    (\nameref{thm: Existence and Uniqueness Theorem})}
+    \quad\implies\quad
+    \varphi(t) \text{ is the \textbf{only} solution of the IVP in
+    \cref{eq: local.02 IVP of y}.}
+  \end{gather*}
+  Thus, \(\varphi(t) = \phi(t)\) and we have
+  \begin{equation*}
+    W(y_1,y_2)(t_0) \neq 0
+    \quad\implies\quad
+    \exists !\, c_1, c_2 \in \mathbb{R} \text{ s.t. }
+    \phi(t) = \varphi(t) = c_1 y_1(t) + c_2 y_2(t)
+  \end{equation*}
+\end{proof}
+
+\begin{theorem}
+  {}\label{thm: Wronskian and general solution of a homogeneous ODE}
+  Suppose \(p(t)\) and \(q(t)\) are continuous on an open interval \(I\),
+  and \(y_1\) and \(y_2\) are two linearly independent solutions of
+  the homogeneous equation
+  \begin{equation*}
+    y'' + p(t)\cdot y' + q(t)\cdot y = 0
+  \end{equation*}
+  for \(t \in I\).
+  Then,
+  \begin{equation*}
+    \text{The \textbf{general solution} is given by }
+    \phi(t) = c_1 y_1(t) + c_2 y_2(t).
+    \quad\iff\quad
+    \exists t_0 \in I \text{ s.t. } W(y_1,y_2)(t_0) \neq 0.
+  \end{equation*}
+
+  \(y_1, y_2\) are said to form a
+  \textbf{fundamental set of solutions (FSS)} of the ODE,
+  if their Wronskian is non-zero.
+\end{theorem}
+
+\begin{proof}
+  \newcommand{\Sivp}[1]{\mathcal{S}_{\mathtt{IVP}}[#1]}
+  \newcommand{\blue}[1]{\textcolor{blue}{#1}}
+  \newcommand{\red}[1]{\textcolor{red}{#1}}
+  \newcommand{\teal}[1]{\textcolor{teal}{#1}}
+  Let \(S\) denote the set of all solutions of the ODE\@.
+  We aim to prove that
+  \begin{equation*}
+    \forall y \in S, \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+    y(t) = c_1 y_1(t) + c_2 y_2(t)
+    \quad\iff\quad
+    \exists t_0 \in I \text{ s.t. } W(y_1,y_2)(t_0) \neq 0
+  \end{equation*}
+
+  Let \(\Sivp{t^*,m,n}\) denote the solution of the following IVP
+  (by Theorem~\ref{thm: Existence and Uniqueness Theorem},
+  there is exactly one solution):
+  \begin{equation*}
+    y'' + p(t)\cdot y' + q(t)\cdot y = 0
+    \qquad y(t^*) = m, \quad y'(t^*) = n
+    \qfor t \in I \qand t^* \in I
+  \end{equation*}
+
+  By Theorem~\ref{thm: Wronskian and IVP with homogeneous ODE},
+  we have
+  \begin{equation*}
+    \forall \teal{t_0} \in I \Big[
+      \Big(W(y_1,y_2)(\teal{t_0}) \neq 0\Big)
+      \; \leftrightarrow \;
+      \forall \red{m},\red{n} \Big(
+        \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+        \Sivp{\teal{t_0},\red{m},\red{n}} = c_1 y_1 + c_2 y_2
+      \Big)
+    \Big]
+  \end{equation*}
+  Instantiate \(\red{m},\red{n}\) with
+  \(\blue{y}(\teal{t_0}), \blue{y'}(\teal{t_0})\)
+  for all \(\blue{y} \in S\):
+  \begin{equation*}
+    \forall \teal{t_0} \in I \Big[
+      \Big(W(y_1,y_2)(\teal{t_0}) \neq 0\Big)
+      \; \leftrightarrow \;
+      \forall \blue{y \in S} \Big(
+        \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+        \Sivp{
+          \teal{t_0},
+          \blue{y}(\teal{t_0}),
+          \blue{y'}(\teal{t_0})
+        } = c_1 y_1 + c_2 y_2
+      \Big)
+    \Big]
+  \end{equation*}
+  Since \(\blue{y}\) satisfies the ODE and initial conditions itself,
+  \(\Sivp{\teal{t_0},\blue{y}(\teal{t_0}),\blue{y'}(\teal{t_0})}\)
+  is identical to \(\blue{y}\). Thus we obtain
+  \begin{equation}
+    \forall \teal{t_0} \in I \Big[
+      \Big(W(y_1,y_2)(\teal{t_0}) \neq 0\Big)
+      \; \leftrightarrow \;
+      \forall \blue{y \in S} \Big(
+        \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+        \blue{y} = c_1 y_1 + c_2 y_2
+      \Big)
+    \Big]
+    \label{eq: local.03 forall t_0}
+  \end{equation}
+
+  Now we can apply the following corollary
+  from first-order formal logic:
+  \begin{equation*}
+    \Big( \exists x. R(x) \Big) \; \land \;
+    \forall x. \Big(R(x) \to (P(x)
+    \leftrightarrow Q) \Big)
+    \quad\implies\quad
+    \Big( \exists x. (R(x) \land P(x)) \Big)
+    \leftrightarrow Q
+  \end{equation*}
+  (Note that \(Q\) does not depend on \(x\)).
+  Identifying \(R(x)\) with \(x \in I\),
+  \(P(x)\) with \(W(y_1,y_2)(x) \neq 0\),
+  and noting \(I\) is non-empty so that \(\exists\teal{t_0} \in I\),
+  we can transform~\cref{eq: local.03 forall t_0} into
+  \begin{equation*}
+    \Big( \exists\teal{t_0} \in I,\;
+    W(y_1,y_2)(\teal{t_0}) \neq 0\Big)
+    \; \leftrightarrow \;
+    \forall \blue{y \in S} \Big(
+      \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+      \blue{y} = c_1 y_1 + c_2 y_2
+    \Big)
+  \end{equation*}
+  This completes the proof.
+\end{proof}
+
+
+\end{document}
