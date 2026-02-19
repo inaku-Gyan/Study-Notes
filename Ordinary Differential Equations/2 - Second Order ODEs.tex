@@ -215,10 +215,15 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   \begin{equation*}
     W(y_1,y_2)(t) = \textcolor{red}{c} \cdot
     \exp(-\int \textcolor{blue}{p(t)} \dd{t})
-    \qquad\text{ where } \textcolor{red}{c}
+    \qquad\text{ where } \textcolor{red}{c \in \mathbb{R}}
     \text{ is a constant depending on } y_1, y_2
   \end{equation*}
 \end{theorem}
+
+\begin{remark}
+  If \(y(t),p(t),q(t) \in \mathbb{C}\),
+  then \(c \in \mathbb{C}\).
+\end{remark}
 
 \begin{theoremBox}\noindent
   \textbf{Corollary}
@@ -243,7 +248,7 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
     W' + p \cdot W = 0 \\
     &\implies
     W = c \cdot \exp(-\int p(t) \dd{t})
-    \qq{ for some constant} c \in \mathbb{R}
+    \qq{ for some constant} c
   \end{align*}
 \end{proof}
 
@@ -264,12 +269,12 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   \begin{align*}
     \text{linear independence}
     \quad&\iff\quad
-    \forall c_1, c_2 \in \mathbb{R},\;
+    \forall c_1, c_2 \in \mathbb{C},\;
     \Big(c_1 y_1(t) + c_2 y_2(t) = 0\Big)
     \; \to \; \Big(c_1 = c_2 = 0\Big)
-    \tag{Proposition 1} \\
+    \tag*{[Proposition 1]} \\
     &\iff\quad
-    \forall c_1, c_2 \in \mathbb{R},\;
+    \forall c_1, c_2 \in \mathbb{C},\;
     \begin{bmatrix}
       y_1(t) & y_2(t) \\
       y_1'(t) & y_2'(t)
@@ -286,7 +291,7 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
     \begin{bmatrix}
       0 \\ 0
     \end{bmatrix}
-    \tag{Proposition 2} \\
+    \tag*{[Proposition 2]} \\
     &\iff\quad
     W(y_1,y_2)(t) \not\equiv 0 \\
     &\iff\quad
@@ -294,10 +299,10 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
     \qq{by the \hyperref[thm: corollary of Abel's Theorem]{
     corollary of Abel's Theorem}}
   \end{align*}
-  [(Proposition 2) \(\implies \) (Proposition 1)] is obtained by
-  combining (Proposition 2) with the following fact:
+  \big([Proposition 2] \(\implies \) [Proposition 1]\big) is obtained by
+  combining [Proposition 2] with the following fact:
   \begin{equation*}
-    \forall c_1, c_2 \in \mathbb{R},\;
+    \forall c_1, c_2 \in \mathbb{C},\;
     \Big(c_1 y_1(t) + c_2 y_2(t) = 0\Big)
     \; \to \;
     \Big(c_1 y_1'(t) + c_2 y_2'(t) = 0\Big)
@@ -579,6 +584,9 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   \(W(y_1,y_2)(t) \neq 0\) for all \(t \in I\).
   \(y_1\) and \(y_2\) form a FSS of \cref{eq: local.04 ODE}.
 \end{proof}
+
+\section{Homogeneous Equations with Constant Coefficients}
+
 
 
 \end{document}
