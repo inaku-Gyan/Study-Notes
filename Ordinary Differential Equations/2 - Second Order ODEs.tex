@@ -603,4 +603,67 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   satisfy the ODE\@.
 \end{proof}
 
+\begin{theorem}
+  For the linear ODE with constant coefficients
+  \begin{equation}
+    a y'' + b y' + c y = 0
+  \end{equation}
+  the \textbf{characteristic equation} is given by
+  \begin{equation*}
+    a r^2 + b r + c = 0
+  \end{equation*}
+  Let \(r_1, r_2\) be the two roots and \(\Delta := b^2 - 4 a c\)
+  be the discriminant. Then,
+  \begin{itemize}
+    \item If \(\Delta > 0\), then \(r_1 \neq r_2 \in \mathbb{R}\),
+      and the general solution is given by
+      \begin{equation*}
+        y(t) = c_1 e^{r_1 t} + c_2 e^{r_2 t}
+      \end{equation*}
+    \item If \(\Delta = 0\), then \(r_1 = r_2 \in \mathbb{R}\),
+      and the general solution is given by
+      \begin{equation*}
+        y(t) = (c_1 + c_2 t) e^{-\frac{b}{2 a} t}
+      \end{equation*}
+    \item If \(\Delta < 0\), then \(r_1 = \overline{r_2} \in \mathbb{C}\).
+      Let \(\lambda := \Re(r_1), \quad \mu := \Im(r_1)\).
+      The general solution is given by
+      \begin{gather*}
+        y(t) = e^{\lambda t} \Big(
+          c_1 \cos(\mu t) + c_2 \sin(\mu t)
+        \Big)
+        \qquad \text{(real-valued when \(a,b,c,c_1,c_2\in\mathbb{R}\))} \\
+        \qor
+        y(t) = e^{\lambda t} \Big(
+          c_1 \cos(\mu t) + \textcolor{red}{\iu}\, c_2 \sin(\mu t)
+        \Big)
+        \qquad \text{(complex-valued)}
+      \end{gather*}
+  \end{itemize}
+\end{theorem}
+
+\begin{proof}
+  The general solutions are derived by substituting
+  the ansatz \( y(t) = e^{rt} \) into the differential equation
+  and applying
+  Theorem~\ref{thm: Wronskian and general solution of a homogeneous ODE}.
+
+  When \(\Delta < 0\),
+  the characteristic equation yields complex conjugate roots,
+  leading to complex-valued solutions.
+  However, if the coefficients \( a, b, c \in \mathbb{R} \),
+  we may apply Theorem~\ref{thm: complex solution to real solutions}
+  to construct an equivalent real-valued general solution.
+
+  When \(\Delta = 0\),
+  he characteristic equation has a repeated real root \( r \),
+  yielding only one solution \( y_1(t) = e^{rt} \).
+  To form a fundamental set of solutions,
+  we require a second linearly independent solution.
+  Using Theorem~\ref{thm: Abel's Theorem} (\nameref{thm: Abel's Theorem}),
+  we can obtain \( y_2(t) = t e^{rt} \).
+  \textit{(Note: Any solution linearly independent of \( y_1(t) \) is
+  acceptable, though \( t e^{rt} \) is the standard choice.)}
+\end{proof}
+
 \end{document}
