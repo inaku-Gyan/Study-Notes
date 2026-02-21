@@ -666,4 +666,30 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   acceptable, though \( t e^{rt} \) is the standard choice.)}
 \end{proof}
 
+\begin{theorem}[Reduction of Order]
+  {}\label{thm: Reduction of Order}
+  If \(y_1\) is a non-zero solution of the ODE
+  \begin{equation*}
+    y'' + p(t)\cdot y' + q(t)\cdot y = 0
+    \qfor t \in I
+  \end{equation*}
+  then a second linearly independent solution \(y_2\) can be found by
+  \begin{equation*}
+    y_2(t) = y_1(t) \int
+    \frac{\exp(-\int p(t) \dd{t})}{{[y_1(t)]}^2} \dd{t}
+  \end{equation*}
+\end{theorem}
+
+\begin{proof}
+  We suppose \(y_2(t) = v(t) y_1(t)\) for some function \(v\).
+  Substituting \(y_2\) into the ODE\@, we have
+  \begin{equation*}
+    y_1 v'' + (2 y_1' + p y_1) v' = 0
+  \end{equation*}
+  Thus \(v\) can be solved.
+  \begin{equation*}
+    v'(t) = \frac{1}{y_1^2(t)} \exp(-\int p(t) \dd{t})
+  \end{equation*}
+\end{proof}
+
 \end{document}
