@@ -587,6 +587,20 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
 
 \section{Homogeneous Equations with Constant Coefficients}
 
+\begin{theorem}
+  {}\label{thm: complex solution to real solutions}
+  Given an ODE with \textbf{real-valued} coefficients
+  \begin{equation*}
+    y'' + p(t)\cdot y' + q(t)\cdot y = 0
+  \end{equation*}
+  if \(y\) is a \textbf{complex-valued} solution of the ODE\@,
+  then \(\Re(y), \Im(y)\) are also solutions of the ODE\@.
+\end{theorem}
 
+\begin{proof}
+  Substitute \(y(t) = u(t) + \iu \, v(t)\) into the ODE\@,
+  and it can be verified that both \(u(t)\) and \(v(t)\)
+  satisfy the ODE\@.
+\end{proof}
 
 \end{document}
