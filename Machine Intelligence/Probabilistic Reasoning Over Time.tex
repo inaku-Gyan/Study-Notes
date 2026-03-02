@@ -2,10 +2,9 @@
 
 \usepackage{geometry}
 
-\usepackage{ctex}
+\usepackage[scheme=plain]{ctex}
 
 \geometry{a4paper,scale=0.9}
-\ctexset{today=old}
 
 \usepackage{booktabs}
 
@@ -28,7 +27,9 @@
 
 % \usepackage{graphicx} %插入图片的宏包
 % \usepackage{subfigure}
-% \usepackage{float} %设置图片浮动位置的宏包
+\usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{caption} % 提供 \captionof 命令
 
 \usepackage{amsmath}
 % \usepackage{esint} % 提供更丰富的积分符号
@@ -145,7 +146,7 @@ urlcolor=blue]{hyperref}
 % \usegdlibrary{trees, layered, force} % 可选布局算法
 
 \usepackage{tkz-graph}
-\usetikzlibrary{shapes.geometric} % 引入椭圆形状支持
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, calc}
 
 \DeclareMathOperator{\Pa}{Parents} % Parents
 \DeclareMathOperator{\Ch}{Children} % Children
@@ -161,6 +162,8 @@ urlcolor=blue]{hyperref}
 \part*{Probabilistic Reasoning Over Time}
 
 \section{Markov Chains}
+
+\subsection{Definitions}
 
 \paragraph*{Stochastic Process}
 A stochastic process is a family of random variables
@@ -194,5 +197,320 @@ the current state depends only on the immediately preceding state, i.e.,
   \qq{for any \(t\)}
 \end{equation*}
 In the following sections, we will focus on first-order Markov processes.
+Without specification, a Markov process is assumed to be first-order.
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      state/.style={
+        ellipse,
+        draw,
+        minimum width=1.4cm,
+        minimum height=0.8cm,
+        inner sep=1pt,
+        font=\large
+      },
+      node distance=1.2cm, % 节点之间的水平距离
+      >={Latex[length=2.5mm]} % 箭头样式
+    ]
+
+    \node[state] (xtm2) {$X_{t-2}$};
+    \node[state, right=of xtm2] (xtm1) {$X_{t-1}$};
+    \node[state, right=of xtm1] (xt)   {$X_{t}$};
+    \node[state, right=of xt]   (xtp1) {$X_{t+1}$};
+    \node[state, right=of xtp1] (xtp2) {$X_{t+2}$};
+
+    \draw[->] (xtm2) -- (xtm1);
+    \draw[->] (xtm1) -- (xt);
+    \draw[->] (xt)   -- (xtp1);
+    \draw[->] (xtp1) -- (xtp2);
+
+    \draw[<-] (xtm2) -- +(-1.5, 0);
+    \draw[->] (xtp2) -- +(1.5, 0);
+  \end{tikzpicture}
+  \caption{A first-order Markov process.}
+\end{figure}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      state/.style={
+        ellipse,
+        draw,
+        minimum width=1.4cm,
+        minimum height=0.8cm,
+        inner sep=1pt,
+        font=\large
+      },
+      node distance=1.2cm,
+      >={Latex[length=2.5mm]}
+    ]
+
+    \node[state] (xtm2) {$X_{t-2}$};
+    \node[state, right=of xtm2] (xtm1) {$X_{t-1}$};
+    \node[state, right=of xtm1] (xt)   {$X_{t}$};
+    \node[state, right=of xt]   (xtp1) {$X_{t+1}$};
+    \node[state, right=of xtp1] (xtp2) {$X_{t+2}$};
+
+    \draw[->] (xtm2) -- (xtm1);
+    \draw[->] (xtm1) -- (xt);
+    \draw[->] (xt)   -- (xtp1);
+    \draw[->] (xtp1) -- (xtp2);
+
+    \draw[->] (xtm2) to[bend left=45] (xt);
+    \draw[->] (xtm1) to[bend left=45] (xtp1);
+    \draw[->] (xt)   to[bend left=45] (xtp2);
+
+    \draw[<-] (xtm2) -- +(-1.5, 0);
+    \draw[->] ($(xtm2.west) + (-1.5, 0.6)$) to[out=20, in=135] (xtm1.north);
+
+    \draw[->] (xtp2) -- +(1.5, 0);
+    \draw[->] (xtp1.north) to[out=45, in=160] ($(xtp2.east) + (1.5, 0.6)$);
+  \end{tikzpicture}
+  \caption{A second-order Markov processs.}
+\end{figure}
+
+\paragraph*{Transition Model}
+
+In a \emph{first-order} Markov process,
+the transition model is the conditional probability distribution
+\(P(X_t \mid X_{t-1})\).
+A transition model can be represented in several ways.
+The following figure shows different representations of the same
+transition model for a first-order Markov process.
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      >={Latex[length=2.5mm]},
+      every node/.style={font=\small},
+      weather/.style={
+        circle,
+        draw,
+        minimum width=0.9cm,
+        minimum height=0.9cm,
+        inner sep=1pt
+      }
+    ]
+    % (a) 3x3 table for the 2x2 transition matrix
+    \node (tbl) at (0, 0) {
+      \begin{tabular}{|c|c|c|}
+        \hline
+        $X_{t} \backslash X_{t-1}$ & Sunny & Rainy \\
+        \hline
+        Sunny & 0.8 & 0.3 \\
+        \hline
+        Rainy & 0.2 & 0.7 \\
+        \hline
+      \end{tabular}
+    };
+
+    % (b) directed graph with two weather states
+    \begin{scope}[xshift=6cm, yshift=-0.5cm]
+      \node[weather] (sun) at (-1.1, 0.45) {Sunny};
+      \node[weather] (rain) at (1.1, 0.45) {Rainy};
+
+      \draw[->] (sun) edge[loop above] node[above] {$0.8$} (sun);
+      \draw[->] (rain) edge[loop above] node[above] {$0.7$} (rain);
+      \draw[->] (sun) to[bend left=15] node[above] {$0.2$} (rain);
+      \draw[->] (rain) to[bend left=15] node[below] {$0.3$} (sun);
+    \end{scope}
+
+    % (c) bipartite representation between X_{t-1} and X_t
+    \begin{scope}[xshift=12cm]
+      \node[weather] (sunL) at (-1.4, 0.85) {Sunny};
+      \node[weather] (rainL) at (-1.4, -0.85) {Rainy};
+      \node[weather] (sunR) at (1.4, 0.85) {Sunny};
+      \node[weather] (rainR) at (1.4, -0.85) {Rainy};
+
+      \node at (-1.4, 1.65) {$X_{t-1}$};
+      \node at (1.4, 1.65) {$X_t$};
+
+      \draw[->] (sunL) -- node[above] {$0.8$} (sunR);
+      \draw[->] (sunL) -- node[pos=0.4, sloped, above] {$0.2$} (rainR);
+      \draw[->] (rainL) -- node[pos=0.4, sloped, below] {$0.3$} (sunR);
+      \draw[->] (rainL) -- node[below] {$0.7$} (rainR);
+    \end{scope}
+  \end{tikzpicture}
+  \caption{A transition model in three different representations.}
+\end{figure}
+
+From above, we can see that Markov processes
+are a special class of \emph{Bayesian networks}.
+And the transition model is
+the \emph{conditional probability table} (CPT) of
+the first-order Markov process.
+Compared to a general Bayesian network,
+a first-order Markov process has a simpler structure (a chain)
+and fewer parameters (only one CPT).
+
+\subsection{Markov Chain Inference}
+
+Inference on Markov chains is basically the same as
+inference in Bayesian networks.
+
+\paragraph*{Forward Algorithm}
+Forward algorithm is a dynamic programming algorithm
+used to solve queries about
+the current state given a previous state.
+It is simply based on the following equation:
+\begin{equation*}
+  \newcommand{\x}{\textcolor{blue}{x}}
+  P(X_t) =
+  \sum_{\x \, \in \, S }
+  P(X_t \mid X_{t-1} = \x) P(X_{t-1} = \x)
+  \qquad\qq{where}
+  S = \{ \text{all possible states} \}
+\end{equation*}
+
+\subparagraph*{Matrix representation}
+
+The forward algorithm can be expressed in matrix form.
+Suppose the set of all possible states is given by
+\(S = \{ s_1, s_2, \ldots, s_n \} \).
+Then we can represent the transition model
+as an \(n \times n\) matrix \(\bm{M}\),
+where the entry \(\bm{M}[i,j] := P(X_t = s_i \mid X_{t-1} = s_j)\).
+Let the vector \(\bm{p}_t\) represent
+the probability distribution of \(X_t\),
+i.e., \(\bm{p}_t[i] := P(X_t = s_i)\).
+Then the forward algorithm can be expressed as
+\begin{equation*}
+  \bm{p}_t = \bm{M} \bm{p}_{t-1}
+  \qq{i.e.}
+  \begin{bmatrix}
+    P(X_t = s_1) \\
+    \vdots \\
+    P(X_t = s_n)
+  \end{bmatrix}
+  =
+  \begin{bmatrix}
+    P(X_t = s_1 \mid X_{t-1} = s_1)
+    & \cdots & P(X_t = s_1 \mid X_{t-1} = s_n) \\
+    \vdots & \ddots & \vdots \\
+    P(X_t = s_n \mid X_{t-1} = s_1)
+    & \cdots & P(X_t = s_n \mid X_{t-1} = s_n)
+  \end{bmatrix}
+  \begin{bmatrix}
+    P(X_{t-1} = s_1) \\
+    \vdots \\
+    P(X_{t-1} = s_n)
+  \end{bmatrix}
+\end{equation*}
+
+\section{Hidden Markov Model (HMM)}
+
+\subsection{Definitions}
+
+When the obseved variables are not the states of the Markov process,
+but are generated by the states, we have a hidden Markov model (HMM).
+
+\paragraph*{Sensor Markov Assumption}
+To make it easier,
+we assume that the current observation depends
+only on the current state, i.e.,
+\begin{equation*}
+  P(E_t \mid \big \{ X_{t-1}, X_{t-2}, \ldots,
+  E_{t-1}, E_{t-2}, \ldots \big \})
+  = P(E_t \mid X_t) \qq{for any \(t\)}
+\end{equation*}
+
+\paragraph*{Transition Model \& Sensor Model}
+In an HMM, we have two models
+(two CPTs in the corresponding Bayesian network):
+\begin{itemize}
+  \item Transition model (same as in Markov processes):
+    \(P(X_t \mid X_{t-1})\)
+  \item Sensor model (or observation model): \(P(E_t \mid X_t)\)
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      state/.style={
+        ellipse,
+        draw,
+        minimum width=1.4cm,
+        minimum height=0.8cm,
+        inner sep=1pt,
+        font=\large
+      },
+      obs/.style={
+        rectangle,
+        draw,
+        minimum width=1.4cm,
+        minimum height=0.8cm,
+        inner sep=1pt,
+        font=\large
+      },
+      node distance=1.2cm, % 节点之间的水平距离
+      >={Latex[length=2.5mm]} % 箭头样式
+    ]
+
+    \node[state] (xtm2) {$X_{t-2}$};
+    \node[state, right=of xtm2] (xtm1) {$X_{t-1}$};
+    \node[state, right=of xtm1] (xt)   {$X_{t}$};
+    \node[state, right=of xt]   (xtp1) {$X_{t+1}$};
+    \node[state, right=of xtp1] (xtp2) {$X_{t+2}$};
+
+    \node[obs, below=1.2cm of xtm2] (etm2) {$E_{t-2}$};
+    \node[obs, below=1.2cm of xtm1] (etm1) {$E_{t-1}$};
+    \node[obs, below=1.2cm of xt]   (et)   {$E_{t}$};
+    \node[obs, below=1.2cm of xtp1] (etp1) {$E_{t+1}$};
+    \node[obs, below=1.2cm of xtp2] (etp2) {$E_{t+2}$};
+
+    \draw[->] (xtm2) -- (xtm1);
+    \draw[->] (xtm1) -- (xt);
+    \draw[->] (xt)   -- (xtp1);
+    \draw[->] (xtp1) -- (xtp2);
+
+    \draw[->] (xtm2) -- (etm2);
+    \draw[->] (xtm1) -- (etm1);
+    \draw[->] (xt)   -- (et);
+    \draw[->] (xtp1) -- (etp1);
+    \draw[->] (xtp2) -- (etp2);
+
+    \draw[<-] (xtm2) -- +(-1.5, 0);
+    \draw[->] (xtp2) -- +(1.5, 0);
+  \end{tikzpicture}
+  \caption{A hidden Markov model (HMM).}
+\end{figure}
+
+\subsection{Inference}
+
+There are four basic inference tasks in a temporal model:
+\begin{itemize}
+  \item \textbf{Filtering}:
+    Finding the current state given all evidence up to now, i.e.,
+    computing
+    \begin{equation*}
+      P(X_t \mid E_1 = e_1, E_2 = e_2, \ldots, E_t = e_t)
+      \qquad\qq{or simply}
+      P(X_t \mid e_{1:t})
+    \end{equation*}
+  \item \textbf{Prediction}:
+    Finding the future state given all evidence up to now, i.e.,
+    computing
+    \begin{equation*}
+      P(X_{t+k} \mid e_{1:t})
+      \qq{for some \(k > 0\)}
+    \end{equation*}
+  \item \textbf{Smoothing}:
+    Finding the past state given all evidence up to now, i.e.,
+    computing
+    \begin{equation*}
+      P(X_{k} \mid e_{1:t})
+      \qq{for some \(0 \leq k < t\)}
+    \end{equation*}
+  \item \textbf{Most likely explanation}:
+    Finding the most likely sequence of states given all evidence up
+    to now, i.e.,
+    \begin{equation*}
+      \arg\max_{x_{1:t}} P(X_{1:t} = x_{1:t} \mid e_{1:t})
+    \end{equation*}
+\end{itemize}
+
+In addition to the above inference tasks,
+we also have \textbf{learning}:
+The transition and sensor models, if not yet known,
+can be learned from observations.
 
 \end{document}
