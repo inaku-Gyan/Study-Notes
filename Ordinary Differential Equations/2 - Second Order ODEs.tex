@@ -587,6 +587,8 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
 
 \section{Homogeneous Equations with Constant Coefficients}
 
+\subsection{}
+
 \begin{theorem}
   {}\label{thm: complex solution to real solutions}
   Given an ODE with \textbf{real-valued} coefficients
@@ -691,5 +693,43 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
     v'(t) = \frac{1}{y_1^2(t)} \exp(-\int p(t) \dd{t})
   \end{equation*}
 \end{proof}
+
+\subsection{Euler Equations}
+
+\begin{definition}[Euler Equation]
+  {}\label{def: Euler Equation}
+  Euler equations are the differential equations of the form
+  \begin{equation}
+    x^2 \dv[2]{y}{x} + A x \dv{y}{x} + B y = 0
+    \qfor x > 0
+    \label{eq: Euler Equation}
+  \end{equation}
+  where \(A, B\) are constants.
+\end{definition}
+
+Let \(x = e^t\), then we have
+\begin{align*}
+  \dv{y}{x} &= \dv{y}{(e^t)}
+  &
+  \dv[2]{y}{x}&= \dv{(e^t)} \left( \dv{y}{x} \right) \\
+  &= \frac{1}{e^t} \cdot \dv{y}{t}
+  &
+  &= \frac{1}{e^t \dd{t}} \cdot \dd( \frac{1}{e^t} \dv{y}{t} ) \\
+  &&&= \frac{1}{e^t \dd{t}} \left[
+    - \frac{\dd{t}}{e^t} \dv{y}{t} + \frac{1}{e^t} \dd(\dv{y}{t})
+  \right] \\
+  &&&= \frac{1}{e^{2 t}} \left[
+    - \dv{y}{t} + \dv[2]{y}{t}
+  \right]
+  \intertext{Thus,}
+  x \dv{y}{x} &= \dv{y}{t}
+  &
+  x^2 \dv[2]{y}{x} &= \dv[2]{y}{t} - \dv{y}{t}
+\end{align*}
+Substituting the above into \cref{eq: Euler Equation}, we have
+\begin{equation*}
+  \dv[2]{y}{t} + (A - 1) \dv{y}{t} + B y = 0
+\end{equation*}
+which is a linear homogeneous ODE with constant coefficients.
 
 \end{document}
