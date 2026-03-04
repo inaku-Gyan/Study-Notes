@@ -183,8 +183,10 @@ which satisfies the Markov assumption (or Markov property)
 of the current state depends on only a
 \emph{finite fixed number} of previous states, i.e.,
 \begin{equation*}
-  P(X_t \mid \big \{ X_{t-1}, X_{t-2}, \ldots \big \} )
-  = P(X_t \mid \big \{ X_{t-1}, X_{t-2}, \ldots, X_{t-k} \big \} )
+  P(\textcolor{red}{X_t} \mid \big \{
+  X_{t-1}, X_{t-2}, \ldots \big \} )
+  = P(\textcolor{red}{X_t} \mid \big \{
+  X_{t-1}, X_{t-2}, \ldots, X_{t-k} \big \} )
   \qq{for any \(t\)}
 \end{equation*}
 
@@ -192,8 +194,9 @@ of the current state depends on only a
 A first-order Markov process is a Markov process where
 the current state depends only on the immediately preceding state, i.e.,
 \begin{equation*}
-  P(X_t \mid \big \{ X_{t-1}, X_{t-2}, \ldots \big \} )
-  = P(X_t \mid X_{t-1})
+  P(\textcolor{red}{X_t} \mid \big \{
+  \textcolor{blue}{X_{t-1}}, X_{t-2}, \ldots \big \} )
+  = P(\textcolor{red}{X_t} \mid \textcolor{blue}{X_{t-1}})
   \qq{for any \(t\)}
 \end{equation*}
 In the following sections, we will focus on first-order Markov processes.
@@ -408,9 +411,11 @@ To make it easier,
 we assume that the current observation depends
 only on the current state, i.e.,
 \begin{equation*}
-  P(E_t \mid \big \{ X_{t-1}, X_{t-2}, \ldots,
-  E_{t-1}, E_{t-2}, \ldots \big \})
-  = P(E_t \mid X_t) \qq{for any \(t\)}
+  P(\textcolor{red}{E_t} \mid \big \{
+      \textcolor{blue}{X_t}, X_{t-1}, X_{t-2},
+  \ldots, E_{t-1}, E_{t-2}, \ldots \big \})
+  = P(\textcolor{red}{E_t} \mid \textcolor{blue}{X_t})
+  \qq{for any \(t\)}
 \end{equation*}
 
 \paragraph*{Transition Model \& Sensor Model}
@@ -498,7 +503,7 @@ There are four basic inference tasks in a temporal model:
     computing
     \begin{equation*}
       P(X_{k} \mid \bm{e}_{1:t})
-      \qq{for some \(0 \leq k < t\)}
+      \qq{for some \(0 < k < t\)}
     \end{equation*}
   \item \textbf{Most likely explanation}:
     Finding the most likely sequence of states given all evidence up
@@ -513,5 +518,38 @@ In addition to the above inference tasks,
 we also have \textbf{learning}:
 The transition and sensor models, if not yet known,
 can be learned from observations.
+
+\subsubsection{Filtering and Prediction}
+
+Let \( \alpha \) be the normalization constant that
+dose not depend on \(x_t\).
+\begin{align*}
+  P(X_t = x_t \mid \bm{e}_{1:t})
+  &= \alpha \cdot P(X_t = x_t, \bm{e}_{1:t-1}, e_t) \\
+  &= \alpha \cdot P(e_t \mid X_t = x_t, \bm{e}_{1:t-1})
+  \cdot P(X_t = x_t, \bm{e}_{1:t-1})
+  \qquad\text{by Bayes' Theorem} \\
+  &= \alpha \cdot P(e_t \mid X_t = x_t)
+  \cdot P(X_t = x_t, \bm{e}_{1:t-1})
+  \qquad\text{by sensor Markov assumption}
+  \intertext{
+    Note that the term \(P(X_t = x_t, \bm{e}_{1:t-1})\)
+    represents a one-step prediction.
+  }
+  &= \alpha \cdot P(e_t \mid X_t = x_t)
+  \cdot \sum_{x_{t-1}} P(X_t = x_t, X_{t-1} = x_{t-1}, \bm{e}_{1:t-1}) \\
+  &= \alpha \cdot P(e_t \mid X_t = x_t)
+  \cdot \sum_{x_{t-1}} P(X_t = x_t \mid X_{t-1} = x_{t-1}, \bm{e}_{1:t-1})
+  P(X_{t-1} = x_{t-1}, \bm{e}_{1:t-1}) \\
+  &= \alpha \cdot P(e_t \mid X_t = x_t)
+  \cdot \sum_{x_{t-1}} P(X_t = x_t \mid X_{t-1} = x_{t-1})
+  P(X_{t-1} = x_{t-1}, \bm{e}_{1:t-1})
+  \qquad\text{by Markov assumption}
+\end{align*}
+In the above result,
+the three probability terms on the right-hand side are given by
+the sensor model, the transition model, and the previous filtering result,
+respectively.
+Thus, filtering and prediction can be solved by iterating the above equation.
 
 \end{document}
