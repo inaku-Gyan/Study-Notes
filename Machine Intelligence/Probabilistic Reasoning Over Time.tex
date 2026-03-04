@@ -484,27 +484,28 @@ There are four basic inference tasks in a temporal model:
     \begin{equation*}
       P(X_t \mid E_1 = e_1, E_2 = e_2, \ldots, E_t = e_t)
       \qquad\qq{or simply}
-      P(X_t \mid e_{1:t})
+      P(X_t \mid \bm{e}_{1:t})
     \end{equation*}
   \item \textbf{Prediction}:
     Finding the future state given all evidence up to now, i.e.,
     computing
     \begin{equation*}
-      P(X_{t+k} \mid e_{1:t})
+      P(X_{t+k} \mid \bm{e}_{1:t})
       \qq{for some \(k > 0\)}
     \end{equation*}
   \item \textbf{Smoothing}:
     Finding the past state given all evidence up to now, i.e.,
     computing
     \begin{equation*}
-      P(X_{k} \mid e_{1:t})
+      P(X_{k} \mid \bm{e}_{1:t})
       \qq{for some \(0 \leq k < t\)}
     \end{equation*}
   \item \textbf{Most likely explanation}:
     Finding the most likely sequence of states given all evidence up
     to now, i.e.,
     \begin{equation*}
-      \arg\max_{x_{1:t}} P(X_{1:t} = x_{1:t} \mid e_{1:t})
+      \arg\max_{\bm{x}_{1:t}}
+      P(\bm{X}_{1:t} = \bm{x}_{1:t} \mid \bm{e}_{1:t})
     \end{equation*}
 \end{itemize}
 
