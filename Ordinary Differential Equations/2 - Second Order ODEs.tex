@@ -459,29 +459,31 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   Let \(S\) denote the set of all solutions of the ODE\@.
   We aim to prove that
   \begin{equation*}
-    \forall y \in S, \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+    \forall y \in S, \exists! c_1, c_2 \in \mathbb{R} \text{ s.t. }
     y(t) = c_1 y_1(t) + c_2 y_2(t)
-    \quad\iff\quad
+    \quad\leftrightarrow\quad
     \exists t_0 \in I \text{ s.t. } W(y_1,y_2)(t_0) \neq 0
   \end{equation*}
 
-  Let \(\Sivp{t^*,m,n}\) denote the solution of the following IVP
+  Let \(\Sivp{\teal{t^*},\red{m},\red{n}}\) denote the solution of
+  the following IVP
   (by Theorem~\ref{thm: Existence and Uniqueness Theorem},
   there is exactly one solution):
   \begin{equation*}
     y'' + p(t)\cdot y' + q(t)\cdot y = 0
-    \qquad y(t^*) = m, \quad y'(t^*) = n
-    \qfor t \in I \qand t^* \in I
+    \qquad y(\teal{t^*}) = \red{m}, \quad y'(\teal{t^*}) = \red{n}
+    \qfor t \in I \qand \teal{t^*} \in I
   \end{equation*}
 
   By Theorem~\ref{thm: Wronskian and IVP with homogeneous ODE},
   we have
   \begin{equation*}
-    \forall \teal{t_0} \in I \Big[
+    \forall \teal{t_0} \in I, \forall \red{m},\red{n} \in \mathbb{R}
+    \Big[
       \Big(W(y_1,y_2)(\teal{t_0}) \neq 0\Big)
       \; \leftrightarrow \;
-      \forall \red{m},\red{n} \Big(
-        \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+      \Big(
+        \exists! c_1, c_2 \in \mathbb{R} \text{ s.t. }
         \Sivp{\teal{t_0},\red{m},\red{n}} = c_1 y_1 + c_2 y_2
       \Big)
     \Big]
@@ -490,11 +492,11 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   \(\blue{y}(\teal{t_0}), \blue{y'}(\teal{t_0})\)
   for all \(\blue{y} \in S\):
   \begin{equation*}
-    \forall \teal{t_0} \in I \Big[
+    \forall \teal{t_0} \in I, \forall \blue{y} \in S \Big[
       \Big(W(y_1,y_2)(\teal{t_0}) \neq 0\Big)
       \; \leftrightarrow \;
-      \forall \blue{y \in S} \Big(
-        \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+      \Big(
+        \exists! c_1, c_2 \in \mathbb{R} \text{ s.t. }
         \Sivp{
           \teal{t_0},
           \blue{y}(\teal{t_0}),
@@ -507,38 +509,41 @@ If \(a(t) \neq 0\), we can divide both sides by \(a(t)\) to get
   \(\Sivp{\teal{t_0},\blue{y}(\teal{t_0}),\blue{y'}(\teal{t_0})}\)
   is identical to \(\blue{y}\). Thus we obtain
   \begin{equation}
-    \forall \teal{t_0} \in I \Big[
+    \forall \teal{t_0} \in I, \forall \blue{y} \in S \Big[
       \Big(W(y_1,y_2)(\teal{t_0}) \neq 0\Big)
       \; \leftrightarrow \;
-      \forall \blue{y \in S} \Big(
-        \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+      \Big(
+        \exists! c_1, c_2 \in \mathbb{R} \text{ s.t. }
         \blue{y} = c_1 y_1 + c_2 y_2
       \Big)
     \Big]
     \label{eq: local.03 forall t_0}
   \end{equation}
 
-  Now we can apply the following corollary
+  Now apply the following two corollaries
   from first-order formal logic:
-  \begin{equation*}
+  \begin{gather*}
     \Big( \exists x. R(x) \Big) \; \land \;
     \forall x. \Big(R(x) \to (P(x)
     \leftrightarrow Q) \Big)
     \quad\implies\quad
     \Big( \exists x. (R(x) \land P(x)) \Big)
+    \leftrightarrow Q \\
+    \Big( \exists x. R(x) \Big) \; \land \;
+    \forall x. \Big(R(x) \to (P(x)
+    \leftrightarrow Q) \Big)
+    \quad\implies\quad
+    \Big( \forall x. (R(x) \to P(x)) \Big)
     \leftrightarrow Q
-  \end{equation*}
-  (Note that \(Q\) does not depend on \(x\)).
-  Identifying \(R(x)\) with \(x \in I\),
-  \(P(x)\) with \(W(y_1,y_2)(x) \neq 0\),
-  and noting \(I\) is non-empty so that \(\exists\teal{t_0} \in I\),
+  \end{gather*}
+  Since both \(I\) and \(S\) are non-empty,
   we can transform~\cref{eq: local.03 forall t_0} into
   \begin{equation*}
     \Big( \exists\teal{t_0} \in I,\;
     W(y_1,y_2)(\teal{t_0}) \neq 0\Big)
     \; \leftrightarrow \;
-    \forall \blue{y \in S} \Big(
-      \exists c_1, c_2 \in \mathbb{R} \text{ s.t. }
+    \forall \blue{y} \in S \Big(
+      \exists! c_1, c_2 \in \mathbb{R} \text{ s.t. }
       \blue{y} = c_1 y_1 + c_2 y_2
     \Big)
   \end{equation*}
