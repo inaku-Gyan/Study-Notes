@@ -768,22 +768,52 @@ a particular solution \(y_p\).
 And since \(a y'' + b y' + c y = 0\) can be easily solved,
 we can obtain the general solution of the non-homogeneous ODE\@.
 
-Define the following polynomials:
-\begin{align*}
-  P_n(t) &:= A_n t^n + A_{n-1} t^{n-1} + \cdots + A_0 \\
-  Q_n(t) &:= B_n t^n + B_{n-1} t^{n-1} + \cdots + B_0 \\
-  R_n(t) &:= C_n t^n + C_{n-1} t^{n-1} + \cdots + C_0
-\end{align*}
-
 \begin{center}
-  \begin{tabular}{c @{\hspace{2cm}} c}
+  \newcommand{\red}[1]{\textcolor{red}{#1}}
+  \newcommand{\blue}[1]{\textcolor{blue}{#1}}
+  \newcommand{\teal}[1]{\textcolor{teal}{#1}}
+  \begin{tabular}{c @{\hspace{1cm}} c}
     \toprule
     \(r(t)\) & \(y_p(t)\) \\
     \midrule
-    \(P_n(t)\) & \(t^s Q_n(t)\) \\
-    \(P_n(t) e^{\alpha t}\) & \(t^s Q_n(t) e^{\alpha t}\) \\
+    \(a_n t^n + \cdots + a_{1} t + a_0\) &
+    \(\red{t^s} (A_n t^n + \cdots + A_{1} t + A_0)\) \\[1em]
+    \((a_n t^n + \cdots + a_{1} t + a_0) \blue{e^{\alpha t}}\) &
+    \(\red{t^s} (A_n t^n + \cdots + A_{1} t + A_0) \blue{e^{\alpha t}}\) \\[1em]
+    \(
+      \begin{matrix}
+        (a_n t^n + \cdots + a_{1} t + a_0) \blue{e^{\alpha t}}
+        \teal{\sin\beta t} \\
+        (a_n t^n + \cdots + a_{1} t + a_0) \blue{e^{\alpha t}}
+        \teal{\cos\beta t}
+    \end{matrix} \text{ or}\) &
+    \(\red{t^s} \Big[
+        (A_n t^n + \cdots + A_{1} t + A_0) \teal{\sin\beta t} +
+        (B_n t^n + \cdots + B_{1} t + B_0) \teal{\cos\beta t}
+    \Big] \blue{e^{\alpha t}} \) \\[1em]
     \bottomrule
-    \end{tabular}
+  \end{tabular}
+
+  \smallskip
+  \begin{minipage}{0.9\textwidth}
+    \textit{Notes.}
+    Here, \(\red{s}\) is the smallest non-negative integer
+    (\(\red{s} \in \{0, 1, 2\} \)) ensuring that
+    \(y_p(t)\) and \(y_h(t)\) possess no common terms.
+    Equivalently, \(\red{s}\) represents the multiplicity of the root
+    \(0\), \(\alpha \), or \(\alpha + i\beta \)
+    in the characteristic equation,
+    corresponding to the respective forms of
+    the non-homogeneous term \(r(t)\).
+  \end{minipage}
 \end{center}
+
+\begin{theorem}
+  If \(y_1\) is a solution to \(a y'' + b y' + c y = r_1(t)\)
+  and \(y_2\) is a solution to \(a y'' + b y' + c y = r_2(t)\),
+  then \(y_1 + y_2\) is a solution to the euqation
+  \(a y'' + b y' + c y = r_1(t) + r_2(t)\).
+\end{theorem}
+
 
 \end{document}
