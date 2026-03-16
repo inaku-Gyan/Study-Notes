@@ -554,7 +554,117 @@ Thus, filtering and prediction can be solved by iterating the above equation.
 
 \section{Particle Filtering}
 
-
 \section{Kalman filtering}
+
+Kalman filters are based on the following linear model:
+
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}[
+      state/.style={
+        rectangle, rounded corners, draw,
+        minimum width=2cm, minimum height=1.3cm,
+        inner sep=2pt, font=\large
+      },
+      var/.style={
+        circle, draw,
+        minimum width=1.2cm, minimum height=1.2cm,
+        inner sep=2pt, font=\large
+      },
+      noise/.style={
+        diamond, draw, fill=white,
+        minimum width=1.3cm, minimum height=1.3cm,
+        inner sep=1pt, font=\small
+      },
+      covar/.style={
+        rectangle, rounded corners, draw, fill=white,
+        minimum width=0.8cm, minimum height=0.8cm,
+        inner sep=2pt, font=\small
+      },
+      >={Latex[length=3mm, width=2mm]}
+    ]
+
+    % Centers (State variables)
+    \node[state] (xm1) {$\bm{x}_{k-1}$};
+    \node[state, right=3.5cm of xm1] (xk) {$\bm{x}_k$};
+
+    % U nodes (Control variables)
+    \node[var, above=2cm of xm1] (um1) {$\bm{u}_{k-1}$};
+    \node[var, above=2cm of xk] (uk) {$\bm{u}_k$};
+
+    % Z nodes (Observation variables)
+    \node[var, below=2cm of xm1] (zm1) {$\bm{z}_{k-1}$};
+    \node[var, below=2cm of xk] (zk) {$\bm{z}_k$};
+
+    % Process noise covariance
+    \node[covar, above left=0.8cm and 1.6cm of xm1] (Qm1) {$\bm{Q}_{k-1}$};
+    \node[covar, above left=0.8cm and 1.6cm of xk] (Qk) {$\bm{Q}_k$};
+
+    % W nodes (Process noise)
+    \node[noise, below right=-0.4cm and -0.1cm of Qm1] (wm1) {$\bm{w}_{k-1}$};
+    \node[noise, below right=-0.4cm and -0.1cm of Qk] (wk) {$\bm{w}_k$};
+
+    % Measurement noise covariance
+    \node[covar, above left=0.6cm and 1.6cm of zm1] (Rm1) {$\bm{R}_{k-1}$};
+    \node[covar, above left=0.6cm and 1.6cm of zk] (Rk) {$\bm{R}_k$};
+
+    % V nodes (Measurement noise)
+    \node[noise, below right=-0.4cm and -0.1cm of Rm1] (vm1) {$\bm{v}_{k-1}$};
+    \node[noise, below right=-0.4cm and -0.1cm of Rk] (vk) {$\bm{v}_k$};
+
+    % Horizontal Edges (State transitions)
+    \draw[->] ([xshift=-2cm]xm1.west) -- node[fill=white, inner
+    sep=2pt] {$\bm{F}_{k-1}$} (xm1);
+    \draw[->] (xm1) -- node[fill=white, inner sep=2pt] {$\bm{F}_k$} (xk);
+    \draw[->] (xk) -- node[fill=white, inner sep=2pt]
+    {$\bm{F}_{k+1}$} ([xshift=2cm]xk.east);
+
+    % Vertical Edges (Control inputs and Observations)
+    \draw[->] (um1) -- node[fill=white, inner sep=2pt] {$\bm{B}_{k-1}$} (xm1);
+    \draw[->] (uk) -- node[fill=white, inner sep=2pt] {$\bm{B}_k$} (xk);
+    \draw[->] (xm1) -- node[fill=white, inner sep=2pt] {$\bm{H}_{k-1}$} (zm1);
+    \draw[->] (xk) -- node[fill=white, inner sep=2pt] {$\bm{H}_k$} (zk);
+
+    % Diagonal Edges (Noise inputs)
+    \draw[->] (wm1) -- (xm1);
+    \draw[->] (wk) -- (xk);
+    \draw[->] (vm1) -- (zm1);
+    \draw[->] (vk) -- (zk);
+
+  \end{tikzpicture}
+  \caption{A state-space representation for Kalman Filtering.}
+\end{figure}
+
+Vector \(\bm{x}_k\) represents the true state of the system at time \(k\),
+and is evolved from the previous state \(\bm{x}_{k-1}\) according to
+\begin{equation*}
+  \bm{x}_k = \bm{F}_k \bm{x}_{k-1} + \bm{B}_k \bm{u}_k + \bm{w}_k
+\end{equation*}
+where
+\begin{itemize}
+  \item \(\bm{F}_k\) is the state transition matrix,
+    which models the dynamics of the system.
+  \item \(\bm{u}_k\) is the control input, which represents any known
+    external influence on the system.
+  \item \(\bm{B}_k\) is the control input matrix,
+    which models how the control input \(\bm{u}_k\) affects the state.
+  \item \(\bm{w}_k\) is a random variable representing the process noise,
+    which is assumed to be Gaussian:
+    \(\bm{w}_k \sim \mathcal{N}(\mathbf{0}, \bm{Q}_k)\)
+\end{itemize}
+Vector \(\bm{z}_k\) represents the observation at time \(k\),
+which is generated from the true state \(\bm{x}_k\) according to
+\begin{equation*}
+  \bm{z}_k = \bm{H}_k \bm{x}_k + \bm{v}_k
+\end{equation*}
+where
+\begin{itemize}
+  \item \(\bm{H}_k\) is the observation matrix,
+    which models how the true state \(\bm{x}_k\) is mapped to the
+    observation \(\bm{z}_k\).
+  \item \(\bm{v}_k\) is a random variable representing the measurement noise,
+    which is assumed to be Gaussian:
+    \(\bm{v}_k \sim \mathcal{N}(\mathbf{0}, \bm{R}_k)\)
+\end{itemize}
 
 \end{document}
