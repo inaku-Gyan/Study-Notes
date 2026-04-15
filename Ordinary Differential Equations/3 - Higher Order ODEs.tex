@@ -1,0 +1,281 @@
+\documentclass[10pt,UTF8]{article}
+
+
+\usepackage{geometry}
+
+\usepackage[scheme=plain]{ctex}
+
+\geometry{a4paper,scale=0.9}
+
+% \usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+
+\usepackage{bm} % 数学粗体（避免斜体被取消）
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+\usepackage{booktabs} % 表格美化
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{esint} % 提供更丰富的积分符号
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+% \usepackage{bussproofs} % 自然演绎推理树
+
+% 交叉引用
+% 关闭边框，设置颜色
+\usepackage[colorlinks=true, linkcolor=darkgray, citecolor=teal,
+urlcolor=blue]{hyperref}
+% 使 \cref 和 \Cref 可用
+\usepackage{cleveref}
+
+\usepackage{bookmark}  % 生成 PDF 大纲
+
+\allowdisplaybreaks[3]  % 允许换页
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipBox}
+{
+  \begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{conceptBox}
+{
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{theoremBoxNoIndent}
+{
+\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{definitionBox}
+{
+  \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{theoremBox}
+{
+  \begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{
+  \begin{definitionBox}
+  \begin{definition inner}[#1]\hfill\par}
+    {
+    \end{definition inner}
+\end{definitionBox}}
+
+\theoremstyle{definition}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{
+  \begin{theoremBox}
+  \begin{theorem inner}[#1]\hfill\par}
+    {
+    \end{theorem inner}
+\end{theoremBox}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{
+\begin{proof inner}[#1]\hfill\par}
+  {\qed\vphantom{.}
+\end{proof inner}}
+
+\theoremstyle{plain}
+\newtheorem{tip inner}{Tip}[section]
+\newenvironment{tip}[1][]
+{
+  \begin{tipBox}
+  \begin{tip inner}[#1]\hfill\par}
+    {
+    \end{tip inner}
+\end{tipBox}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\iu}{\mathrm{i}}  % 虚数单位 i
+
+
+\begin{document}
+
+\part*{Higher Order ODEs}
+
+\section{Linear ODEs}
+
+\subsection{General Theory}
+
+\begin{theorem}[Existence and Uniqueness Theorem]
+  {}\label{thm: Existence and Uniqueness}
+  Let \(I \subset\mathbb{R}\) be an open interval and suppose
+  functions \(g, p_0, p_1, \ldots, p_{n-1}\) are continuous on \(I\).
+  Then for \(t_0 \in I\) and real numbers \(y_0, y_1, \ldots, y_{n-1}\),
+  there exists exactly one solution to the IVP
+  \begin{equation*}
+    \begin{cases}
+      y^{(n)} + p_{n-1}(t) y^{(n-1)} + \cdots + p_1(t) y' + p_0(t) y = g(t), \\
+      y(t_0) = y_0, \\
+      y'(t_0) = y_1, \\
+      \vdots \\
+      y^{(n-1)}(t_0) = y_{n-1},
+    \end{cases}
+  \end{equation*}
+\end{theorem}
+
+\begin{theorem}[Principle of Superposition]
+  {}\label{thm: Principle of Superposition}
+  If \(y_1, y_2, \ldots, y_n\) are solutions to the homogeneous linear ODE
+  \begin{equation*}
+    y^{(n)} + p_{n-1}(t) y^{(n-1)} + \cdots + p_1(t) y' + p_0(t) y = 0,
+  \end{equation*}
+  then any linear combination
+  \begin{equation*}
+    y = c_1 y_1 + c_2 y_2 + \cdots + c_n y_n,
+  \end{equation*}
+  where \(c_1, c_2, \ldots, c_n\) are constants, is also a solution
+  to the homogeneous equation.
+\end{theorem}
+
+\begin{definition}[Wronskian]
+  {}\label{def: Wronskian}
+  The Wronskian of \(n\) functions \(y_1, y_2, \ldots, y_n\) is
+  defined as the determinant
+  \begin{equation*}
+    W(y_1, y_2, \ldots, y_n)(t) =
+    \begin{vmatrix}
+      y_1(t) & y_2(t) & \cdots & y_n(t) \\
+      y_1'(t) & y_2'(t) & \cdots & y_n'(t) \\
+      \vdots & \vdots & \ddots & \vdots \\
+      y_1^{(n-1)}(t) & y_2^{(n-1)}(t) & \cdots & y_n^{(n-1)}(t)
+    \end{vmatrix}.
+  \end{equation*}
+\end{definition}
+
+\begin{definition}[Fundamental Set of Solutions]
+  {}\label{def: Fundamental Set of Solutions}
+  The set of \(n\) solutions \(y_1, y_2, \ldots, y_n\) to
+  an \(n\)-th order homogeneous linear ODE defined on an interval \(I\)
+  is called a \textbf{fundamental set of solutions (FSS)}
+  if every solution to the homogeneous equation can be
+  expressed as a linear combination of \(y_1, y_2, \ldots, y_n\).
+\end{definition}
+
+\begin{theorem}
+  If \(p_0,\ldots,p_{n-1}\) are continuous on an interval \(I\) and
+  \(y_1, \ldots, y_n\) are solutions to the homogeneous linear ODE
+  \begin{equation*}
+    y^{(n)} + p_{n-1}(t) y^{(n-1)} + \cdots + p_1(t) y' + p_0(t) y = 0,
+  \end{equation*}
+  then every solution to the ODE can be expressed as a linear
+  combination of \(y_1, \ldots, y_n\) if and only if
+  \begin{equation*}
+    \exists t\in I \text{ s.t. } W(y_1, \ldots, y_n)(t) \neq 0
+  \end{equation*}
+\end{theorem}
+
+\begin{theorem}
+  Let \(y_1,\ldots,y_n\) be the solutions to the homogeneous linear ODE
+  \begin{equation*}
+    y^{(n)} + p_{n-1}(t) y^{(n-1)} + \cdots + p_1(t) y' + p_0(t) y = 0,
+    \qfor t\in I.
+  \end{equation*}
+  Then
+  \begin{equation*}
+    y_1, \ldots, y_n \text{ are linearly independent}
+    \quad\iff\quad
+    \exists t\in I \text{ s.t. } W(y_1, \ldots, y_n)(t) \neq 0.
+  \end{equation*}
+\end{theorem}
+
+\begin{theorem}[Abel's Theorem]
+  {}\label{thm: Abel's Theorem}
+  If \(y_1, \ldots, y_n\) are solutions to the homogeneous linear ODE
+  \begin{equation*}
+    y^{(n)} + \textcolor{blue}{p_{n-1}(t)} y^{(n-1)}
+    + p_{n-2}(t) y^{(n-2)} + \cdots + p_1(t) y' + p_0(t) y = 0,
+    \qfor t\in I,
+  \end{equation*}
+  then the Wronskian is given by
+  \begin{equation*}
+    W(y_1, \ldots, y_n)(t) = \textcolor{red}{c} \cdot
+    \exp(-\int \textcolor{blue}{p_{n-1}(t)} \dd{t})
+    \qquad\text{ where } \textcolor{red}{c}
+    \text{ is a constant depending on } y_1, \ldots, y_n.
+  \end{equation*}
+\end{theorem}
+
+\subsection{Homogeneous Equations with Constant Coefficients}
+
+For constants \(a_n \ne 0, a_{n-1}, \ldots, a_1, a_0 \in \mathbb{R}\),
+\begin{equation*}
+  a_n y^{(n)} + a_{n-1} y^{(n-1)} + \cdots + a_1 y' + a_0 y = 0
+\end{equation*}
+\textbf{Characteristic polynomial}:
+\begin{align*}
+  Z(r) &= a_n r^n + a_{n-1} r^{n-1} + \cdots + a_1 r + a_0 \\
+  &= a_n (r - r_1)(r - r_2) \cdots (r - r_n) \\
+  &= a_n {(r - r_1)}^{m_1} {(r - r_2)}^{m_2} \cdots {(r - r_k)}^{m_k}
+\end{align*}
+where \(r_1, r_2, \ldots, r_n \in \mathbb{C}\) are the roots of \(Z(r)\).
+
+\subsubsection*{Complex-valued solutions}
+
+Complex roots must appear in conjugate pairs, i.e., if
+\(r = \lambda + \iu \mu \) is a root,
+then its conjugate \(\bar{r} = \lambda - \iu \mu \) is also a root.
+The complex-valued solution pair \(y = e^{(\lambda + \iu \mu) t}\)
+and \(y = e^{(\lambda - \iu \mu) t}\) can be re-expressed
+as the real-valued solution pair:
+\begin{equation*}
+  y = e^{\lambda t} \cos(\mu t) \qand
+  y = e^{\lambda t} \sin(\mu t).
+\end{equation*}
+
+\subsection{Non-Homogeneous Equations}
+
+
+
+\subsection{Method of Undetermined Coefficients}
+
+
+\subsection{Variation of Parameters}
+
+\end{document}
