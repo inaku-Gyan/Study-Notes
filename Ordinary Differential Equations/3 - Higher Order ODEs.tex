@@ -377,7 +377,7 @@ The solution to the system can be expressed in vector form as
 
 \begin{theorem}[Existence and Uniqueness]
   {}\label{thm: Existence and Uniqueness for 1st order ODE Systems}
-  For the system of first order ODEs \cref{eq: system of 1st order ODEs},
+  For the system of first order ODEs~(\ref{eq: system of 1st order ODEs}),
   if the functions \(F_1, F_2, \ldots, F_n\) and the partial derivatives
   \(\displaystyle\pdv{F_i}{y_j}\) for all pairs \(i, j = 1, 2, \ldots, n\)
   are continuous on a region \(R\) defined by
@@ -417,9 +417,10 @@ which is a system of \(n\) first order ODEs.
   {}\label{def: 1st-order linear system}
   A system of first order ODEs is called \textbf{linear} if it can be
   expressed in the form
-  \begin{equation*}
+  \begin{equation}
     \bm{y}'(t) = \bm{P}(t) \bm{y}(t) + \bm{g}(t) \quad \qfor t\in I,
-  \end{equation*}
+    \label{eq: 1st-order linear system}
+  \end{equation}
   where
   \begin{equation*}
     \bm{y}(t) =
@@ -457,5 +458,20 @@ which is a system of \(n\) first order ODEs.
   \end{equation*}
 \end{definition}
 
+\begin{theorem}[Existence and Uniqueness for First-Order Linear Systems]
+  {}\label{thm: Existence and Uniqueness for 1st-order linear systems}
+  For the first-order linear system~(\ref{eq: 1st-order linear system}),
+  if all entries of \(\bm{P}(t)\) and \(\bm{g}(t)\) are continuous on
+  an interval \(I\), then for any \(t_0 \in I\) and \(\bm{y}_0 \in
+  \mathbb{R}^n\),
+  there exists a unique solution \(\bm{y}(t)\) to the IVP
+  \begin{equation*}
+    \begin{cases}
+      \bm{y}'(t) = \bm{P}(t) \bm{y}(t) + \bm{g}(t) \\
+      \bm{y}(t_0) = \bm{y}_0
+    \end{cases}
+    \quad \qfor t\in I.
+  \end{equation*}
+\end{theorem}
 
 \end{document}
