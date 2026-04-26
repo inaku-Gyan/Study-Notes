@@ -1,0 +1,286 @@
+\documentclass[10pt,UTF8]{article}
+
+
+\usepackage{geometry}
+
+\usepackage[scheme=plain]{ctex}
+
+\geometry{a4paper,scale=0.9}
+
+% \usepackage{times}  % 设置正文字体为 Adobe Times Roman
+% \usepackage{mathptmx} % 只加载数学字体
+% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
+
+\usepackage{bm} % 数学粗体（避免斜体被取消）
+
+% \usepackage{makecell}
+% \usepackage{multirow} % 表格多行合并
+
+\usepackage{booktabs} % 表格美化
+
+% \usepackage{graphicx} %插入图片的宏包
+% \usepackage{subfigure}
+% \usepackage{float} %设置图片浮动位置的宏包
+
+\usepackage{amsmath}
+\usepackage{esint} % 提供更丰富的积分符号
+\usepackage{amssymb}
+\usepackage{mathtools}
+
+\usepackage{physics}
+
+% \usepackage{siunitx}
+% % 关闭警告
+% \ExplSyntaxOn
+% \msg_redirect_name:nnn { siunitx } { physics-pkg } { none }
+% \ExplSyntaxOff
+
+% \usepackage{bussproofs} % 自然演绎推理树
+
+% 交叉引用
+% 关闭边框，设置颜色
+\usepackage[colorlinks=true, linkcolor=darkgray, citecolor=teal,
+urlcolor=blue]{hyperref}
+% 使 \cref 和 \Cref 可用
+\usepackage{cleveref}
+
+\usepackage{bookmark}  % 生成 PDF 大纲
+
+\allowdisplaybreaks[3]  % 允许换页
+
+
+%%%%%%%%%%%%%%%%%%%%%%%% tcolorbox %%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[most]{tcolorbox}
+
+\newenvironment{tipBox}
+{
+  \begin{tcolorbox}[colback=green!5!white,colframe=green!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{conceptBox}
+{
+\begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{theoremBoxNoIndent}
+{
+\begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{definitionBox}
+{
+  \begin{tcolorbox}[colback=blue!5!white,colframe=blue!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+
+\newenvironment{theoremBox}
+{
+  \begin{tcolorbox}[colback=yellow!5!white,colframe=yellow!75!black,parbox=false,before
+  upper=\par,before lower=\par]}
+  {
+\end{tcolorbox}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%% amsthm %%%%%%%%%%%%%%%%
+\usepackage{amsthm}
+
+\theoremstyle{definition}
+\newtheorem{definition inner}{Definition}[section]
+\newenvironment{definition}[1][]
+{
+  \begin{definitionBox}
+  \begin{definition inner}[#1]\hfill\par}
+    {
+    \end{definition inner}
+\end{definitionBox}}
+
+\theoremstyle{definition}
+\newtheorem{theorem inner}{Theorem}[section]
+\newenvironment{theorem}[1][]
+{
+  \begin{theoremBox}
+  \begin{theorem inner}[#1]\hfill\par}
+    {
+    \end{theorem inner}
+\end{theoremBox}}
+
+\theoremstyle{definition}
+\newtheorem*{proof inner}{\textit{Proof}}
+\renewenvironment{proof}[1][]
+{
+\begin{proof inner}[#1]\hfill\par}
+  {\qed\vphantom{.}
+\end{proof inner}}
+
+\theoremstyle{plain}
+\newtheorem{tip inner}{Tip}[section]
+\newenvironment{tip}[1][]
+{
+  \begin{tipBox}
+  \begin{tip inner}[#1]\hfill\par}
+    {
+    \end{tip inner}
+\end{tipBox}}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{\textit{Remark}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newcommand{\iu}{\mathrm{i}}  % 虚数单位 i
+
+\DeclareMathOperator{\Null}{Null}  % Null space
+
+
+\begin{document}
+
+\part*{Review of Matrices}
+
+\section{}
+
+
+\begin{definition}[Eigenvalues and Eigenvectors]
+  For a square matrix \(A\), if there exists a non-zero vector \(\bm{v}\)
+  and a scalar \(\lambda \) such that
+  \[
+    A\bm{v} = \lambda\bm{v},
+  \]
+  then \(\lambda \) is called an eigenvalue of \(A\) and
+  \(\bm{v}\) is called an eigenvector corresponding to \(\lambda \).
+\end{definition}
+
+\begin{definition}[Multiplicity of Eigenvalues]
+  Suppose \(\lambda \) is an eigenvalue of a matrix \(A\) and let the
+  characteristic polynomial of \(A\) be \(p(x) = \det(A - x I)\).
+  Then we have two types of multiplicity for \(\lambda \):
+  \begin{itemize}
+    \item \textbf{Algebraic multiplicity} of \(\lambda \):
+      The number of times \(\lambda \) appears as a root of \(p(x)\).
+    \item \textbf{Geometric multiplicity} of \(\lambda \):
+      It is equivalent to any of the following (all of which are equal):
+      \begin{itemize}
+        \item The number of linearly independent eigenvectors
+          corresponding to \(\lambda \).
+        \item The dimension of the corresponding eigenspace:
+          \( \dim(\{\bm{v} \mid A\bm{v} = \lambda\bm{v}\}) \).
+        \item The nullity of \(A - \lambda I\):
+          \( \dim(\Null(A - \lambda I)) \).
+      \end{itemize}
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}
+  For any eigenvalue \(\lambda \) of a square matrix \(A\),
+  \begin{equation*}
+    \text{geometric multiplicity of } \lambda
+    \quad \leqslant \quad
+    \text{algebraic multiplicity of } \lambda.
+  \end{equation*}
+\end{theorem}
+\begin{proof}
+  Suppose \(A \in \mathbb{R}^{n \times n}\) and \(\lambda \) is
+  an eigenvalue of \(A\) with geometric multiplicity \(k\).
+  Since \(\dim(\Null(A - \lambda I)) = k\),
+  we can pick \(k\) orthonormal eigenvectors
+  \( \{\bm{v}_1, \bm{v}_2, \ldots, \bm{v}_k\} \) from \(\Null(A - \lambda I)\),
+  and then extend this set to an orthonormal basis of \(\mathbb{R}^n\)
+  by adding \(n-k\) more vectors
+  \( \{\bm{v}_{k+1}, \bm{v}_{k+2}, \ldots, \bm{v}_n\} \).
+  Define the following matrices:
+  \begin{equation*}
+    V_1 =
+    \begin{bmatrix}
+      \vrule & & \vrule \\
+      \bm{v}_1 & \cdots & \bm{v}_k \\
+      \vrule & & \vrule
+    \end{bmatrix}
+    \qquad
+    V_2 =
+    \begin{bmatrix}
+      \vrule & & \vrule \\
+      \bm{v}_{k+1} & \cdots & \bm{v}_n \\
+      \vrule & & \vrule
+    \end{bmatrix}
+    \qquad
+    V =
+    \begin{bmatrix}
+      & & & & \\
+      & \ldots V_1 & & \ldots V_2 & \\
+      & & & &
+    \end{bmatrix} =
+    \begin{bmatrix}
+      \vrule & & \vrule \\
+      \bm{v}_{1} & \cdots & \bm{v}_n \\
+      \vrule & & \vrule
+    \end{bmatrix}
+  \end{equation*}
+  It is easy to know that
+  \(V_1 \in \mathbb{R}^{n \times k} \) and
+  \(V_2 \in \mathbb{R}^{n \times (n-k)}\),
+  and \(V \in \mathbb{R}^{n \times n}\) is an orthogonal matrix.
+  Then we have
+  \begin{align*}
+    A V_1 = \lambda V_1,
+    \qquad\qquad
+    V^\top A V &=
+    \begin{bmatrix}
+      & & \\
+      & \ldots V_1^\top & \\
+      & & \\
+      & \ldots V_2^\top & \\
+      & &
+    \end{bmatrix} A
+    \begin{bmatrix}
+      & & & & \\
+      & \ldots V_1 & & \ldots V_2 & \\
+      & & & &
+    \end{bmatrix} \\
+    &=
+    \begin{bmatrix}
+      & & \\
+      & \ldots (V_1^\top A V_1) & \ldots (V_1^\top A V_2) & \\
+      & & \\
+      & \ldots (V_2^\top A V_1) & \ldots (V_2^\top A V_2) & \\
+      & &
+    \end{bmatrix} \\
+    &=
+    \begin{bmatrix}
+      & & \\
+      & \ldots (\lambda I_k) & \ldots (V_1^\top A V_2) & \\
+      & & \\
+      & \ldots O_{n-k} & \ldots (V_2^\top A V_2) & \\
+      & &
+    \end{bmatrix}
+    \in \mathbb{R}^{n \times n}
+  \end{align*}
+  Thus, the characteristic polynomial of \(A\) can be computed as
+  \begin{align*}
+    p(x) =
+    \det(A - x I)
+    &= \det(V^\top (A - x I) V ) \\
+    &= \det(V^\top A V - x I) \\
+    &= \det\left(
+      \begin{bmatrix}
+        & & \\
+        & \ldots (\lambda I_k - x I_k) & \ldots (V_1^\top A V_2) & \\
+        & & \\
+        & \ldots O_{n-k} & \ldots (V_2^\top A V_2 - x I_{n-k}) & \\
+        & &
+      \end{bmatrix}
+    \right) \\
+    &= {(\lambda - x)}^k
+    \cdot
+    \det(V_2^\top A V_2 - x I_{n-k})
+  \end{align*}
+  Therefore, \(\lambda \) is a root of \(p(x)\) with multiplicity at
+  least \(k\),
+  which means the algebraic multiplicity of \(\lambda \) is at least \(k\).
+\end{proof}
+
+
+\end{document}
