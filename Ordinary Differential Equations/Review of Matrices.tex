@@ -194,9 +194,9 @@ urlcolor=blue]{hyperref}
 \begin{proof}
   Suppose \(\mat{A} \in \mathbb{R}^{n \times n}\) and \(\lambda \) is
   an eigenvalue of \(\mat{A}\) with geometric multiplicity \(k\).
-  Since \(\dim(\Null(\mat{A} - \lambda \mat{I})) = k\),
+  Since \(\dim(\Null(\mat{A} - \lambda \mat{I}_n)) = k\),
   we can pick \(k\) orthonormal eigenvectors
-  \( \{\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_k\} \) from \(\Null(\mat{A} - \lambda \mat{I})\),
+  \( \{\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_k\} \) from \(\Null(\mat{A} - \lambda \mat{I}_n)\),
   and then extend this set to an orthonormal basis of \(\mathbb{R}^n\)
   by adding \(n-k\) more vectors
   \( \{\vec{v}_{k+1}, \vec{v}_{k+2}, \ldots, \vec{v}_n\} \).
@@ -270,9 +270,9 @@ urlcolor=blue]{hyperref}
   Thus, the characteristic polynomial of \(\mat{A}\) can be computed as
   \begin{align*}
     p(x) =
-    \det(\mat{A} - x \mat{I})
-    &= \det(\mat{V}^\top (\mat{A} - x \mat{I}) \mat{V} ) \\
-    &= \det(\mat{V}^\top \mat{A} \mat{V} - x \mat{I}) \\
+    \det(\mat{A} - x \mat{I}_n)
+    &= \det(\mat{V}^\top (\mat{A} - x \mat{I}_n) \mat{V} ) \\
+    &= \det(\mat{V}^\top \mat{A} \mat{V} - x \mat{I}_n) \\
     &= \det\left(
       \begin{bmatrix}
         & & \\
