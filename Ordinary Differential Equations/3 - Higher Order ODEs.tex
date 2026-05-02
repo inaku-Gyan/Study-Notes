@@ -29,6 +29,9 @@
 
 \usepackage{physics}
 
+\renewcommand{\vec}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\bm{#1}}
+
 % \usepackage{siunitx}
 % % 关闭警告
 % \ExplSyntaxOn
@@ -300,11 +303,11 @@ and \(y_p\) is a particular solution.
   homogeneous equation
   and \(u_1, u_2, \ldots, u_n\) are functions given by
   \begin{equation*}
-    u_i(t) = \int \frac{g(t) \cdot \det[M_i(t)]}{W(y_1, \ldots, y_n)(t)} \dd{t},
+    u_i(t) = \int \frac{g(t) \cdot \det[\mat{M}_i(t)]}{W(y_1, \ldots, y_n)(t)} \dd{t},
     \quad\qfor i = 1, 2, \ldots, n, \qand
   \end{equation*}
   \begin{equation*}
-    M_i =
+    \mat{M}_i =
     \begin{pmatrix}
       y_1 & \cdots & y_{i-1} & 0 & y_{i+1} & \cdots & y_n \\
       y_1' & \cdots & y_{i-1}' & 0 & y_{i+1}' & \cdots & y_n' \\
@@ -366,7 +369,7 @@ can be written as
 \end{equation}
 The solution to the system can be expressed in vector form as
 \begin{equation*}
-  \bm{y}(t) =
+  \vec{y}(t) =
   \begin{pmatrix}
     y_1(t) \\
     y_2(t) \\
@@ -386,12 +389,12 @@ The solution to the system can be expressed in vector form as
     \times [x_n - b, x_n + b] \subseteq \mathbb{R}^{n+1},
   \end{equation*}
   where constants \(a, b > 0\), then there exists a unique solution
-  \(\bm{y}(t)\) for \(t \in (t_0 - h, t_0 + h)\) to the IVP,
+  \(\vec{y}(t)\) for \(t \in (t_0 - h, t_0 + h)\) to the IVP,
   where
   \begin{equation*}
     h = \min \{a, b/M\} \qand
-    M = \max\limits_{\bm{v} \in R}\{
-      \abs{F_1(\bm{v})}, \abs{F_2(\bm{v})}, \ldots, \abs{F_n(\bm{v})}
+    M = \max\limits_{\vec{v} \in R}\{
+      \abs{F_1(\vec{v})}, \abs{F_2(\vec{v})}, \ldots, \abs{F_n(\vec{v})}
     \}.
   \end{equation*}
 \end{theorem}
@@ -418,12 +421,12 @@ which is a system of \(n\) first order ODEs.
   A system of first order ODEs is called \textbf{linear} if it can be
   expressed in the form
   \begin{equation}
-    \bm{y}'(t) = \bm{P}(t) \bm{y}(t) + \bm{g}(t) \quad \qfor t\in I,
+    \vec{y}'(t) = \mat{P}(t) \vec{y}(t) + \vec{g}(t) \quad \qfor t\in I,
     \label{eq: 1st-order linear system}
   \end{equation}
   where
   \begin{equation*}
-    \bm{y}(t) =
+    \vec{y}(t) =
     \begin{pmatrix}
       y_1(t) \\
       y_2(t) \\
@@ -431,7 +434,7 @@ which is a system of \(n\) first order ODEs.
       y_n(t)
     \end{pmatrix}
     \qquad
-    \bm{g}(t) =
+    \vec{g}(t) =
     \begin{pmatrix}
       g_1(t) \\
       g_2(t) \\
@@ -439,7 +442,7 @@ which is a system of \(n\) first order ODEs.
       g_n(t)
     \end{pmatrix}
     \qquad
-    \bm{P}(t) =
+    \mat{P}(t) =
     \begin{pmatrix}
       p_{11}(t) & p_{12}(t) & \cdots & p_{1n}(t) \\
       p_{21}(t) & p_{22}(t) & \cdots & p_{2n}(t) \\
@@ -452,23 +455,23 @@ which is a system of \(n\) first order ODEs.
 \begin{definition}[Homogeneous First-Order Linear System]
   {}\label{def: Homogeneous 1st-order linear system}
   A first order linear system is called \textbf{homogeneous} if
-  \(\bm{g}(t) = \bm{0}\) for all \(t\in I\), i.e., it can be expressed as
+  \(\vec{g}(t) = \vec{0}\) for all \(t\in I\), i.e., it can be expressed as
   \begin{equation*}
-    \bm{y}'(t) = \bm{P}(t) \bm{y}(t) \quad \qfor t\in I.
+    \vec{y}'(t) = \mat{P}(t) \vec{y}(t) \quad \qfor t\in I.
   \end{equation*}
 \end{definition}
 
 \begin{theorem}[Existence and Uniqueness for First-Order Linear Systems]
   {}\label{thm: Existence and Uniqueness for 1st-order linear systems}
   For the first-order linear system~(\ref{eq: 1st-order linear system}),
-  if all entries of \(\bm{P}(t)\) and \(\bm{g}(t)\) are continuous on
-  an interval \(I\), then for any \(t_0 \in I\) and \(\bm{y}_0 \in
+  if all entries of \(\mat{P}(t)\) and \(\vec{g}(t)\) are continuous on
+  an interval \(I\), then for any \(t_0 \in I\) and \(\vec{y}_0 \in
   \mathbb{R}^n\),
-  there exists a unique solution \(\bm{y}(t)\) to the IVP
+  there exists a unique solution \(\vec{y}(t)\) to the IVP
   \begin{equation*}
     \begin{cases}
-      \bm{y}'(t) = \bm{P}(t) \bm{y}(t) + \bm{g}(t) \\
-      \bm{y}(t_0) = \bm{y}_0
+      \vec{y}'(t) = \mat{P}(t) \vec{y}(t) + \vec{g}(t) \\
+      \vec{y}(t_0) = \vec{y}_0
     \end{cases}
     \quad \qfor t\in I.
   \end{equation*}
