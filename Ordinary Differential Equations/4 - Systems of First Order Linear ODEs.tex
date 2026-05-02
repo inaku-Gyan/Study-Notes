@@ -7,10 +7,6 @@
 
 \geometry{a4paper,scale=0.9}
 
-% \usepackage{times}  % 设置正文字体为 Adobe Times Roman
-% \usepackage{mathptmx} % 只加载数学字体
-% \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
-
 \usepackage{bm} % 数学粗体（避免斜体被取消）
 
 % \usepackage{makecell}
@@ -29,8 +25,16 @@
 
 \usepackage{physics}
 
-\renewcommand{\vec}[1]{\bm{#1}}
-\newcommand{\mat}[1]{\bm{#1}}
+% 选择数学字体
+% 符合 ISO 
+\usepackage[utopia]{mathdesign}
+\usepackage{isomath}
+
+\renewcommand{\vec}[1]{\vectorsym{#1}}
+\newcommand{\mat}[1]{\matrixsym{#1}}
+
+\usepackage{fontspec} % 提供字体选择接口
+\setmainfont{Times New Roman} % 设置正文字体为 Times New Roman
 
 % \usepackage{siunitx}
 % % 关闭警告
