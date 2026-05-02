@@ -56,9 +56,9 @@
 
 \renewcommand{\vec}[1]{%
   \ifnum0\ifcat#1a1\else0\fi>0
-    \symbfit{#1}  % letter
+  \symbfit{#1}  % letter
   \else
-    \symbf{#1}  % number or symbol
+  \symbf{#1}  % number or symbol
   \fi
 }
 
@@ -169,6 +169,8 @@ urlcolor=blue]{hyperref}
 
 
 \newcommand{\iu}{\mathrm{i}}  % 虚数单位 i
+
+\DeclareMathOperator{\adj}{adj}  % 伴随矩阵 adj
 
 
 \begin{document}
@@ -285,12 +287,10 @@ which is a system of \(n\) first order ODEs.
 \begin{definition}[Homogeneous First-Order Linear System]
   {}\label{def: Homogeneous 1st-order linear system}
   A first order linear system is called \textbf{homogeneous} if
-  \(\vec{g}(t) = \vec{0}\) for all \(t\in I\), i.e., it can be expressed as
-  \begin{equation}
-    \vec{y}'(t) = \mat{P}(t) \vec{y}(t) \quad \qfor t\in I,
-    \label{eq: 1st-order linear homogeneous system}
-  \end{equation}
-  where \(\vec{y} \in {C(I)}^n\) and \(\mat{P}(t) \in {C(I)}^{n \times n}\).
+  \(\vec{g}(t) = \vec{0}_n\) for all \(t\in I\), i.e., it can be expressed as
+  \begin{equation*}
+    \vec{y}'(t) = \mat{P}(t) \vec{y}(t) \quad \qfor t\in I.
+  \end{equation*}
 \end{definition}
 
 \begin{theorem}[Existence and Uniqueness for First-Order Linear Systems]
@@ -309,11 +309,26 @@ which is a system of \(n\) first order ODEs.
   \end{equation*}
 \end{theorem}
 
+\bigskip
+
+In the rest parts,
+we will focus on the following homogeneous
+system defined on an open interval \(I \subseteq \mathbb{R}\):
+\begin{equation}
+  \vec{y}'(t) = \mat{P}(t) \vec{y}(t) \qfor t\in I,
+  \label{eq: 1st-order linear homogeneous system}
+\end{equation}
+where \(\vec{y} \in {C^1(I)}^n\) and
+\(\mat{P} \in {C(I)}^{n \times n}\),
+i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
+
+\smallskip
+
 \begin{theorem}[Principle of Superposition]
   {}\label{thm: Principle of Superposition}
   If \(\vec{y}_1(t)\) and \(\vec{y}_2(t)\) are solutions to the homogeneous
-  first-order linear system
-  \(\vec{y}'(t) = \mat{P}(t) \vec{y}(t)\), then the linear combination
+  first-order linear system~(\ref{eq: 1st-order linear homogeneous system}),
+  then the linear combination
   \begin{equation*}
     \vec{y}(t) = c_1 \vec{y}_1(t) + c_2 \vec{y}_2(t)
   \end{equation*}
@@ -346,17 +361,90 @@ which is a system of \(n\) first order ODEs.
   the Wronskian for vector functions.
 \end{remark}
 
-\begin{theorem}[Liouville’s Formula]
-
+\begin{theorem}[Liouville's Formula]
+  {}\label{thm: Liouville's Formula}
+  Let \(\vec{y}^{(1)}(t), \vec{y}^{(2)}(t), \ldots,
+  \vec{y}^{(n)}(t)\) be \(n\) solutions
+  to the homogeneous system~(\ref{eq: 1st-order linear homogeneous system}).
+  Then the Wronskian of these solutions is given by
+  \begin{equation*}
+    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t) =
+    \textcolor{red}{c} \cdot
+    \exp( \int \tr(\mat{P}(t)) \dd{t} )
+    \qfor t\in I,
+  \end{equation*}
+  where \(\textcolor{red}{c}\) is a constant
+  not depending on \(t\).
 \end{theorem}
+\begin{remark}
+  The \textbf{trace} of a square matrix
+  \(\mat{A} \in \mathbb{R}^{n \times n}\)
+  is defined as the sum of its diagonal entries:
+  \begin{equation*}
+    \tr(\mat{A}) := a_{11} + a_{22} + \cdots + a_{nn}.
+  \end{equation*}
+\end{remark}
+\begin{proof}[Liouville's Formula]
+  Before the proof, we need to introduce several theorems from linear algebra:
+  \begin{enumerate}
+    \item For any square matrix \(\mat{A}\),
+      \begin{equation}
+        \dv{t}(\det(\mat{A})) = \tr(\adj(\mat{A}) \dv{\mat{A}}{t}).
+        \label{thm: local.01 dv of det}
+      \end{equation}
+    \item The trace remains unchanged under cycle permutations:
+      \begin{equation}
+        \tr(\mat{A}\mat{B}\mat{C}) = \tr(\mat{B}\mat{C}\mat{A}).
+        \label{thm: local.02 trace cycle perm}
+      \end{equation}
+    \item Property of the adjugate matrix:
+      \begin{equation}
+        \adj(\mat{A}) \mat{A} = \mat{A} \adj(\mat{A})
+        = \det(\mat{A}) \mat{I}.
+        \label{thm: local.03 adj property}
+      \end{equation}
+  \end{enumerate}
+
+  Now, let \(\mat{Y} :=
+    \begin{bmatrix}
+      \vec{y}^{(1)} & \vec{y}^{(2)} & \cdots & \vec{y}^{(n)}
+  \end{bmatrix} \in {C^1(I)}^{n \times n}\)
+  and \(W := \det(\mat{Y})\) be the Wronskian.
+  Then we have
+  \begin{align*}
+    W' &= \tr(\adj(\mat{Y}) \mat{Y}') \\
+    &= \tr(\adj(\mat{Y}) \mat{P} \mat{Y})
+    \qquad\qsince \vec{y}' = \mat{P} \vec{y} \\
+    &= \tr(\mat{Y} \adj(\mat{Y}) \mat{P}) \\
+    &= \tr(W \mat{I} \mat{P}) \\
+    &= W \tr(\mat{P}).
+  \end{align*}
+  Hence the Liouville's formula.
+\end{proof}
 
 \begin{theorem}
-  Consider the homogeneous system
-  \(\vec{y}'(t) = \mat{P}(t) \vec{y}(t)\) for \(t\in I\).
+  If \(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)}\) are
+  \(n\) solutions to
+  a homogeneous system~(\ref{eq: 1st-order linear homogeneous system}),
+  then
+  \begin{equation*}
+    \forall t\in I, \quad
+    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t) = 0
+    \qquad\iff\qquad
+    \exists t_0 \in I \text{ s.t. }
+    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t_0) = 0.
+  \end{equation*}
+\end{theorem}
+\begin{proof}
+  Proven by Liouville's formula.
+\end{proof}
+
+\begin{theorem}
   If the \(n\) solutions \(\vec{y}^{(1)}(t), \vec{y}^{(2)}(t),
   \ldots, \vec{y}^{(n)}(t)\)
+  of the homogeneous system~(\ref{eq: 1st-order linear homogeneous system})
   are \textbf{linearly independent} for each \(t\in I\),
-  then each solution of the system can be expressed as a linear combination:
+  then every solution of the system can be expressed as a linear combination:
   \begin{equation*}
     \vec{y}(t) = c_1 \vec{y}^{(1)}(t) + c_2 \vec{y}^{(2)}(t) + \cdots
     + c_n \vec{y}^{(n)}(t)
@@ -368,23 +456,10 @@ which is a system of \(n\) first order ODEs.
 \begin{definition}[Fundamental Set of Solutions]
   A set of \(n\) \textbf{linearly independent} solutions
   \( \{\vec{y}^{(1)}(t), \vec{y}^{(2)}(t), \ldots, \vec{y}^{(n)}(t)\} \)
-  to the homogeneous
-  system \(\vec{y}'(t) = \mat{P}(t) \vec{y}(t)\) is called a
+  to the homogeneous system~(\ref{eq: 1st-order linear homogeneous system})
+  is called a
   \textbf{fundamental set of solutions}.
 \end{definition}
 
-\begin{theorem}
-  If \(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)}\) are
-  \(n\) solutions to
-  a homogeneous system \(\vec{y}'(t) = \mat{P}(t) \vec{y}(t)\) for \(t\in I\),
-  then
-  \begin{equation*}
-    \forall t\in I, \quad
-    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t) = 0
-    \qquad\iff\qquad
-    \exists t_0 \in I \text{ s.t. }
-    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t_0) = 0.
-  \end{equation*}
-\end{theorem}
 
 \end{document}
