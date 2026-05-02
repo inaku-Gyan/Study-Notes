@@ -377,12 +377,12 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
 
 \begin{theorem}[Liouville's Formula]
   {}\label{thm: Liouville's Formula}
-  Let \(\vec{y}^{(1)}(t), \vec{y}^{(2)}(t), \ldots,
-  \vec{y}^{(n)}(t)\) be \(n\) solutions
+  Let \(\vec{y}_1(t), \vec{y}_2(t), \ldots,
+  \vec{y}_n(t)\) be \(n\) solutions
   to the homogeneous system~(\ref{eq: 1.HL.Sys}).
   Then the Wronskian of these solutions is given by
   \begin{equation*}
-    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t) =
+    W(\vec{y}_1, \vec{y}_2, \ldots, \vec{y}_n)(t) =
     \textcolor{red}{c} \cdot
     \exp( \int \tr(\mat{P}(t)) \dd{t} )
     \qfor t\in I,
@@ -421,7 +421,7 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
 
   Now, let \(\mat{Y} :=
     \begin{bmatrix}
-      \vec{y}^{(1)} & \vec{y}^{(2)} & \cdots & \vec{y}^{(n)}
+      \vec{y}_1 & \vec{y}_2 & \cdots & \vec{y}_n
   \end{bmatrix} \in {C^1(I)}^{n \times n}\)
   and \(W := \det(\mat{Y})\) be the Wronskian.
   Then we have
@@ -438,16 +438,16 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
 
 \begin{theorem}
   {}\label{thm: nonzero Wronskian}
-  If \(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)}\) are
+  If \(\vec{y}_1, \vec{y}_2, \ldots, \vec{y}_n\) are
   \(n\) solutions to
   a homogeneous system~(\ref{eq: 1.HL.Sys}),
   then
   \begin{equation*}
     \forall t\in I, \quad
-    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t) = 0
+    W(\vec{y}_1, \vec{y}_2, \ldots, \vec{y}_n)(t) = 0
     \qquad\iff\qquad
     \exists t_0 \in I \text{ s.t. }
-    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t_0) = 0.
+    W(\vec{y}_1, \vec{y}_2, \ldots, \vec{y}_n)(t_0) = 0.
   \end{equation*}
 \end{theorem}
 \begin{proof}
@@ -456,7 +456,7 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
 
 \begin{definition}[Fundamental Set of Solutions]
   A set of \(n\) \textbf{linearly independent} solutions
-  \( \{\vec{y}^{(1)}(t), \vec{y}^{(2)}(t), \ldots, \vec{y}^{(n)}(t)\} \)
+  \( \{\vec{y}_1(t), \vec{y}_2(t), \ldots, \vec{y}_n(t)\} \)
   to the homogeneous system~(\ref{eq: 1.HL.Sys})
   is called a
   \textbf{fundamental set of solutions}.
@@ -471,14 +471,14 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
 \end{definition}
 
 \begin{theorem}
-  If the \(n\) solutions \(\vec{y}^{(1)}(t), \vec{y}^{(2)}(t),
-  \ldots, \vec{y}^{(n)}(t)\)
+  If the \(n\) solutions \(\vec{y}_1(t), \vec{y}_2(t),
+  \ldots, \vec{y}_n(t)\)
   of the homogeneous system~(\ref{eq: 1.HL.Sys})
   are \textbf{linearly independent} for each \(t\in I\),
   then every solution of the system can be expressed as a linear combination:
   \begin{equation*}
-    \vec{y}(t) = c_1 \vec{y}^{(1)}(t) + c_2 \vec{y}^{(2)}(t) + \cdots
-    + c_n \vec{y}^{(n)}(t)
+    \vec{y}(t) = c_1 \vec{y}_1(t) + c_2 \vec{y}_2(t) + \cdots
+    + c_n \vec{y}_n(t)
     \qfor t\in I
   \end{equation*}
   in \textbf{exactly one way}.
@@ -493,11 +493,11 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
   Let \(\vec{\phi}(t)\) be any solution to the homogeneous system
   and let \(\mat{Y} :=
     \begin{bmatrix}
-      \vec{y}^{(1)} & \vec{y}^{(2)} & \cdots & \vec{y}^{(n)}
+      \vec{y}_1 & \vec{y}_2 & \cdots & \vec{y}_n
   \end{bmatrix}\).
   We pick some \(t_0 \in I\) and define the constant vector
   \(\vec{\xi} := \vec{\phi}(t_0) \in \mathbb{R}^n\).
-  Since \(\vec{y}^{(1)}(t), \ldots, \vec{y}^{(n)}(t)\) are
+  Since \(\vec{y}_1(t), \ldots, \vec{y}_n(t)\) are
   linearly independent for any \(t \in I\),
   we have \(\det(\mat{Y})(t_0) \neq 0\).
   Then the following equation has a unique solution
@@ -506,7 +506,7 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
     \mat{Y}(t_0) \cdot \vec{c} = \vec{\xi} \qfor \vec{c} \in \mathbb{R}^n.
   \end{equation*}
   Now we define the linear combination of
-  \(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)}\)
+  \(\vec{y}_1, \vec{y}_2, \ldots, \vec{y}_n\)
   as a new vector function:
   \begin{equation*}
     \vec{\eta}(t) := \mat{Y}(t) \cdot \vec{c} \qfor t\in I.
@@ -539,7 +539,7 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
   \(\vec{y}(t_0) = \vec{e}_i\),
   where \(\vec{e}_i\) is the \(i\)-th standard basis vector.
   Then \(\mat{Y}(t_0) = \mat{I}_n\).
-  Since the Wronskian \(W(\vec{y}^{(1)}, \ldots, \vec{y}^{(n)})(t_0) =
+  Since the Wronskian \(W(\vec{y}_1, \ldots, \vec{y}_n)(t_0) =
   \det(\mat{Y})(t_0) = 1 \neq 0\),
   the solutions are linearly independent throughout \(I\)
   by Theorem~\ref{thm: nonzero Wronskian}.
