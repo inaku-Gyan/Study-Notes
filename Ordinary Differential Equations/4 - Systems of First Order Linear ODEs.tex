@@ -7,6 +7,8 @@
 
 \geometry{a4paper,scale=0.9}
 
+\linespread{1.8} % x 倍行距
+
 % \usepackage{makecell}
 % \usepackage{multirow} % 表格多行合并
 
@@ -128,7 +130,7 @@ urlcolor=blue]{hyperref}
 \theoremstyle{definition}
 \newtheorem{definition inner}{Definition}[section]
 \newenvironment{definition}[1][]
-{
+{\bigskip
   \begin{definitionBox}
   \begin{definition inner}[#1]\hfill\par}
     {
@@ -138,7 +140,7 @@ urlcolor=blue]{hyperref}
 \theoremstyle{definition}
 \newtheorem{theorem inner}{Theorem}[section]
 \newenvironment{theorem}[1][]
-{
+{\bigskip
   \begin{theoremBox}
   \begin{theorem inner}[#1]\hfill\par}
     {
@@ -439,6 +441,14 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
   Proven by Liouville's formula.
 \end{proof}
 
+\begin{definition}[Fundamental Set of Solutions]
+  A set of \(n\) \textbf{linearly independent} solutions
+  \( \{\vec{y}^{(1)}(t), \vec{y}^{(2)}(t), \ldots, \vec{y}^{(n)}(t)\} \)
+  to the homogeneous system~(\ref{eq: 1st-order linear homogeneous system})
+  is called a
+  \textbf{fundamental set of solutions}.
+\end{definition}
+
 \begin{theorem}
   If the \(n\) solutions \(\vec{y}^{(1)}(t), \vec{y}^{(2)}(t),
   \ldots, \vec{y}^{(n)}(t)\)
@@ -452,14 +462,17 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
   \end{equation*}
   in \textbf{exactly one way}.
 \end{theorem}
+\begin{proof}
+  The \nameref{thm: Principle of Superposition} indicates
+  the solutions form a vector space, thus there exist bases.
+  Therefore, the essence of this proof is to show that the dimension
+  of the solution space is exactly \(n\), so that \(n\)
+  linearly independent solutions form a basis (FSS).
+  Also, since the solution space is a subspace of \({C^1(I)}^n\),
+  the dimension of the solution space cannot exceed \(n\).
+  Hence, we only need to show that the dimension is at least \(n\).
 
-\begin{definition}[Fundamental Set of Solutions]
-  A set of \(n\) \textbf{linearly independent} solutions
-  \( \{\vec{y}^{(1)}(t), \vec{y}^{(2)}(t), \ldots, \vec{y}^{(n)}(t)\} \)
-  to the homogeneous system~(\ref{eq: 1st-order linear homogeneous system})
-  is called a
-  \textbf{fundamental set of solutions}.
-\end{definition}
+\end{proof}
 
 
 \end{document}
