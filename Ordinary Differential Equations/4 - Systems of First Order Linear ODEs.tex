@@ -7,8 +7,6 @@
 
 \geometry{a4paper,scale=0.9}
 
-\usepackage{bm} % 数学粗体（避免斜体被取消）
-
 % \usepackage{makecell}
 % \usepackage{multirow} % 表格多行合并
 
@@ -25,16 +23,47 @@
 
 \usepackage{physics}
 
-% 选择数学字体
-% 符合 ISO 
-\usepackage[utopia]{mathdesign}
-\usepackage{isomath}
+%%%%%%%%%%%%%%%%%%%
+%%%%% 字体配置 %%%%%
+%%%%%%%%%%%%%%%%%%%
 
-\renewcommand{\vec}[1]{\vectorsym{#1}}
-\newcommand{\mat}[1]{\matrixsym{#1}}
+%%% 传统宏包配置 %%%
+
+% \usepackage[utopia]{mathdesign}
+% \usepackage{isomath}
+
+% \usepackage{bm} % 数学粗体（避免斜体被取消）
+
+% \renewcommand{\vec}[1]{\vectorsym{#1}}
+% \newcommand{\mat}[1]{\matrixsym{#1}}
+
+%%% 更现代的宏包配置 %%%
 
 \usepackage{fontspec} % 提供字体选择接口
-\setmainfont{Times New Roman} % 设置正文字体为 Times New Roman
+\usepackage{unicode-math}
+
+\setmainfont{STIXTwoText-Regular.otf}[
+  BoldFont       = STIXTwoText-Bold.otf,
+  ItalicFont     = STIXTwoText-Italic.otf,
+  BoldItalicFont = STIXTwoText-BoldItalic.otf
+]
+\setmathfont{STIXTwoMath-Regular.otf}  % 已包含 加粗/斜体 等
+
+% \setmathfont{XITS Math}
+
+\newcommand{\mat}[1]{\symbfit{#1}}
+\newcommand{\tensor}[1]{\symbfsfit{#1}}
+
+\renewcommand{\vec}[1]{%
+  \ifnum0\ifcat#1a1\else0\fi>0
+    \symbfit{#1}  % letter
+  \else
+    \symbf{#1}  % number or symbol
+  \fi
+}
+
+%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%
 
 % \usepackage{siunitx}
 % % 关闭警告
@@ -257,9 +286,11 @@ which is a system of \(n\) first order ODEs.
   {}\label{def: Homogeneous 1st-order linear system}
   A first order linear system is called \textbf{homogeneous} if
   \(\vec{g}(t) = \vec{0}\) for all \(t\in I\), i.e., it can be expressed as
-  \begin{equation*}
-    \vec{y}'(t) = \mat{P}(t) \vec{y}(t) \quad \qfor t\in I.
-  \end{equation*}
+  \begin{equation}
+    \vec{y}'(t) = \mat{P}(t) \vec{y}(t) \quad \qfor t\in I,
+    \label{eq: 1st-order linear homogeneous system}
+  \end{equation}
+  where \(\vec{y} \in {C(I)}^n\) and \(\mat{P}(t) \in {C(I)}^{n \times n}\).
 \end{definition}
 
 \begin{theorem}[Existence and Uniqueness for First-Order Linear Systems]
@@ -272,9 +303,87 @@ which is a system of \(n\) first order ODEs.
   \begin{equation*}
     \begin{cases}
       \vec{y}'(t) = \mat{P}(t) \vec{y}(t) + \vec{g}(t) \\
-      \vec{y}(t_0) = \vec{y}_0
+      \vec{y}(t_0) = \vec{a} \in \mathbb{R}^n
     \end{cases}
     \quad \qfor t\in I.
+  \end{equation*}
+\end{theorem}
+
+\begin{theorem}[Principle of Superposition]
+  {}\label{thm: Principle of Superposition}
+  If \(\vec{y}_1(t)\) and \(\vec{y}_2(t)\) are solutions to the homogeneous
+  first-order linear system
+  \(\vec{y}'(t) = \mat{P}(t) \vec{y}(t)\), then the linear combination
+  \begin{equation*}
+    \vec{y}(t) = c_1 \vec{y}_1(t) + c_2 \vec{y}_2(t)
+  \end{equation*}
+  is also a solution for any constants \(c_1, c_2\).
+\end{theorem}
+
+\begin{definition}[Wronskian]
+  The \textbf{Wronskian} of \(n\) vector functions
+  \(\vec{f}_1(t), \vec{f}_2(t), \ldots, \vec{f}_n(t) \in {C(I)}^n \)
+  is defined as
+  \begin{equation*}
+    W(\vec{f}_1, \vec{f}_2, \ldots, \vec{f}_n)(t)
+    \quad
+    :=
+    \quad
+    \det(
+      \begin{bmatrix}
+        \vrule & & \vrule \\
+        \vec{f}_1(t) & \cdots & \vec{f}_n(t) \\
+        \vrule & & \vrule
+    \end{bmatrix})
+    \qfor t\in I.
+  \end{equation*}
+\end{definition}
+
+\begin{remark}
+  The Wronskian for vector functions is different from
+  the Wronskian for scalar functions.
+  There is no derivative involved in the definition of
+  the Wronskian for vector functions.
+\end{remark}
+
+\begin{theorem}[Liouville’s Formula]
+
+\end{theorem}
+
+\begin{theorem}
+  Consider the homogeneous system
+  \(\vec{y}'(t) = \mat{P}(t) \vec{y}(t)\) for \(t\in I\).
+  If the \(n\) solutions \(\vec{y}^{(1)}(t), \vec{y}^{(2)}(t),
+  \ldots, \vec{y}^{(n)}(t)\)
+  are \textbf{linearly independent} for each \(t\in I\),
+  then each solution of the system can be expressed as a linear combination:
+  \begin{equation*}
+    \vec{y}(t) = c_1 \vec{y}^{(1)}(t) + c_2 \vec{y}^{(2)}(t) + \cdots
+    + c_n \vec{y}^{(n)}(t)
+    \qfor t\in I
+  \end{equation*}
+  in \textbf{exactly one way}.
+\end{theorem}
+
+\begin{definition}[Fundamental Set of Solutions]
+  A set of \(n\) \textbf{linearly independent} solutions
+  \( \{\vec{y}^{(1)}(t), \vec{y}^{(2)}(t), \ldots, \vec{y}^{(n)}(t)\} \)
+  to the homogeneous
+  system \(\vec{y}'(t) = \mat{P}(t) \vec{y}(t)\) is called a
+  \textbf{fundamental set of solutions}.
+\end{definition}
+
+\begin{theorem}
+  If \(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)}\) are
+  \(n\) solutions to
+  a homogeneous system \(\vec{y}'(t) = \mat{P}(t) \vec{y}(t)\) for \(t\in I\),
+  then
+  \begin{equation*}
+    \forall t\in I, \quad
+    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t) = 0
+    \qquad\iff\qquad
+    \exists t_0 \in I \text{ s.t. }
+    W(\vec{y}^{(1)}, \vec{y}^{(2)}, \ldots, \vec{y}^{(n)})(t_0) = 0.
   \end{equation*}
 \end{theorem}
 
