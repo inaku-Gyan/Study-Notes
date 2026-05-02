@@ -11,7 +11,7 @@
 % \usepackage{mathptmx} % 只加载数学字体
 % \renewcommand{\rmdefault}{cmr} % 恢复正文字体为 Computer Modern Roman
 
-\usepackage{bm} % 数学粗体（避免斜体被取消）
+% \usepackage{bm} % 数学粗体（避免斜体被取消）
 
 % \usepackage{makecell}
 % \usepackage{multirow} % 表格多行合并
@@ -28,6 +28,15 @@
 \usepackage{mathtools}
 
 \usepackage{physics}
+
+% 选择数学字体
+% 符合 ISO 
+\usepackage[utopia]{mathdesign}
+\usepackage[OMLmathrm,OMLmathbf,sfdefault=fav,scaled=0.875]{isomath}
+
+\renewcommand*{\vec}{\vectorsym}
+\newcommand{\mat}[1]{\matrixsym{#1}}
+\newcommand{\tsr}[1]{\tensorsym{#1}}
 
 % \usepackage{siunitx}
 % % 关闭警告
@@ -145,18 +154,18 @@ urlcolor=blue]{hyperref}
 
 
 \begin{definition}[Eigenvalues and Eigenvectors]
-  For a square matrix \(A\), if there exists a non-zero vector \(\bm{v}\)
+  For a square matrix \(\mat{A}\), if there exists a non-zero vector \(\vec{v}\)
   and a scalar \(\lambda \) such that
   \[
-    A\bm{v} = \lambda\bm{v},
+    \mat{A}\vec{v} = \lambda\vec{v},
   \]
-  then \(\lambda \) is called an eigenvalue of \(A\) and
-  \(\bm{v}\) is called an eigenvector corresponding to \(\lambda \).
+  then \(\lambda \) is called an eigenvalue of \(\mat{A}\) and
+  \(\vec{v}\) is called an eigenvector corresponding to \(\lambda \).
 \end{definition}
 
 \begin{definition}[Multiplicity of Eigenvalues]
-  Suppose \(\lambda \) is an eigenvalue of a matrix \(A\) and let the
-  characteristic polynomial of \(A\) be \(p(x) = \det(A - x I)\).
+  Suppose \(\lambda \) is an eigenvalue of a matrix \(\mat{A}\) and let the
+  characteristic polynomial of \(\mat{A}\) be \(p(x) = \det(\mat{A} - x \mat{I})\).
   Then we have two types of multiplicity for \(\lambda \):
   \begin{itemize}
     \item \textbf{Algebraic multiplicity} of \(\lambda \):
@@ -167,15 +176,15 @@ urlcolor=blue]{hyperref}
         \item The number of linearly independent eigenvectors
           corresponding to \(\lambda \).
         \item The dimension of the corresponding eigenspace:
-          \( \dim(\{\bm{v} \mid A\bm{v} = \lambda\bm{v}\}) \).
-        \item The nullity of \(A - \lambda I\):
-          \( \dim(\Null(A - \lambda I)) \).
+          \( \dim(\{\vec{v} \mid \mat{A}\vec{v} = \lambda\vec{v}\}) \).
+        \item The nullity of \(\mat{A} - \lambda \mat{I}\):
+          \( \dim(\Null(\mat{A} - \lambda \mat{I})) \).
       \end{itemize}
   \end{itemize}
 \end{definition}
 
 \begin{theorem}
-  For any eigenvalue \(\lambda \) of a square matrix \(A\),
+  For any eigenvalue \(\lambda \) of a square matrix \(\mat{A}\),
   \begin{equation*}
     \text{geometric multiplicity of } \lambda
     \quad \leqslant \quad
@@ -183,99 +192,99 @@ urlcolor=blue]{hyperref}
   \end{equation*}
 \end{theorem}
 \begin{proof}
-  Suppose \(A \in \mathbb{R}^{n \times n}\) and \(\lambda \) is
-  an eigenvalue of \(A\) with geometric multiplicity \(k\).
-  Since \(\dim(\Null(A - \lambda I)) = k\),
+  Suppose \(\mat{A} \in \mathbb{R}^{n \times n}\) and \(\lambda \) is
+  an eigenvalue of \(\mat{A}\) with geometric multiplicity \(k\).
+  Since \(\dim(\Null(\mat{A} - \lambda \mat{I})) = k\),
   we can pick \(k\) orthonormal eigenvectors
-  \( \{\bm{v}_1, \bm{v}_2, \ldots, \bm{v}_k\} \) from \(\Null(A - \lambda I)\),
+  \( \{\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_k\} \) from \(\Null(\mat{A} - \lambda \mat{I})\),
   and then extend this set to an orthonormal basis of \(\mathbb{R}^n\)
   by adding \(n-k\) more vectors
-  \( \{\bm{v}_{k+1}, \bm{v}_{k+2}, \ldots, \bm{v}_n\} \).
+  \( \{\vec{v}_{k+1}, \vec{v}_{k+2}, \ldots, \vec{v}_n\} \).
   Define the following matrices:
   \begin{equation*}
-    V_1 =
+    \mat{V}_1 =
     \begin{bmatrix}
       \vrule & & \vrule \\
-      \bm{v}_1 & \cdots & \bm{v}_k \\
+      \vec{v}_1 & \cdots & \vec{v}_k \\
       \vrule & & \vrule
     \end{bmatrix}
     \qquad
-    V_2 =
+    \mat{V}_2 =
     \begin{bmatrix}
       \vrule & & \vrule \\
-      \bm{v}_{k+1} & \cdots & \bm{v}_n \\
+      \vec{v}_{k+1} & \cdots & \vec{v}_n \\
       \vrule & & \vrule
     \end{bmatrix}
     \qquad
-    V =
+    \mat{V} =
     \begin{bmatrix}
       & & & & \\
-      & \ldots V_1 & & \ldots V_2 & \\
+      & \ldots \mat{V}_1 & & \ldots \mat{V}_2 & \\
       & & & &
     \end{bmatrix} =
     \begin{bmatrix}
       \vrule & & \vrule \\
-      \bm{v}_{1} & \cdots & \bm{v}_n \\
+      \vec{v}_{1} & \cdots & \vec{v}_n \\
       \vrule & & \vrule
     \end{bmatrix}
   \end{equation*}
-  It is easy to know that
-  \(V_1 \in \mathbb{R}^{n \times k} \) and
-  \(V_2 \in \mathbb{R}^{n \times (n-k)}\),
-  and \(V \in \mathbb{R}^{n \times n}\) is an orthogonal matrix.
+  where
+  \(\mat{V}_1 \in \mathbb{R}^{n \times k} \) and
+  \(\mat{V}_2 \in \mathbb{R}^{n \times (n-k)}\),
+  and \(\mat{V} \in \mathbb{R}^{n \times n}\) is an orthogonal matrix.
   Then we have
   \begin{align*}
-    A V_1 = \lambda V_1,
+    \mat{A} \mat{V}_1 = \lambda \mat{V}_1,
     \qquad\qquad
-    V^\top A V &=
+    \mat{V}^\top \mat{A} \mat{V} &=
     \begin{bmatrix}
       & & \\
-      & \ldots V_1^\top & \\
+      & \ldots \mat{V}_1^\top & \\
       & & \\
-      & \ldots V_2^\top & \\
+      & \ldots \mat{V}_2^\top & \\
       & &
-    \end{bmatrix} A
+    \end{bmatrix} \mat{A}
     \begin{bmatrix}
       & & & & \\
-      & \ldots V_1 & & \ldots V_2 & \\
+      & \ldots \mat{V}_1 & & \ldots \mat{V}_2 & \\
       & & & &
     \end{bmatrix} \\
     &=
     \begin{bmatrix}
       & & \\
-      & \ldots (V_1^\top A V_1) & \ldots (V_1^\top A V_2) & \\
+      & \ldots (\mat{V}_1^\top \mat{A} \mat{V}_1) & \ldots (\mat{V}_1^\top \mat{A} \mat{V}_2) & \\
       & & \\
-      & \ldots (V_2^\top A V_1) & \ldots (V_2^\top A V_2) & \\
+      & \ldots (\mat{V}_2^\top \mat{A} \mat{V}_1) & \ldots (\mat{V}_2^\top \mat{A} \mat{V}_2) & \\
       & &
     \end{bmatrix} \\
     &=
     \begin{bmatrix}
       & & \\
-      & \ldots (\lambda I_k) & \ldots (V_1^\top A V_2) & \\
+      & \ldots (\lambda \mat{I}_k) & \ldots (\mat{V}_1^\top \mat{A} \mat{V}_2) & \\
       & & \\
-      & \ldots O_{n-k} & \ldots (V_2^\top A V_2) & \\
+      & \ldots \mat{O}_{n-k} & \ldots (\mat{V}_2^\top \mat{A} \mat{V}_2) & \\
       & &
     \end{bmatrix}
     \in \mathbb{R}^{n \times n}
   \end{align*}
-  Thus, the characteristic polynomial of \(A\) can be computed as
+  Thus, the characteristic polynomial of \(\mat{A}\) can be computed as
   \begin{align*}
     p(x) =
-    \det(A - x I)
-    &= \det(V^\top (A - x I) V ) \\
-    &= \det(V^\top A V - x I) \\
+    \det(\mat{A} - x \mat{I})
+    &= \det(\mat{V}^\top (\mat{A} - x \mat{I}) \mat{V} ) \\
+    &= \det(\mat{V}^\top \mat{A} \mat{V} - x \mat{I}) \\
     &= \det\left(
       \begin{bmatrix}
         & & \\
-        & \ldots (\lambda I_k - x I_k) & \ldots (V_1^\top A V_2) & \\
+        & \ldots (\lambda \mat{I}_k - x \mat{I}_k) & \ldots (\mat{V}_1^\top \mat{A} \mat{V}_2) & \\
         & & \\
-        & \ldots O_{n-k} & \ldots (V_2^\top A V_2 - x I_{n-k}) & \\
+        & \ldots \mat{O}_{n-k} & \ldots (\mat{V}_2^\top \mat{A} \mat{V}_2 - x \mat{I}_{n-k}) & \\
         & &
       \end{bmatrix}
     \right) \\
     &= {(\lambda - x)}^k
     \cdot
-    \det(V_2^\top A V_2 - x I_{n-k})
+    \det(\mat{V}_2^\top \mat{A} \mat{V}_2 - x \mat{I}_{n-k})
   \end{align*}
   Therefore, \(\lambda \) is a root of \(p(x)\) with multiplicity at
   least \(k\),
