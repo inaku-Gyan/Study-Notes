@@ -454,22 +454,6 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
   Proven by Liouville's formula.
 \end{proof}
 
-\begin{definition}[Fundamental Set of Solutions]
-  A set of \(n\) \textbf{linearly independent} solutions
-  \( \{\vec{y}_1(t), \vec{y}_2(t), \ldots, \vec{y}_n(t)\} \)
-  to the homogeneous system~(\ref{eq: 1.HL.Sys})
-  is called a
-  \textbf{fundamental set of solutions}.
-\end{definition}
-
-\begin{definition}[Fundamental Matrix]
-  {}\label{def: Fundamental Matrix}
-  A matrix function \(\mat{Y}(t) \in {C^1(I)}^{n \times n}\) is called a
-  \textbf{fundamental matrix} of
-  the homogeneous system~(\ref{eq: 1.HL.Sys})
-  if its columns form a fundamental set of solutions.
-\end{definition}
-
 \begin{theorem}
   If the \(n\) solutions \(\vec{y}_1(t), \vec{y}_2(t),
   \ldots, \vec{y}_n(t)\)
@@ -521,6 +505,31 @@ i.e., all entries of \(\mat{P}\) and \(\vec{y}\) are continuous on \(I\).
   Thus any solution \(\vec{\phi}(t)\) can be expressed as a linear
   combination of the fundamental solutions.
 \end{proof}
+
+\begin{definition}[Fundamental Set of Solutions]
+  A set of \(n\) \textbf{linearly independent} solutions
+  \( \{\vec{y}_1(t), \vec{y}_2(t), \ldots, \vec{y}_n(t)\} \)
+  to the homogeneous system~(\ref{eq: 1.HL.Sys})
+  is called a
+  \textbf{fundamental set of solutions}.
+\end{definition}
+
+\begin{definition}[Fundamental Matrix]
+  {}\label{def: Fundamental Matrix}
+  A matrix function \(\mat{Y}(t) \in {C^1(I)}^{n \times n}\) is called a
+  \textbf{fundamental matrix} of
+  the homogeneous system~(\ref{eq: 1.HL.Sys})
+  if its columns form a fundamental set of solutions.
+\end{definition}
+
+For a square matrix \(\mat{Y}\) whose columns are solutions
+to the homogeneous system~(\ref{eq: 1.HL.Sys}),
+we have
+\begin{equation*}
+  \det(\mat{Y}) \ne 0
+  \quad\iff\quad
+  \mat{Y} \text{ is a fundamental matrix}.
+\end{equation*}
 
 \begin{theorem}[Existence of Fundamental Matrix]
   {}\label{thm: Existence of Fundamental Matrix}
