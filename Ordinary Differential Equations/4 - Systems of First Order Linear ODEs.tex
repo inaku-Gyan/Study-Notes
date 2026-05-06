@@ -574,5 +574,142 @@ defined on an open interval \(I \subseteq \mathbb{R}\):
   \label{eq: 1.HLCC.Sys}
 \end{equation}
 where \(\mat{A} \in \mathbb{R}^{n \times n}\) is a constant matrix.
+We will introduce two methods to solve this system:
+\begin{enumerate}
+  \item The method of matrix exponentials.
+  \item The method of eigenvalues and eigenvectors.
+\end{enumerate}
+
+\subsection{Method 1: Matrix Exponentials}
+
+\subsubsection{Matrix Exponentials}
+
+\begin{theorem}
+  {}\label{thm: exp of sum of commuting matrices}
+  For any square matrices \(\mat{A}, \mat{B} \in \mathbb{R}^{n \times n}\),
+  \begin{equation*}
+    \mat{A} \mat{B} = \mat{B} \mat{A}
+    \quad\implies\quad
+    e^{\mat{A} + \mat{B}} = e^{\mat{A}} e^{\mat{B}}.
+  \end{equation*}
+\end{theorem}
+\begin{proof}
+  Using the Binomial Theorem.
+\end{proof}
+
+\begin{theorem}
+  {}\label{thm: inv of mat exp}
+  For any square matrix \(\mat{A} \in \mathbb{R}^{n \times n}\),
+  we have \(\det(e^{\mat{A}}) \ne 0\),
+  and \({(e^{\mat{A}})}^{-1} = e^{-\mat{A}}\).
+\end{theorem}
+\begin{proof}
+  Let \(\mat{A}\) be an arbitrary square matrix.
+  Since \(\mat{A}(-\mat{A}) = -\mat{A}^2 = (-\mat{A})\mat{A}\),
+  we have
+  \(e^{\mat{A}} e^{-\mat{A}} = e^{\mat{A} - \mat{A}} = e^{\mat{O}} = \mat{I}\).
+\end{proof}
+
+\begin{theorem}
+  {}\label{thm: derivative of mat exp}
+  For a constant square matrix \(\mat{A}\):
+  \begin{equation*}
+    \dv{(e^{\mat{A} t})}{t} = \mat{A} e^{\mat{A} t} = e^{\mat{A} t} \mat{A}
+  \end{equation*}
+\end{theorem}
+\begin{proof}
+  \begin{equation*}
+    \dv{(e^{\mat{A} t})}{t}
+    = \dv{t} \sum_{k=0}^{\infty} \frac{\mat{A}^k t^k}{k!}
+    = \mat{A} \sum_{k=1}^{\infty} \frac{\mat{A}^{k-1} t^{k-1}}{(k-1)!}
+    = \mat{A} e^{\mat{A} t}
+    = \sum_{k=1}^{\infty} \frac{\mat{A}^{k-1} t^{k-1}}{(k-1)!} \cdot \mat{A}
+    = e^{\mat{A} t} \mat{A}
+  \end{equation*}
+\end{proof}
+
+Theorem~\ref{thm: derivative of mat exp} indicates that the columns of
+the matrix \(\mat{Y}(t) := e^{\mat{A} t}\) are solutions
+to the homogeneous system~(\ref{eq: 1.HLCC.Sys}),
+and Theorem~\ref{thm: inv of mat exp} shows its invertibility.
+Thus, \(\mat{Y}(t)\) is a \textbf{fundamental matrix}.
+Then, the \textbf{general solution} to the system can be expressed as
+\begin{equation*}
+  \vec{y}(t) = e^{\mat{A} t} \cdot \vec{c} \qfor t\in I,
+\end{equation*}
+where \(\vec{c} \in \mathbb{R}^n\) is an arbitrary constant vector.
+
+\subsubsection{Computing Matrix Exponentials}
+
+Now, how to compute \(e^{\mat{A} t}\)?
+We can make use of the \nameref{thm: S-N Decomposition}.
+
+\begin{definition}[Semisimple Matrix]
+  A square matrix \(\mat{A} \in \mathbb{R}^{n \times n}\)
+  is called \textbf{semisimple}
+  if it is \textbf{diagonalizable}, i.e.,
+  there exists an invertible matrix \(\mat{P}\) such that
+  \(\mat{P}^{-1} \mat{A} \mat{P} = \mat{D}\),
+  where \(\mat{D}\) is a diagonal matrix.
+\end{definition}
+\begin{remark}
+  The diagonal entries of \(\mat{D}\) are the eigenvalues of \(\mat{A}\).
+\end{remark}
+
+\begin{definition}[Nilpotent Matrix]
+  A square matrix \(\mat{A} \in \mathbb{R}^{n \times n}\)
+  is called \textbf{nilpotent}
+  if there exists a positive integer \(k\) such that
+  \(\mat{A}^k = \mat{O}\).
+\end{definition}
+
+\begin{theorem}
+  {}\label{thm: exp of a diagonalizable matrix}
+  For a diagonalizable matrix
+  \(\mat{A} = \mat{P} \mat{\Lambda} \mat{P}^{-1} \in \mathbb{R}^{n \times n}\),
+  we have
+  \begin{equation*}
+    e^{\mat{A}} = \mat{P} e^{\mat{\Lambda}} \mat{P}^{-1}
+    = \mat{P}
+    \begin{pmatrix}
+      e^{\lambda_1} & & \\ & \ddots & \\ & & e^{\lambda_n}
+    \end{pmatrix}
+    \mat{P}^{-1}
+    \qquad\text{where }
+    \lambda_1, \ldots, \lambda_n \text{ are eigenvalues of } \mat{A}.
+  \end{equation*}
+\end{theorem}
+
+\begin{theorem}[S-N Decomposition]
+  {}\label{thm: S-N Decomposition}
+  For any square matrix \(\mat{A} \in \mathbb{R}^{n \times n}\),
+  there \textbf{uniquely} exist a semisimple matrix \(\mat{S}\)
+  and a nilpotent matrix \(\mat{N}\) such that
+  \begin{equation*}
+    \mat{A} = \mat{S} + \mat{N} \quad\text{and}\quad
+    \mat{S} \mat{N} = \mat{N} \mat{S}.
+  \end{equation*}
+  Additionally, \(\mat{S}\) shares the same eigenvalues as \(\mat{A}\)
+  with the same algebraic multiplicities.
+\end{theorem}
+
+Since \(\mat{S}\) and \(\mat{N}\) commute, we have
+\begin{equation*}
+  e^{\mat{A} t} = e^{\mat{S} t + \mat{N} t}
+  = e^{\mat{S} t} e^{\mat{N} t}.
+\end{equation*}
+Because \(\mat{S}\) is semisimple, we can compute \(e^{\mat{S} t}\)
+with Theorem~\ref{thm: exp of a diagonalizable matrix}.
+For the nilpotent matrix \(\mat{N}\),
+since \(\mat{N}^k = \mat{O}\) for some \(k\),
+the series expansion of \(e^{\mat{N} t}\) terminates within dinitely many terms:
+\begin{equation*}
+  e^{\mat{N} t} = \mat{I} + \mat{N} t + \frac{\mat{N}^2 t^2}{2!} + \cdots
+  + \frac{\mat{N}^{k-1} t^{k-1}}{(k-1)!}.
+\end{equation*}
+Thus it is computable.
+
+\subsection{Method 2: Eigenvalues and Eigenvectors}
+
 
 \end{document}
