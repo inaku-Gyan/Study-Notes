@@ -711,6 +711,121 @@ Thus it is computable.
 
 \subsection{Method 2: Eigenvalues and Eigenvectors}
 
+\begin{definition}[Generalized Eigenvector]
+  {}\label{def: Generalized Eigenvector}
+  For a square matrix \(\mat{A} \in \mathbb{R}^{n \times n}\) and an eigenvalue
+  \(\lambda \) of \(\mat{A}\), a nonzero vector \(\vec{\xi} \in \mathbb{R}^n\)
+  is called a \textbf{generalized eigenvector} of \(\mat{A}\) corresponding to
+  \(\lambda \) if there exists a positive integer \(k\) such that
+  \begin{equation*}
+    {(\mat{A} - \lambda \mat{I})}^k \vec{\xi} = \vec{0}.
+  \end{equation*}
+  If \(k\) is the least integer satisfying the above equation,
+  then \(\vec{\xi}\) is called
+  a generalized eigenvector of order \(k\).
+\end{definition}
+
+\begin{theorem}[Generalized Eigenspace]
+  {}\label{thm: Generalized Eigenspace}
+  The \textbf{generalized eigenspace} of
+  an eigenvalue \( \lambda \) of \(\mat{A}\) with algebraic multiplicity \(m\),
+  denoted by \(G_{\lambda}\), is given by
+  \begin{equation*}
+    G_{\lambda} = \ker \! \qty({(\mat{A} - \lambda \mat{I})}^m)
+    \qand
+    \dim(G_{\lambda}) = m.
+  \end{equation*}
+\end{theorem}
+
+
+Consider the homogeneous system~(\ref{eq: 1.HLCC.Sys}).
+Suppose \(\mat{A} \in \mathbb{R}^{n \times n}\) has \(k\) distinct eigenvalues:
+\begin{equation*}
+  \det(x\mat{I} - \mat{A}) =
+  {(x - \lambda_1)}^{m_1} {(x - \lambda_2)}^{m_2}
+  \cdots {(x - \lambda_k)}^{m_k},
+\end{equation*}
+where \(m_i\) is the algebraic multiplicity of \(\lambda_i\) and
+\(\sum_{i=1}^k m_i = n\).
+For each eigenvalue \(\lambda_i\), we need to find \(m_i\) linearly
+independent solutions:
+\( \vec{y}^{(i)}_1, \vec{y}^{(i)}_2, \ldots, \vec{y}^{(i)}_{m_i} \),
+so that we have \(n\) linearly independent solutions in total.
+
+For each \(\lambda_i\), whose geometric multiplicity is \(q_i\),
+there are two cases:
+\begin{enumerate}
+  \item \(1 \leqslant q_i = m_i \leqslant n\),
+    there are \(m_i\) L.I. eigenvectors;
+  \item \(1 \leqslant q_i < m_i \leqslant n\).
+\end{enumerate}
+
+\subsubsection*{Case 1}
+
+For the first case, we can construct the solutions for \(\lambda_i\) as
+\begin{align*}
+  \vec{y}^{(i)}_1(t) &= \vec{r}^{(i)}_1 e^{\lambda_i t}, \\
+  \vec{y}^{(i)}_2(t) &= \vec{r}^{(i)}_2 e^{\lambda_i t}, \\
+  &\vdots \\
+  \vec{y}^{(i)}_{m_i}(t) &= \vec{r}^{(i)}_{m_i} e^{\lambda_i t}.
+\end{align*}
+where \(\vec{r}^{(i)}_1, \vec{r}^{(i)}_2, \ldots, \vec{r}^{(i)}_{m_i}\)
+are \(m_i\) L.I. eigenvectors
+corresponding to \(\lambda_i\).
+
+\subsubsection*{Case 2}
+
+By Theorem~\ref{thm: Generalized Eigenspace},
+there are \(m_i\) L.I. generalized eigenvectors for \(\lambda_i\):
+\(\vec{\xi}^{(i)}_1, \vec{\xi}^{(i)}_2, \ldots, \vec{\xi}^{(i)}_{m_i}\).
+We use each of them to construct a solution.
+For the \(j\)-th generalized eigenvector \(\vec{\xi}^{(i)}_j\),
+we first construct the following \(m_i\) vectors:
+\begin{align*}
+  \vec{\eta}^{(i,j)}_0 &:= \vec{\xi}^{(i)}_j, \\
+  \vec{\eta}^{(i,j)}_1 &:= (\mat{A} - \lambda_i \mat{I}) \vec{\xi}^{(i)}_j, \\
+  \vec{\eta}^{(i,j)}_2 &:= {(\mat{A} - \lambda_i \mat{I})}^2
+  \vec{\xi}^{(i)}_j, \\
+  &\vdots \\
+  \vec{\eta}^{(i,j)}_{m_i-1} &:= {(\mat{A} - \lambda_i \mat{I})}^{m_i-1}
+  \vec{\xi}^{(i)}_j.
+\end{align*}
+\begin{remark}
+  Some of these vectors may be zero, because if \(\vec{\xi}^{(i)}_j\)
+  is of order \(k\) (\(k \leqslant m_i\))
+  then \(\vec{\eta}^{(i,j)}_k = \vec{\eta}^{(i,j)}_{k+1} = \cdots = \vec{0}\),
+  and \(\vec{\eta}^{(i,j)}_{k-1}\) is an ordinary eigenvector, while
+  the rest \(k-1\) nonzero vectors are generalized eigenvectors.
+\end{remark}
+
+Now we construct the solution as:
+\begin{equation*}
+  \vec{y}^{(i)}_j(t) = \qty(
+    \vec{\eta}^{(i,j)}_0 +
+    \vec{\eta}^{(i,j)}_1 t +
+    \vec{\eta}^{(i,j)}_2 \frac{t^2}{2!} + \cdots +
+    \vec{\eta}^{(i,j)}_{m_i-1} \frac{t^{m_i-1}}{(m_i-1)!}
+  ) \cdot e^{\lambda_i t}
+  \quad\qfor j = 1, 2, \ldots, m_i.
+\end{equation*}
+It can be verified that \(\vec{y}^{(i)}_j\) is indeed a
+solution to the system by direct substitution:
+\(\displaystyle \dv{t}(\vec{y}^{(i)}_j)=\mat{A} \cdot \vec{y}^{(i)}_j\).
+
+\subsubsection*{The General Solution}
+
+Finally, we can express the general solution to the system as
+\begin{align*}
+  \vec{y}(t) &= \sum_{i=1}^k \sum_{j=1}^{m_i} c^{(i)}_j \vec{y}^{(i)}_j(t) \\
+  &= \sum_{i=1}^k \sum_{j=1}^{m_i} c^{(i)}_j
+  \qty(
+    \vec{\eta}^{(i,j)}_0 +
+    \vec{\eta}^{(i,j)}_1 t +
+    \vec{\eta}^{(i,j)}_2 \frac{t^2}{2!} + \cdots +
+    \vec{\eta}^{(i,j)}_{m_i-1} \frac{t^{m_i-1}}{(m_i-1)!}
+  ) \cdot e^{\lambda_i t}.
+\end{align*}
+
 \section{Non-Homogeneous Systems with Constant Coefficients}
 
 \subsection{Method of Undetermined Coefficients}
