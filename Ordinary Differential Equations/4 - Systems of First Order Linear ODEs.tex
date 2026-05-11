@@ -642,7 +642,6 @@ where \(\vec{c} \in \mathbb{R}^n\) is an arbitrary constant vector.
 \subsubsection{Computing Matrix Exponentials}
 
 Now, how to compute \(e^{\mat{A} t}\)?
-We can make use of the \nameref{thm: S-N Decomposition}.
 
 \begin{definition}[Semisimple Matrix]
   A square matrix \(\mat{A} \in \mathbb{R}^{n \times n}\)
@@ -693,6 +692,15 @@ We can make use of the \nameref{thm: S-N Decomposition}.
   with the same algebraic multiplicities.
 \end{theorem}
 
+When computing \(e^{\mat{A} t}\),
+there are two cases:
+\(\mat{A}\) is diagonalizable or not.
+If \(\mat{A}\) is diagonalizable, we can compute
+\(e^{\mat{A} t}\) with
+Theorem~\ref{thm: exp of a diagonalizable matrix}.
+If \(\mat{A}\) is not diagonalizable,
+we then apply the \nameref{thm: S-N Decomposition}
+to \(\mat{A}\).
 Since \(\mat{S}\) and \(\mat{N}\) commute, we have
 \begin{equation*}
   e^{\mat{A} t} = e^{\mat{S} t + \mat{N} t}
