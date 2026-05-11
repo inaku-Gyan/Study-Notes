@@ -870,11 +870,52 @@ We can rewrite the linear combination of them into
 a single arbitrary constant vector \(\vec{c} \in \mathbb{R}^n\),
 which gives the same result as the matrix exponential method.
 
-\section{Non-Homogeneous Systems with Constant Coefficients}
+\section{Non-Homogeneous Linear Systems}
 
 \subsection{Method of Undetermined Coefficients}
 
 \subsection{Variation of Parameters}
 
+Consider the non-homogeneous linear system
+\begin{equation}
+  \vec{y}'(t) = \mat{P}(t) \vec{y}(t) + \vec{g}(t) \quad \qfor t\in I,
+  \label{eq: 1.nHL.Sys}
+\end{equation}
+where \(\mat{P} \in {C(I)}^{n \times n}\) and
+\(\vec{g} \in {C(I)}^n\),
+and the corresponding homogeneous system is
+\begin{equation}
+  \vec{y}'(t) = \mat{P}(t) \vec{y}(t) \quad \qfor t\in I.
+  \label{eq: 1.cHL.Sys}
+\end{equation}
+
+If we already have a fundamental matrix,
+then we can construct a particular solution using
+\nameref{thm: Variation of Parameters}.
+
+\begin{theorem}[Variation of Parameters]
+  {}\label{thm: Variation of Parameters}
+  Consider the non-homogeneous system~(\ref{eq: 1.nHL.Sys}).
+  Suppose \(\mat{F}(t)\) is a \textbf{fundamental matrix}
+  of the corresponding homogeneous system~(\ref{eq: 1.cHL.Sys}).
+  Then a \textbf{particular solution} to system~(\ref{eq: 1.nHL.Sys})
+  can be found by setting
+  \begin{equation*}
+    \vec{y}_p(t) = \mat{F}(t) \cdot \vec{u}(t),
+  \end{equation*}
+  where \(\vec{u}(t)\) is given by
+  \begin{equation*}
+    \vec{u}(t) = \int {\mat{F}(t)}^{-1} \vec{g}(t) \dd{t}.
+  \end{equation*}
+  Thus the \textbf{general solution} to system~(\ref{eq: 1.nHL.Sys}) is
+  \begin{align*}
+    \vec{y}(t) &= \vec{y}_h(t) + \vec{y}_p(t) \\
+    &= \mat{F}(t) \cdot (\vec{c} + \vec{u}(t)) \\
+    &= \mat{F}(t) \cdot \vec{c} + \mat{F}(t) \int {\mat{F}(t)}^{-1}
+    \vec{g}(t) \dd{t}
+    \qfor t\in I,
+  \end{align*}
+  where \(\vec{c} \in \mathbb{R}^n\) is an arbitrary constant vector.
+\end{theorem}
 
 \end{document}
