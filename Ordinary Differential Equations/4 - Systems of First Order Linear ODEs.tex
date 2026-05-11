@@ -791,11 +791,11 @@ we first construct the following \(m_i\) vectors:
   \vec{\xi}^{(i)}_j.
 \end{align*}
 \begin{remark}
-  Some of these vectors may be zero, because if \(\vec{\xi}^{(i)}_j\)
-  is of order \(k\) (\(k \leqslant m_i\))
-  then \(\vec{\eta}^{(i,j)}_k = \vec{\eta}^{(i,j)}_{k+1} = \cdots = \vec{0}\),
-  and \(\vec{\eta}^{(i,j)}_{k-1}\) is an ordinary eigenvector, while
-  the rest \(k-1\) nonzero vectors are generalized eigenvectors.
+  Some of these vectors may be zero. If \(\vec{\xi}^{(i)}_j\)
+  is of order \(s\) (\(1 \leqslant s \leqslant m_i\)),
+  then \(\vec{\eta}^{(i,j)}_s = \vec{\eta}^{(i,j)}_{s+1} = \cdots = \vec{0}\),
+  and \(\vec{\eta}^{(i,j)}_{s-1}\) is an ordinary eigenvector, while
+  the rest \(s-1\) nonzero vectors are generalized eigenvectors (nonzero).
 \end{remark}
 
 Now we construct the solution as:
@@ -823,8 +823,44 @@ Finally, we can express the general solution to the system as
     \vec{\eta}^{(i,j)}_1 t +
     \vec{\eta}^{(i,j)}_2 \frac{t^2}{2!} + \cdots +
     \vec{\eta}^{(i,j)}_{m_i-1} \frac{t^{m_i-1}}{(m_i-1)!}
-  ) \cdot e^{\lambda_i t}.
+  ) \cdot e^{\lambda_i t} \\
+  &= \sum_{i=1}^k \sum_{j=1}^{m_i} c^{(i)}_j e^{\lambda_i t}
+  \sum_{s=0}^{m_i-1} \vec{\eta}^{(i,j)}_s \frac{t^s}{s!}
 \end{align*}
+where \(k\) is the number of distinct eigenvalues,
+\(m_i\) is the algebraic multiplicity of \(\lambda_i\),
+and \(c^{(i)}_j\) are arbitrary constants.
+
+\paragraph{Relation with the Matrix Exponential}
+The above solution can be rewritten as
+\begin{align*}
+  \vec{y}(t)
+  &= \sum_{i=1}^k \sum_{j=1}^{m_i} c^{(i)}_j e^{\lambda_i t}
+  \sum_{s=0}^{m_i-1} \vec{\eta}^{(i,j)}_s \frac{t^s}{s!} \\
+  &= \sum_{i=1}^k \sum_{j=1}^{m_i}
+  c^{(i)}_j e^{\lambda_i t}
+  \qty[ \sum_{s=0}^{m_i-1}
+    {(\mat{A} - \lambda_i \mat{I})}^{s} \frac{t^s}{s!}
+  ] \vec{\xi}^{(i)}_j \\
+  &= \sum_{i=1}^k \sum_{j=1}^{m_i}
+  c^{(i)}_j e^{\lambda_i t}
+  \qty[ \sum_{s=0}^{\infty}
+    {(\mat{A} - \lambda_i \mat{I})}^{s} \frac{t^s}{s!}
+  ] \vec{\xi}^{(i)}_j \\
+  &= e^{\mat{A} t} \sum_{i=1}^k \sum_{j=1}^{m_i}
+  c^{(i)}_j \vec{\xi}^{(i)}_j
+\end{align*}
+Note that for each eigenvalue \(\lambda_i\),
+\(\vec{\xi}^{(i)}_1, \vec{\xi}^{(i)}_2, \ldots, \vec{\xi}^{(i)}_{m_i}\)
+are \(m_i\) L.I. generalized eigenvectors we picked,
+whose existence is guaranteed by Theorem~\ref{thm: Generalized Eigenspace}.
+Additionally, generalized eigenvectors corresponding to different eigenvalues
+are also linearly independent.
+Thus, the span of all these \(n\) generalized eigenvectors is
+exactly the whole space \(\mathbb{R}^n\).
+We can rewrite the linear combination of them into
+a single arbitrary constant vector \(\vec{c} \in \mathbb{R}^n\),
+which gives the same result as the matrix exponential method.
 
 \section{Non-Homogeneous Systems with Constant Coefficients}
 
