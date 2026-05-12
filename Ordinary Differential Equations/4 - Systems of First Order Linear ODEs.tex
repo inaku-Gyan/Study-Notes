@@ -874,9 +874,67 @@ which gives the same result as the matrix exponential method.
 
 \subsection{Method of Undetermined Coefficients}
 
+Consider the non-homogeneous linear system with constant coefficients:
+\begin{equation}
+  \vec{y}'(t) = \mat{A} \vec{y}(t) + \vec{g}(t) \quad \qfor t\in I,
+  \label{eq: 1.nHLCC.Sys}
+\end{equation}
+where \(\mat{A} \in \mathbb{R}^{n \times n}\) and
+\(\vec{g} \in {C(I)}^n\).
+
+To find a particular solution to the system, we can use the following table.
+
+\begin{center}
+  \newcommand{\red}[1]{\textcolor{red}{#1}}
+  \newcommand{\blue}[1]{\textcolor{blue}{#1}}
+  \newcommand{\teal}[1]{\textcolor{teal}{#1}}
+  \newcommand{\brown}[1]{\textcolor{brown}{#1}}
+  \begin{tabular}{c @{\hspace{1cm}} c}
+    \toprule
+    \(\vec{g}(t)\) & \(\vec{y}_p(t)\) \\
+    \midrule
+    \(\vec{a}_m t^m + \cdots + \vec{a}_1 t + \vec{a}_0\) &
+    \(\red{\vec{b}_{m+s} t^{m+s} + \cdots} + \vec{b}_m t^m + \cdots +
+    \vec{b}_0\) \\[1em]
+    \((\vec{a}_m t^m + \cdots + \vec{a}_{1} t + \vec{a}_0)
+    \blue{e^{\alpha t}}\) &
+    \((\red{\vec{b}_{m+s} t^{m+s} + \cdots} + \vec{b}_m t^m + \cdots
+    + \vec{b}_0) \blue{e^{\alpha t}}\) \\[1em]
+    \(
+      \begin{matrix}
+        (\vec{a}_m t^m + \cdots + \vec{a}_{1} t + \vec{a}_0) \blue{e^{\alpha t}}
+        \teal{\sin\beta t} \\
+        (\vec{a}_m t^m + \cdots + \vec{a}_{1} t + \vec{a}_0) \blue{e^{\alpha t}}
+        \teal{\cos\beta t}
+    \end{matrix} \text{ or}\) &
+    \(
+      \begin{matrix}
+        \Big[
+          (\red{\vec{b}_{m+s} t^{m+s} + \cdots} + \vec{b}_m t^m +
+          \cdots + \vec{b}_0) \teal{\sin\beta t} +
+          \qquad\qquad \\ \qquad\qquad\qquad
+          (\red{\vec{c}_{m+s} t^{m+s} + \cdots} + \vec{c}_m t^m +
+          \cdots + \vec{c}_0) \teal{\cos\beta t}
+        \Big] \blue{e^{\alpha t}}
+    \end{matrix}\) \\[1em]
+    \bottomrule
+  \end{tabular}
+
+  \smallskip
+  \begin{minipage}{0.9\textwidth}
+    \textit{Notes.}
+    \(\red{s}\) represents the \textbf{algebraic multiplicity} of
+    \(\brown{0}\), \(\brown{\alpha}\), or \(\brown{\alpha + \iu\beta}\)
+    as an eigenvalue of the coefficient matrix \(\mat{A}\), respectively.
+  \end{minipage}
+\end{center}
+Different from the single equation case,
+where the lowest order term of \(t\) in the particular solution is \(t^s\),
+here the polynomial contains all powers of \(t\) from \(t^0\) to \(t^{m+s}\).
+
 \subsection{Variation of Parameters}
 
-Consider the non-homogeneous linear system
+Consider the non-homogeneous linear system:
 \begin{equation}
   \vec{y}'(t) = \mat{P}(t) \vec{y}(t) + \vec{g}(t) \quad \qfor t\in I,
   \label{eq: 1.nHL.Sys}
