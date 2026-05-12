@@ -173,6 +173,7 @@ urlcolor=blue]{hyperref}
 \newcommand{\iu}{\mathrm{i}}  % 虚数单位 i
 
 \DeclareMathOperator{\adj}{adj}  % 伴随矩阵 adj
+\DeclareMathOperator{\diag}{diag}  % 对角矩阵 diag
 
 
 \begin{document}
@@ -716,6 +717,135 @@ the series expansion of \(e^{\mat{N} t}\) terminates within dinitely many terms:
   + \frac{\mat{N}^{k-1} t^{k-1}}{(k-1)!}.
 \end{equation*}
 Thus it is computable.
+
+\subsubsection{Jordan Normal Form}
+
+\begin{definition}[Jordan Block]
+  {}\label{def: Jordan Block}
+  For an eigenvalue \(\lambda \in \mathbb{C}\) and a positive integer \(m\),
+  the \(m\)-th order \textbf{Jordan block} corresponding to \(\lambda \) is
+  defined as the following \(m \times m\) matrix:
+  \begin{equation*}
+    \mat{J}_m(\lambda) =
+    \begin{pmatrix}
+      \lambda & 1 & & \\ & \lambda & \ddots & \\ & & \ddots & 1 \\ &
+      & & \lambda
+    \end{pmatrix}.
+  \end{equation*}
+\end{definition}
+
+\begin{theorem}[Jordan Normal Form]
+  {}\label{thm: Jordan Normal Form}
+  For any square matrix \(\mat{A} \in \mathbb{R}^{n \times n}\),
+  there exists an invertible matrix \(\mat{P}\) such that
+  \begin{equation*}
+    \mat{P}^{-1} \mat{A} \mat{P} =
+    \mat{J} =
+    \diag\Big(
+      \mat{J}_{m_1}(\lambda_1),
+      \mat{J}_{m_2}(\lambda_2), \ldots,
+      \mat{J}_{m_k}(\lambda_k)
+    \Big) =
+    \begin{pmatrix}
+      \mat{J}_{m_1}(\lambda_1) & & \\ & \ddots & \\ & & \mat{J}_{m_k}(\lambda_k)
+    \end{pmatrix},
+  \end{equation*}
+  where \(\lambda_1, \ldots, \lambda_k\) are distinct eigenvalues of \(\mat{A}\)
+  and \(m_i\) is the algebraic multiplicity of \(\lambda_i\).
+\end{theorem}
+
+The matrix \(\mat{P}\) consists of \(n\) L.I. \textbf{generalized eigenvectors}
+of \(\mat{A}\). And their position in \(\mat{P}\) corresponds to the
+position of the Jordan blocks in \(\mat{J}\).
+For instance, the first \(m_1\) columns of \(\mat{P}\) are the generalized
+eigenvectors corresponding to \(\lambda_1\) and they form a
+\nameref{def: Jordan Chain}.
+
+\begin{definition}[Jordan Chain]
+  {}\label{def: Jordan Chain}
+  For a square matrix \(\mat{A} \in \mathbb{R}^{n \times n}\) and an eigenvalue
+  \(\lambda \) of \(\mat{A}\), a sequence of nonzero vectors
+  \(\vec{\xi}_1, \vec{\xi}_2, \ldots, \vec{\xi}_m\) is called a
+  \textbf{Jordan chain} of length \(m\) corresponding to \(\lambda \)
+  if the following equations hold:
+  \begin{equation*}
+    (\mat{A} - \lambda \mat{I}) \vec{\xi}_1 = \vec{0}, \quad
+    (\mat{A} - \lambda \mat{I}) \vec{\xi}_2 = \vec{\xi}_1, \quad
+    (\mat{A} - \lambda \mat{I}) \vec{\xi}_3 = \vec{\xi}_2, \quad
+    \ldots, \quad
+    (\mat{A} - \lambda \mat{I}) \vec{\xi}_m = \vec{\xi}_{m-1}.
+  \end{equation*}
+  Then \(\vec{\xi}_1, \vec{\xi}_2, \ldots, \vec{\xi}_m\) are
+  L.I. generalized eigenvectors of \(\mat{A}\) corresponding to \(\lambda \).
+\end{definition}
+
+\begin{theorem}
+  Let \(\mat{N}_m := \mat{J}_m(\lambda) - \lambda\mat{I}\),
+  then \(\mat{N}_m\) is nilpotent:
+  \begin{equation*}
+    \mat{N}_m^m = \mat{O} \qand \mat{N}_m^{m-1} \ne \mat{O}.
+  \end{equation*}
+\end{theorem}
+
+When the power of \(\mat{N}_m\) increases,
+the nonzero entries move towards the upper right corner.
+\begin{equation*}
+  \mat{N}_m =
+  \begin{pmatrix}
+    0 & 1 & & & \\ & 0 & 1 & & \\ & & \ddots & \ddots &  \\ & & & 0 &
+    1 \\ & & & & 0
+  \end{pmatrix}, \quad
+  \mat{N}_m^2 =
+  \begin{pmatrix}
+    0 & 0 & 1 & & \\ & 0 & 0 & \ddots & \\ & & \ddots & \ddots &
+    1 \\ & & & 0 & 0 \\ & & & & 0
+  \end{pmatrix}, \quad
+  \cdots, \quad
+  \mat{N}_m^{m-1} =
+  \begin{pmatrix}
+    0 & & & 0 & 1 \\ & 0 & & & 0 \\ & & \ddots & & \\ & & & 0 &
+    \\ & & & & 0
+  \end{pmatrix}, \quad
+  \mat{N}_m^m = \mat{O}.
+\end{equation*}
+
+\begin{theorem}[Exponential of a Jordan Block]
+  {}\label{thm: exp of Jordan block}
+  For \(\lambda \in \mathbb{C}\) and a positive integer \(m\),
+  the exponential of the \(m\)-th order Jordan block
+  \(\mat{J}_m(\lambda)\) is given by
+  \begin{equation*}
+    e^{\mat{J}_m(\lambda) t} =
+    e^{\lambda t} \cdot
+    \begin{pmatrix}
+      1 & t & \frac{t^2}{2!} & \cdots & \frac{t^{m-1}}{(m-1)!} \\
+      & 1 & t & \ddots & \vdots \\ & & 1 & \ddots & \frac{t^2}{2!} \\ &
+      & & \ddots & t \\ & & & & 1
+    \end{pmatrix}.
+  \end{equation*}
+\end{theorem}
+\begin{proof}
+  Let \(\mat{N}_m := \mat{J}_m(\lambda) - \lambda\mat{I}\).
+  Then we have
+  \begin{align*}
+    \exp(\mat{J}_m(\lambda) t) &= \exp(\lambda t \mat{I} + \mat{N}_m t) \\
+    &= \exp(\lambda t \mat{I}) \cdot \exp(\mat{N}_m t) \\
+    &= e^{\lambda t} \mat{I} \cdot \exp(\mat{N}_m t) \\
+    &= e^{\lambda t} \sum_{k=0}^{m-1} \frac{t^k}{k!} \mat{N}_m^k
+  \end{align*}
+\end{proof}
+
+Compute \(e^{\mat{A} t}\) with the Jordan normal form:
+\begin{align*}
+  e^{\mat{A} t} &= \exp(\mat{P} \mat{J} \mat{P}^{-1} t) \\
+  &= \mat{P} e^{\mat{J} t} \mat{P}^{-1} \\
+  &= \mat{P}
+  \begin{pmatrix}
+    e^{\mat{J}_{m_1}(\lambda_1) t} & & \\ & \ddots & \\ & &
+    e^{\mat{J}_{m_k}(\lambda_k) t}
+  \end{pmatrix}
+  \mat{P}^{-1}.
+\end{align*}
 
 \subsection{Method 2: Eigenvalues and Eigenvectors}
 
